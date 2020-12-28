@@ -11,6 +11,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidFileProperties
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 
 open class MainApplication : Application() {
 
@@ -22,7 +23,7 @@ open class MainApplication : Application() {
         }
 
         startKoin {
-            androidLogger()
+            androidLogger(Level.ERROR)
             androidContext(this@MainApplication)
             androidFileProperties()
             modules(listOf(viewModelModule, apiModule))
