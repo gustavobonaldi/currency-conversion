@@ -1,8 +1,8 @@
 package br.com.btg.btgchallenge.network.room.dao
 
 import android.content.Context
-import br.com.btg.btgchallenge.network.model.currency.Currencies
-import br.com.btg.btgchallenge.network.model.currency.Quotes
+import br.com.btg.btgchallenge.network.dto.currency.Currencies
+import br.com.btg.btgchallenge.network.dto.currency.Quotes
 import br.com.btg.btgchallenge.network.room.CurrConversionRoomDatabase
 
 open class CurrencyRoom {

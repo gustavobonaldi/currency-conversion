@@ -5,8 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import br.com.btg.btgchallenge.network.model.currency.Currencies
-import br.com.btg.btgchallenge.network.model.currency.Quotes
+import br.com.btg.btgchallenge.network.dto.currency.Currencies
+import br.com.btg.btgchallenge.network.dto.currency.Quotes
 import br.com.btg.btgchallenge.network.room.dao.CurrencyDao
 
 // Annotates class to be a Room Database with a table (entity) of the Word class

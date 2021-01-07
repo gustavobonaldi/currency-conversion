@@ -1,13 +1,10 @@
 package br.com.btg.btgchallenge.network.api.config
 
-import br.com.btg.btgchallenge.network.model.ApiResponse
+import br.com.btg.btgchallenge.network.dto.ApiResponse
 import com.google.gson.Gson
-import okhttp3.ResponseBody
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
 import java.lang.Exception
-import java.lang.reflect.Type
-import java.util.*
 
 
 enum class ErrorCodes(val code: Int) {

@@ -3,8 +3,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import br.com.btg.btgchallenge.network.model.currency.Currencies
-import br.com.btg.btgchallenge.network.model.currency.Quotes
+import br.com.btg.btgchallenge.network.dto.currency.Currencies
+import br.com.btg.btgchallenge.network.dto.currency.Quotes
 
 @Dao
 interface CurrencyDao {

@@ -1,6 +1,6 @@
 package br.com.btg.btgchallenge.network.api.config
 
-import br.com.btg.btgchallenge.network.model.ApiResponse
+import br.com.btg.btgchallenge.network.dto.ApiResponse
 
 data class Resource<T>(val status: Status, val data: ApiResponse<*>?, val message: String?) {
     companion object {

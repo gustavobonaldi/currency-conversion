@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/fragmentCurrencyList"
-        android:name="br.com.btg.btgchallenge.ui.fragments.currencylist.FragmentCurrencyList"
+        android:name="br.com.btg.btgchallenge.presentation.currencylist.FragmentCurrencyList"
         android:label="FragmentCurrencyList"
         tools:layout="@layout/fragment_currency_list"/>
     <fragment
         android:id="@+id/fragmentConversions"
-        android:name="br.com.btg.btgchallenge.ui.fragments.conversions.FragmentConversions"
+        android:name="br.com.btg.btgchallenge.presentation.conversions.FragmentConversions"
         android:label="FragmentConversions"
         tools:layout="@layout/fragment_conversions"/>
 </navigation>

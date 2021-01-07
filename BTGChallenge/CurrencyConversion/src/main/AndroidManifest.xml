@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme"
         android:name="br.com.btg.btgchallenge.MainApplication"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.fragments.SplashScreenActivity"
+        <activity android:name=".presentation.SplashScreenActivity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"
+        <activity android:name=".presentation.MainActivity"
             android:windowSoftInputMode="adjustResize"/>
     </application>
 
