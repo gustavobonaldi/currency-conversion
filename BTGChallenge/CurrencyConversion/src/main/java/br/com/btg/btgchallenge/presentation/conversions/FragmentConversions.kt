@@ -15,6 +15,7 @@ import br.com.btg.btgchallenge.databinding.FragmentConversionsBinding
 import br.com.btg.btgchallenge.network.api.config.Resource
 import br.com.btg.btgchallenge.network.api.config.Status
 import br.com.btg.btgchallenge.presentation.FragmentBase
+import br.com.btg.btgchallenge.presentation.conversions.Currency.CurrencyType
 import br.com.btg.btgchallenge.presentation.currencylist.FragmentCurrencyList
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_conversions.*
@@ -31,19 +32,12 @@ class FragmentConversions : FragmentBase() {
     private var currencyTo = Currency(Pair("", ""), CurrencyType.TO)
     private var valueToConvert: Double = 0.0
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_conversions, container, false)
         binding.viewModel = conversionViewModel
@@ -53,11 +47,21 @@ class FragmentConversions : FragmentBase() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setListeners()
+        setObservers()
+        conversionViewModel.getRealtimeRates()
+    }
 
-        container_from.setOnClickListener { clicked -> showCurrencyList(CurrencyType.FROM) }
-        container_to.setOnClickListener { clicked -> showCurrencyList(CurrencyType.TO) }
+    fun setListeners(){
+        container_from.setOnClickListener{
+            showCurrencyList(CurrencyType.FROM)
+        }
+
+        container_to.setOnClickListener {
+            showCurrencyList(CurrencyType.TO)
+        }
+
         currency_from_edit_text.addTextChangedListener(convertCurrency())
-        getConversionQuotes()
     }
 
     fun showCurrencyList(currencyType: CurrencyType) {
@@ -78,11 +82,6 @@ class FragmentConversions : FragmentBase() {
         fragmentCurrencyList.show(activity?.supportFragmentManager!!, "teste")
     }
 
-    fun clearFields() {
-        text_view_converted_value.text = ""
-        currency_from_edit_text.setText("")
-    }
-
     fun setDrawableFlag(imageView: ImageView, currency: Currency) {
         val uri = "@drawable/flag_" + currency.currency.first.toString().toLowerCase()
         var imageResource: Int =
@@ -93,35 +92,19 @@ class FragmentConversions : FragmentBase() {
         imageView.setImageResource(imageResource)
     }
 
-    override fun onStart() {
-        super.onStart()
-    }
+    fun setObservers(){
+        conversionViewModel.realTimeRatesLiveData.observe(viewLifecycleOwner, Observer {
+            when (it.status) {
+                Status.SUCCESS -> {
 
-    override fun onResume() {
-        super.onResume()
-
-    }
-
-    override fun onStop() {
-        super.onStop()
-    }
-
-    fun getConversionQuotes() {
-        conversionViewModel.getRealtimeRates.observe(viewLifecycleOwner, observerQuotes)
-        conversionViewModel.getRealtimeRates()
-    }
-
-    private val observerQuotes = Observer<Resource<Any>> {
-        when (it.status) {
-            Status.SUCCESS -> {
-
+                }
+                Status.ERROR -> {
+                    showSnackbar(it?.message)
+                }
+                Status.LOADING -> {
+                }
             }
-            Status.ERROR -> {
-                showSnackbar(it?.message)
-            }
-            Status.LOADING -> {
-            }
-        }
+        })
     }
 
     private fun setValueConverted(value: Double) {
@@ -142,7 +125,6 @@ class FragmentConversions : FragmentBase() {
             }
         }
     }
-
 
     private var current = ""
     fun convertCurrency(): TextWatcher {
@@ -186,5 +168,10 @@ class FragmentConversions : FragmentBase() {
         } catch (ex: Exception) {
 
         }
+    }
+
+    fun clearFields() {
+        text_view_converted_value.text = ""
+        currency_from_edit_text.setText("")
     }
 }

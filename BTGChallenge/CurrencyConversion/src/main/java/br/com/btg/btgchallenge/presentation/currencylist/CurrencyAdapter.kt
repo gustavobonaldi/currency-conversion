@@ -8,7 +8,7 @@ import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import br.com.btg.btgchallenge.R
 import br.com.btg.btgchallenge.presentation.conversions.Currency
-import br.com.btg.btgchallenge.presentation.conversions.CurrencyType
+import br.com.btg.btgchallenge.presentation.conversions.Currency.CurrencyType
 import br.com.btg.btgchallenge.presentation.extensions.inflate
 import br.com.btg.btgchallenge.presentation.extensions.listen
 import kotlinx.android.synthetic.main.currency_item.view.*

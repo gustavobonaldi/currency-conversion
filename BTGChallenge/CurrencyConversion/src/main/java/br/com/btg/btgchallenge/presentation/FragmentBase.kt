@@ -9,22 +9,6 @@ import androidx.fragment.app.Fragment
 
 open class FragmentBase : Fragment() {
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
-    override fun onStart() {
-        super.onStart()
-    }
-
     override fun onResume() {
         super.onResume()
     }

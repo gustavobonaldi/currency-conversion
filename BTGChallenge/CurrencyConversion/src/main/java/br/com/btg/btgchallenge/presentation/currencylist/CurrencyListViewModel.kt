@@ -10,19 +10,14 @@ import kotlinx.coroutines.launch
 
 class CurrencyListViewModel(val currencyLayerUseCase: CurrencyLayerUseCaseImpl) : ViewModel() {
 
-    val getCurrencies= MutableLiveData<Resource<Any>>()
+    private val _getCurrencies = MutableLiveData<Resource<Any>>()
+    val getCurrencies: LiveData<Resource<Any>> = _getCurrencies
 
     fun getCurrencies() {
         viewModelScope.launch(context = Dispatchers.IO)
         {
-            getCurrencies.postValue(Resource.loading())
-            val currencies = currencyLayerUseCase.getCurrencies()
-            when (currencies.status) {
-                Status.SUCCESS -> {
-                    //persistir dado
-                }
-            }
-            getCurrencies.postValue(currencies)
+            _getCurrencies.postValue(Resource.loading())
+            _getCurrencies.postValue(currencyLayerUseCase.getCurrencies())
         }
     }
 }

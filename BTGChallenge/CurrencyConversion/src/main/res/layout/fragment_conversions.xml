@@ -203,7 +203,7 @@
                     android:background="@drawable/circle_number"
                     android:gravity="center_horizontal|center_vertical"
                     android:text="4"
-                    android:visibility="@{viewModel.convertedValue.length()>0 ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{viewModel.convertedValueLiveData.length()>0 ? View.VISIBLE : View.GONE}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -212,7 +212,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat"
-                    android:text="@{viewModel.convertedValue}"
+                    android:text="@{viewModel.convertedValueLiveData}"
                     android:textColor="@android:color/white"
                     android:textSize="36sp"
                     android:textStyle="bold"

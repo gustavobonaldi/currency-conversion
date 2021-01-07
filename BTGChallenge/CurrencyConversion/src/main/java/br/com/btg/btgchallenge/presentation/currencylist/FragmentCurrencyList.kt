@@ -16,19 +16,22 @@ import br.com.btg.btgchallenge.databinding.FragmentCurrencyListBinding
 import br.com.btg.btgchallenge.network.api.config.Resource
 import br.com.btg.btgchallenge.network.api.config.Status
 import br.com.btg.btgchallenge.presentation.conversions.Currency
-import br.com.btg.btgchallenge.presentation.conversions.CurrencyType
+import br.com.btg.btgchallenge.presentation.conversions.Currency.CurrencyType
 import kotlinx.android.synthetic.main.fragment_currency_list.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class FragmentCurrencyList(val currencyType: CurrencyType, val listener: (Currency) -> Unit) : DialogFragment() {
+class FragmentCurrencyList(
+    val currencyType: CurrencyType,
+    val listener: (Currency) -> Unit
+) : DialogFragment() {
 
     val currencyListViewModel: CurrencyListViewModel by viewModel()
     private lateinit var binding: FragmentCurrencyListBinding
     private lateinit var adapter: CurrencyAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_currency_list, container, false)
         binding.viewModel = currencyListViewModel
@@ -38,7 +41,8 @@ class FragmentCurrencyList(val currencyType: CurrencyType, val listener: (Curren
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getCurrencies()
+        setObservers()
+        currencyListViewModel.getCurrencies()
     }
 
     override fun onResume() {
@@ -64,28 +68,24 @@ class FragmentCurrencyList(val currencyType: CurrencyType, val listener: (Curren
         }
     }
 
-    fun getCurrencies()
-    {
-        currencyListViewModel.getCurrencies.observe(viewLifecycleOwner, observerCurrencies)
-        currencyListViewModel.getCurrencies()
-    }
-
-    private val observerCurrencies = Observer<Resource<Any>> {
-        when (it.status) {
-            Status.SUCCESS -> {
-                loader_currency_list.visibility = View.GONE
-                recycler_currency_list.visibility = View.VISIBLE
-                setCurrencyList(it.data?.currencies)
-                setSearchView()
+    private fun setObservers() {
+        currencyListViewModel.getCurrencies.observe(viewLifecycleOwner, Observer {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    loader_currency_list.visibility = View.GONE
+                    recycler_currency_list.visibility = View.VISIBLE
+                    setCurrencyList(it.data?.currencies)
+                    setSearchView()
+                }
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                }
+                Status.LOADING -> {
+                    loader_currency_list.visibility = View.VISIBLE
+                    recycler_currency_list.visibility = View.GONE
+                }
             }
-            Status.ERROR -> {
-                Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
-            }
-            Status.LOADING -> {
-                loader_currency_list.visibility = View.VISIBLE
-                recycler_currency_list.visibility = View.GONE
-            }
-        }
+        })
     }
 
     fun setSearchView()
