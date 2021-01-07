@@ -33,30 +33,6 @@ class Converters {
         return gson.toJson(list, type)
     }
 
-//    @TypeConverter
-//    fun stringToMapString(json: String?): Map<String, String> {
-//        return Gson().fromJson(json,  object : TypeToken<Map<String, String>>() {}.type)
-//    }
-//
-//    @TypeConverter
-//    fun mapToStringString(value: Map<String, String>?): String {
-//        return if(value == null) "" else Gson().toJson(value)
-//    }
-//
-//    @TypeConverter
-//    fun stringToMapDouble(json: String?): Map<String, Double> {
-//        return Gson().fromJson(json,  object : TypeToken<Map<String, Double>>() {}.type)
-//    }
-//
-//    @TypeConverter
-//    fun mapToStringDouble(value: Map<String, Double>?): String {
-//        return if(value == null) "" else Gson().toJson(value)
-//    }
-
-
-
-
-
     @TypeConverter
     fun stringToHashMapString(json: String?): HashMap<String, String> {
         return Gson().fromJson(json,  object : TypeToken<HashMap<String, String>>() {}.type)

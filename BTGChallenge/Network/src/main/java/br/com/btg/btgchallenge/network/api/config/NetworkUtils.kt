@@ -2,6 +2,7 @@ package br.com.btg.btgchallenge.network.api.config
 
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -18,7 +19,13 @@ class NetworkUtils {
         }
 
         fun provideOkHttpClient(requestInterceptor: RequestInterceptor): OkHttpClient {
-            return OkHttpClient().newBuilder().addInterceptor(requestInterceptor).build()
+            val loggingInterceptor = HttpLoggingInterceptor()
+            loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+            return OkHttpClient()
+                .newBuilder()
+                .addInterceptor(requestInterceptor)
+                .addInterceptor(loggingInterceptor)
+                .build()
         }
     }
 }
