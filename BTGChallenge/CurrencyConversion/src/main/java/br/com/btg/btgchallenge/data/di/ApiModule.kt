@@ -1,9 +1,9 @@
 package br.com.btg.btgchallenge.data.di
 
-import br.com.btg.btgchallenge.network.BuildConfig
-import br.com.btg.btgchallenge.network.api.config.NetworkUtils
-import br.com.btg.btgchallenge.network.api.config.RequestInterceptor
-import br.com.btg.btgchallenge.network.api.config.ResponseHandler
+import br.com.btg.btgchallenge.api.BuildConfig
+import br.com.btg.btgchallenge.api.api.config.NetworkUtils
+import br.com.btg.btgchallenge.api.api.config.RequestInterceptor
+import br.com.btg.btgchallenge.api.api.config.ResponseHandler
 import br.com.btg.btgchallenge.data.repository.CurrencyLayerRepositoryImpl
 import br.com.btg.btgchallenge.data.api.CurrencyLayerServices
 import br.com.btg.btgchallenge.data.repository.CurrencyRepositoryLocal

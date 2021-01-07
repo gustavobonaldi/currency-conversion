@@ -1,9 +1,9 @@
 package br.com.btg.btgchallenge.data.repository
 
 import android.content.Context
-import br.com.btg.btgchallenge.network.dto.currency.Currencies
-import br.com.btg.btgchallenge.network.dto.currency.Quotes
-import br.com.btg.btgchallenge.network.room.dao.CurrencyRoom
+import br.com.btg.btgchallenge.api.dto.currency.Currencies
+import br.com.btg.btgchallenge.api.dto.currency.Quotes
+import br.com.btg.btgchallenge.api.room.dao.CurrencyRoom
 import java.lang.Exception
 
 class CurrencyRepositoryLocal(private val context: Context) {

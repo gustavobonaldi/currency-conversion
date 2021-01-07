@@ -13,8 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.btg.btgchallenge.R
 import br.com.btg.btgchallenge.databinding.FragmentCurrencyListBinding
-import br.com.btg.btgchallenge.network.api.config.Resource
-import br.com.btg.btgchallenge.network.api.config.Status
+import br.com.btg.btgchallenge.api.api.config.Status
 import br.com.btg.btgchallenge.presentation.conversions.Currency
 import br.com.btg.btgchallenge.presentation.conversions.Currency.CurrencyType
 import kotlinx.android.synthetic.main.fragment_currency_list.*

@@ -3,11 +3,11 @@ package br.com.btg.btgchallenge.data.repository;
 
 import android.content.Context
 import br.com.btg.btgchallenge.data.api.CurrencyLayerServices
-import br.com.btg.btgchallenge.network.api.config.Resource
-import br.com.btg.btgchallenge.network.api.config.ResponseHandler
-import br.com.btg.btgchallenge.network.dto.ApiResponse
-import br.com.btg.btgchallenge.network.dto.currency.Currencies
-import br.com.btg.btgchallenge.network.dto.currency.Quotes
+import br.com.btg.btgchallenge.api.api.config.Resource
+import br.com.btg.btgchallenge.api.api.config.ResponseHandler
+import br.com.btg.btgchallenge.api.dto.ApiResponse
+import br.com.btg.btgchallenge.api.dto.currency.Currencies
+import br.com.btg.btgchallenge.api.dto.currency.Quotes
 import java.lang.Exception
 
 class CurrencyLayerRepositoryImpl(

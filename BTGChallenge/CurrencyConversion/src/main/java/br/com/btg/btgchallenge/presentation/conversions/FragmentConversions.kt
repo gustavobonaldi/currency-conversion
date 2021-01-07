@@ -1,6 +1,5 @@
 package br.com.btg.btgchallenge.presentation.conversions
 
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,8 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import br.com.btg.btgchallenge.R
 import br.com.btg.btgchallenge.databinding.FragmentConversionsBinding
-import br.com.btg.btgchallenge.network.api.config.Resource
-import br.com.btg.btgchallenge.network.api.config.Status
+import br.com.btg.btgchallenge.api.api.config.Status
 import br.com.btg.btgchallenge.presentation.FragmentBase
 import br.com.btg.btgchallenge.presentation.conversions.Currency.CurrencyType
 import br.com.btg.btgchallenge.presentation.currencylist.FragmentCurrencyList

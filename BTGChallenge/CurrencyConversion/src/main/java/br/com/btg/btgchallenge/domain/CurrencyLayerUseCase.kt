@@ -1,6 +1,6 @@
 package br.com.btg.btgchallenge.domain
 
-import br.com.btg.btgchallenge.network.api.config.Resource
+import br.com.btg.btgchallenge.api.api.config.Resource
 
 interface CurrencyLayerUseCase{
     suspend fun getCurrencies(): Resource<Any>

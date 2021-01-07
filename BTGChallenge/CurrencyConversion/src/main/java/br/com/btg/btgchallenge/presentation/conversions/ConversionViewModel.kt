@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.btg.btgchallenge.R
-import br.com.btg.btgchallenge.network.api.config.Resource
+import br.com.btg.btgchallenge.api.api.config.Resource
 import br.com.btg.btgchallenge.domain.CurrencyLayerUseCaseImpl
-import br.com.btg.btgchallenge.network.dto.ErrorDTO
+import br.com.btg.btgchallenge.api.dto.ErrorDTO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
