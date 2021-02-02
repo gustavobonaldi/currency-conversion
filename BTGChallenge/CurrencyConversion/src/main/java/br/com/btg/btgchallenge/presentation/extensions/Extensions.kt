@@ -23,11 +23,16 @@
 package br.com.btg.btgchallenge.presentation.extensions
 
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
+import br.com.btg.btgchallenge.R
+import br.com.btg.btgchallenge.presentation.conversions.Currency
 
 fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View {
   return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
@@ -38,4 +43,20 @@ fun <T : RecyclerView.ViewHolder> T.listen(event: (position: Int, type: Int) -> 
     event.invoke(getAdapterPosition(), getItemViewType())
   }
   return this
+}
+
+fun ImageView.setDrawableFlag(context: Context?, currency: Currency){
+  val uri = "@drawable/flag_" + currency.currency.first.toString().toLowerCase()
+  context?.let {
+    var imageResource: Int =
+      it.resources.getIdentifier(uri, null, it.getPackageName())
+    if (imageResource == 0) {
+      imageResource = R.drawable.globe
+    }
+    setImageResource(imageResource)
+  }
+}
+
+fun Currency.getFormattedString(): String{
+  return (currency.second + " - " + currency.first)
 }

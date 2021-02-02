@@ -1,3 +1,4 @@
+include ':utils'
 include ':api-core'
 include ':CurrencyConversion'
 rootProject.name = "BTG Challenge"
