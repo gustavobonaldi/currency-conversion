@@ -18,14 +18,14 @@ class CurrencyAdapter(
     private val currencies: Map<String, String>,
     val context: Context,
     val currencyType: CurrencyType,
-    val event: (Currency) -> Unit
-) : RecyclerView.Adapter<CurrencyAdapter.CurrencyHolder>(),
-    Filterable {
+    val event: (Currency) -> Unit) : RecyclerView.Adapter<CurrencyAdapter.CurrencyHolder>(), Filterable {
 
     lateinit var filteredCurencies : Map<String, String>
     init {
         filteredCurencies = currencies
     }
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyHolder {
         val inflatedView = parent.inflate(R.layout.currency_item, false)
         return CurrencyHolder(inflatedView, context).listen{ pos, type ->

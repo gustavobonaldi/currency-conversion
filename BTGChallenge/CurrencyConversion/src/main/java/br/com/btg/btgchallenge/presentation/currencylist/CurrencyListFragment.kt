@@ -14,20 +14,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.btg.btgchallenge.R
 import br.com.btg.btgchallenge.databinding.FragmentCurrencyListBinding
 import br.com.btg.btgchallenge.api.api.config.Status
+import br.com.btg.btgchallenge.api.api.config.Status.*
 import br.com.btg.btgchallenge.presentation.conversions.Currency
 import br.com.btg.btgchallenge.presentation.conversions.Currency.CurrencyType
 import kotlinx.android.synthetic.main.fragment_currency_list.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class FragmentCurrencyList(
+class CurrencyListFragment(
     val currencyType: CurrencyType,
     val listener: (Currency) -> Unit
 ) : DialogFragment() {
 
-    val currencyListViewModel: CurrencyListViewModel by viewModel()
+    private val currencyListViewModel: CurrencyListViewModel by viewModel()
+    private var adapter: CurrencyAdapter? = null
     private lateinit var binding: FragmentCurrencyListBinding
-    private lateinit var adapter: CurrencyAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -46,21 +47,19 @@ class FragmentCurrencyList(
 
     override fun onResume() {
         super.onResume()
-        val params: ViewGroup.LayoutParams = dialog!!.window!!.attributes
-        params.width = ViewGroup.LayoutParams.MATCH_PARENT
-        params.height = ViewGroup.LayoutParams.MATCH_PARENT
-        dialog!!.window!!.attributes = params as WindowManager.LayoutParams
+        setWindowSettings()
     }
 
-    fun setCurrencyList(currencies: Map<String, String>?)
+    private fun setCurrencyList(currencies: Map<String, String>?)
     {
-        if(currencies != null && currencies.size > 0) {
-            recycler_currency_list.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = CurrencyAdapter(currencies, requireContext(), currencyType){
-                listener.invoke(it)
+        if(currencies != null && currencies.isNotEmpty()) {
+            recycler_currency_list.apply {
+                adapter = CurrencyAdapter(currencies, requireContext(), currencyType){
+                    listener.invoke(it)
+                }
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                recycler_currency_list.adapter = adapter
             }
-            recycler_currency_list.adapter = adapter
-
         }
         else{
             Toast.makeText(requireContext(), resources.getString(R.string.no_data_found), Toast.LENGTH_LONG).show()
@@ -70,16 +69,16 @@ class FragmentCurrencyList(
     private fun setObservers() {
         currencyListViewModel.getCurrencies.observe(viewLifecycleOwner, Observer {
             when (it.status) {
-                Status.SUCCESS -> {
+                SUCCESS -> {
                     loader_currency_list.visibility = View.GONE
                     recycler_currency_list.visibility = View.VISIBLE
                     setCurrencyList(it.data?.currencies)
                     setSearchView()
                 }
-                Status.ERROR -> {
+                ERROR -> {
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
                 }
-                Status.LOADING -> {
+                LOADING -> {
                     loader_currency_list.visibility = View.VISIBLE
                     recycler_currency_list.visibility = View.GONE
                 }
@@ -87,7 +86,7 @@ class FragmentCurrencyList(
         })
     }
 
-    fun setSearchView()
+    private fun setSearchView()
     {
         currency_search_view.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -95,9 +94,17 @@ class FragmentCurrencyList(
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                adapter.filter.filter(newText)
+                adapter?.filter?.filter(newText)
                 return false
             }
         })
+    }
+
+    private fun setWindowSettings()
+    {
+        val params: ViewGroup.LayoutParams = dialog!!.window!!.attributes
+        params.width = ViewGroup.LayoutParams.MATCH_PARENT
+        params.height = ViewGroup.LayoutParams.MATCH_PARENT
+        dialog!!.window!!.attributes = params as WindowManager.LayoutParams
     }
 }
