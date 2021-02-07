@@ -14,6 +14,8 @@ import br.com.bonaldi.currency.conversion.presentation.conversions.Currency.Curr
 import br.com.bonaldi.currency.conversion.presentation.currencylist.CurrencyListFragment
 import br.com.bonaldi.currency.conversion.presentation.extensions.getFormattedString
 import br.com.bonaldi.currency.conversion.presentation.extensions.setDrawableFlag
+import com.google.android.gms.ads.AdLoader
+import com.google.android.gms.ads.AdRequest
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_conversions.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -47,6 +49,13 @@ class ConversionsFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         setListeners()
         setObservers()
+        setAds()
+    }
+
+    private fun setAds()
+    {
+        val adRequest: AdRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
     }
 
     private fun setListeners(){
@@ -113,7 +122,8 @@ class ConversionsFragment : BaseFragment() {
                 s: CharSequence,
                 start: Int,
                 count: Int,
-                after: Int) {}
+                after: Int
+            ) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (!s.toString().equals(current)) {
