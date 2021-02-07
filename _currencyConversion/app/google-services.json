@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "109624041069",
+    "project_id": "currencyconversion-22ea8",
+    "storage_bucket": "currencyconversion-22ea8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:109624041069:android:091fa6aafbe967ef69a964",
+        "android_client_info": {
+          "package_name": "br.com.bonaldi.currency.conversion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "109624041069-ubc1bonr5mr1jnpapgu6l8qnp5sd5lvd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtV8ObqNQe6LiHB09K46i5eiHflFzlHBY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "109624041069-ubc1bonr5mr1jnpapgu6l8qnp5sd5lvd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

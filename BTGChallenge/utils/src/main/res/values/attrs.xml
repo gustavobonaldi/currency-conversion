@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <declare-styleable name="CustomCardCurrencyComponent">
-        <attr name="step" format="string"/>
-        <attr name="currencyName" format="string"/>
-        <attr name="currencyImage" format="reference"/>
-    </declare-styleable>
-</resources>
