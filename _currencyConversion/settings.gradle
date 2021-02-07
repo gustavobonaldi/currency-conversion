@@ -1,0 +1,4 @@
+include ':utils'
+include ':api-core'
+include ':app'
+rootProject.name = "CurrencyConversion"

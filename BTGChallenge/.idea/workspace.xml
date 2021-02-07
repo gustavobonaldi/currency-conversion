@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="64f0acc2-9d39-45c3-b7f4-76d7bb461304" name="Default Changelist" comment="added:&#10;new utils module&#10;new card component&#10;implement card component to conversion list&#10;&#10;refactor:&#10;all resources">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/proguard-rules.pro" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/androidTest/java/br/com/btg/btgchallenge/ExampleInstrumentedTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/ic_launcher-playstore.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/java/br/com/btg/btgchallenge/MainApplication.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/java/br/com/btg/btgchallenge/data/api/CurrencyLayerServices.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/java/br/com/btg/btgchallenge/data/di/ApiModule.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/java/br/com/btg/btgchallenge/data/di/ViewModelModule.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/java/br/com/btg/btgchallenge/data/repository/CurrencyLayerRepository.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/java/br/com/btg/btgchallenge/data/repository/CurrencyLayerRepositoryImpl.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/java/br/com/btg/btgchallenge/data/repository/CurrencyRepositoryLocal.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/java/br/com/btg/btgchallenge/domain/CurrencyLayerUseCase.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/java/br/com/btg/btgchallenge/domain/CurrencyLayerUseCaseImpl.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/java/br/com/btg/btgchallenge/presentation/BaseViewModel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/java/br/com/btg/btgchallenge/presentation/FragmentBase.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/java/br/com/btg/btgchallenge/presentation/MainActivity.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/java/br/com/btg/btgchallenge/presentation/SplashScreenActivity.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/java/br/com/btg/btgchallenge/presentation/controls/EditTextCurrency.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/java/br/com/btg/btgchallenge/presentation/conversions/ConversionViewModel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/java/br/com/btg/btgchallenge/presentation/conversions/ConversionsFragment.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/java/br/com/btg/btgchallenge/presentation/conversions/Currency.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/java/br/com/btg/btgchallenge/presentation/currencylist/Conversions.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/java/br/com/btg/btgchallenge/presentation/currencylist/CurrencyAdapter.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/java/br/com/btg/btgchallenge/presentation/currencylist/CurrencyListFragment.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/java/br/com/btg/btgchallenge/presentation/currencylist/CurrencyListViewModel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/java/br/com/btg/btgchallenge/presentation/extensions/Extensions.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/drawable-hdpi/ic_stat_name.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/drawable-mdpi/ic_action_name.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/drawable-mdpi/ic_stat_name.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/drawable-xhdpi/ic_action_name.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/drawable-xhdpi/ic_stat_name.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/drawable-xxhdpi/ic_action_name.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/drawable-xxxhdpi/ic_action_name.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/drawable-xxxhdpi/ic_stat_name.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/layout/activity_main.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/layout/activity_splash.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/layout/currency_item.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/layout/fragment_conversions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/layout/fragment_currency_list.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/mipmap-hdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/mipmap-hdpi/ic_launcher_foreground.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/mipmap-hdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/mipmap-mdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/mipmap-mdpi/ic_launcher_foreground.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/mipmap-mdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/mipmap-xhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/mipmap-xhdpi/ic_launcher_foreground.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/mipmap-xhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/mipmap-xxhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/mipmap-xxhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/mipmap-xxxhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/main/res/navigation/app_navigation.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CurrencyConversion/src/test/java/br/com/btg/btgchallenge/ExampleUnitTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-core/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-core/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-core/consumer-rules.pro" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-core/proguard-rules.pro" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-core/src/androidTest/java/br/com/btg/btgchallenge/api/ExampleInstrumentedTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-core/src/main/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-core/src/main/java/br/com/btg/btgchallenge/api/api/config/NetworkUtils.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-core/src/main/java/br/com/btg/btgchallenge/api/api/config/RequestInterceptor.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-core/src/main/java/br/com/btg/btgchallenge/api/api/config/Resource.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-core/src/main/java/br/com/btg/btgchallenge/api/api/config/ResponseHandler.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-core/src/main/java/br/com/btg/btgchallenge/api/api/config/Status.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-core/src/main/java/br/com/btg/btgchallenge/api/cache/CacheController.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-core/src/main/java/br/com/btg/btgchallenge/api/dto/ApiResponse.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-core/src/main/java/br/com/btg/btgchallenge/api/dto/Error.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-core/src/main/java/br/com/btg/btgchallenge/api/dto/ErrorDTO.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-core/src/main/java/br/com/btg/btgchallenge/api/dto/currency/Currencies.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-core/src/main/java/br/com/btg/btgchallenge/api/dto/currency/Quotes.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-core/src/main/java/br/com/btg/btgchallenge/api/room/Converters.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-core/src/main/java/br/com/btg/btgchallenge/api/room/CurrConversionRoomDatabase.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-core/src/main/java/br/com/btg/btgchallenge/api/room/dao/CurrencyDao.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-core/src/main/java/br/com/btg/btgchallenge/api/room/dao/CurrencyRoom.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-core/src/main/res/values/cache.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-core/src/test/java/br/com/btg/btgchallenge/api/ExampleUnitTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/consumer-rules.pro" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/proguard-rules.pro" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/androidTest/java/br/com/btg/btgchallenge/utils/ExampleInstrumentedTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/java/br/com/btg/btgchallenge/utils/customcomponents/CustomCardCurrencyComponent.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/btg_logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/circle_number.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_aed.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_afn.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_ars.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_aud.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_bbd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_bdt.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_bgn.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_bhd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_bmd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_bnd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_bob.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_brl.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_btn.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_bzd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_cad.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_chf.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_clp.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_cny.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_cop.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_crc.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_czk.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_dkk.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_dop.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_egp.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_etb.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_eur.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_gbp.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_gel.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_ghs.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_gmd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_gyd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_hkd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_hrk.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_huf.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_idr.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_ils.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_inr.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_isk.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_jmd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_jpy.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_kes.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_krw.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_kwd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_kyd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_kzt.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_lak.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_lkr.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_lrd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_ltl.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_mad.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_mdl.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_mkd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_mnt.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_mur.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_mwk.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_mxn.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_myr.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_mzn.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_nad.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_ngn.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_nio.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_nok.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_npr.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_nzd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_omr.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_pen.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_pgk.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_php.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_pkr.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_pln.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_pyg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_qar.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_ron.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_rsd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_rub.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_sar.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_sek.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_sgd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_sos.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_srd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_thb.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_try.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_ttd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_twd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_tzs.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_uah.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_ugx.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_usd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_uyu.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_vef.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_vnd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_yer.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/flag_zar.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/globe.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/grandient_background.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/ic_action_name.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/ic_arrow_down.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/ic_conversion.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/ic_launcher_background.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/ic_launcher_foreground.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/ic_stat_name.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/drawable/splash.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/font/montserrat.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/font/montserrat_bold.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/layout/custom_card_component.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/values/attrs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/values/colors.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/values/dimen.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/values/font_certs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/values/ic_launcher_background.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/values/strings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/res/values/styles.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/test/java/br/com/btg/btgchallenge/utils/ExampleUnitTest.kt" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[6231f425]" />
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin Interface" />
+        <option value="Kotlin Class" />
+        <option value="layoutResourceFile_vertical" />
+        <option value="valueResourceFile" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="newstuffs" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1nQt99Y7w1vqoFgpjGLxvpjJ1Ua" />
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="android-custom-view/Users/gbonaldi/.gradle/caches/modules-2/files-2.1/androidx.cardview/cardview/1.0.0/c9f3ce7ca74ad2c978230f4094ba6804c5166f9c/cardview-1.0.0-sources.jar!/androidx/cardview/widget/CardView.java_SELECTED" value="CardView" />
+    <property name="android-custom-view/Users/gbonaldi/Android/CurrencyConversion/BTGChallenge/utils/src/main/java/br/com/btg/btgchallenge/utils/customcomponents/CustomCardCurrencyComponent.kt_SELECTED" value="CustomCardCurrencyComponent" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/api-core/src/main/java" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="multi-representation-preview/Users/gbonaldi/.gradle/caches/modules-2/files-2.1/androidx.cardview/cardview/1.0.0/c9f3ce7ca74ad2c978230f4094ba6804c5166f9c/cardview-1.0.0-sources.jar!/androidx/cardview/widget/CardView.java_selected" value="Custom views" />
+    <property name="multi-representation-preview/Users/gbonaldi/Android/CurrencyConversion/BTGChallenge/utils/src/main/java/br/com/btg/btgchallenge/utils/customcomponents/CustomCardCurrencyComponent.kt_selected" value="Custom views" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.17" />
+    <property name="project.structure.side.proportion" value="0.2" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/main/java/br/com/bonaldi/currency/conversion" />
+      <recent name="$PROJECT_DIR$/utils/src/main/res/drawable" />
+      <recent name="$PROJECT_DIR$/utils/src/main/res/font" />
+      <recent name="$PROJECT_DIR$/utils/src/main/res/layout" />
+      <recent name="$PROJECT_DIR$/utils/src/main/res/values" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CurrencyConversion" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
+      <module name="CurrencyConversion.app" />
+      <option name="DEPLOY" value="true" />
+      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+      <option name="DEPLOY_AS_INSTANT" value="false" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="ALL_USERS" value="false" />
+      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+      <option name="DEBUGGER_TYPE" value="Auto" />
+      <Auto>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Auto>
+      <Hybrid>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Hybrid>
+      <Java />
+      <Native>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Native>
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Sample Java Methods" />
+        <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
+        <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
+      </Profilers>
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
+      <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="64f0acc2-9d39-45c3-b7f4-76d7bb461304" name="Default Changelist" comment="" />
+      <created>1611333987880</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1611333987880</updated>
+    </task>
+    <task id="LOCAL-00001" summary="added:&#10;new utils module&#10;new card component&#10;implement card component to conversion list&#10;&#10;refactor:&#10;all resources">
+      <created>1612241311862</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1612241311862</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="added:&#10;new utils module&#10;new card component&#10;implement card component to conversion list&#10;&#10;refactor:&#10;all resources" />
+    <option name="LAST_COMMIT_MESSAGE" value="added:&#10;new utils module&#10;new card component&#10;implement card component to conversion list&#10;&#10;refactor:&#10;all resources" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="245" y="172" key="#PSD" timestamp="1612238528120">
+      <screen x="0" y="25" width="1440" height="823" />
+    </state>
+    <state x="245" y="172" key="#PSD/0.25.1440.823@0.25.1440.823" timestamp="1612238528120" />
+    <state x="-1481" y="468" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1612538093405">
+      <screen x="-1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="-1481" y="468" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.25.1440.823/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1612538093405" />
+    <state x="335" y="25" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1612235037006">
+      <screen x="0" y="25" width="1440" height="823" />
+    </state>
+    <state x="335" y="25" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.25.1440.823@0.25.1440.823" timestamp="1612235037006" />
+    <state x="308" y="195" key="AndroidCreateResourceDirectoryDialog" timestamp="1612237425561">
+      <screen x="0" y="25" width="1440" height="823" />
+    </state>
+    <state x="308" y="195" key="AndroidCreateResourceDirectoryDialog/0.25.1440.823@0.25.1440.823" timestamp="1612237425561" />
+    <state x="308" y="195" key="AndroidCreateResourceFileDialog" timestamp="1612241037309">
+      <screen x="0" y="25" width="1440" height="823" />
+    </state>
+    <state x="308" y="195" key="AndroidCreateResourceFileDialog/0.25.1440.823@0.25.1440.823" timestamp="1612241037309" />
+    <state x="59" y="25" key="CommitChangelistDialog2" timestamp="1612537342408">
+      <screen x="0" y="25" width="1440" height="823" />
+    </state>
+    <state x="59" y="25" key="CommitChangelistDialog2/0.25.1440.823/-1920.0.1920.1080@0.25.1440.823" timestamp="1612537342408" />
+    <state x="59" y="25" key="CommitChangelistDialog2/0.25.1440.823@0.25.1440.823" timestamp="1612241307491" />
+    <state x="100" y="125" width="1240" height="623" key="DiffContextDialog" timestamp="1612238722945">
+      <screen x="0" y="25" width="1440" height="823" />
+    </state>
+    <state x="100" y="125" width="1240" height="623" key="DiffContextDialog/0.25.1440.823@0.25.1440.823" timestamp="1612238722945" />
+    <state width="1878" height="295" key="GridCell.Tab.0.bottom" timestamp="1612539074097">
+      <screen x="-1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1878" height="295" key="GridCell.Tab.0.bottom/0.25.1440.823/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1612539074097" />
+    <state width="1398" height="211" key="GridCell.Tab.0.bottom/0.25.1440.823@0.25.1440.823" timestamp="1612242415357" />
+    <state width="1878" height="295" key="GridCell.Tab.0.center" timestamp="1612539074097">
+      <screen x="-1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1878" height="295" key="GridCell.Tab.0.center/0.25.1440.823/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1612539074097" />
+    <state width="1398" height="211" key="GridCell.Tab.0.center/0.25.1440.823@0.25.1440.823" timestamp="1612242415356" />
+    <state width="1878" height="295" key="GridCell.Tab.0.left" timestamp="1612539074096">
+      <screen x="-1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1878" height="295" key="GridCell.Tab.0.left/0.25.1440.823/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1612539074096" />
+    <state width="1398" height="211" key="GridCell.Tab.0.left/0.25.1440.823@0.25.1440.823" timestamp="1612242415355" />
+    <state width="1878" height="295" key="GridCell.Tab.0.right" timestamp="1612539074097">
+      <screen x="-1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1878" height="295" key="GridCell.Tab.0.right/0.25.1440.823/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1612539074097" />
+    <state width="1398" height="211" key="GridCell.Tab.0.right/0.25.1440.823@0.25.1440.823" timestamp="1612242415356" />
+    <state x="320" y="173" key="Vcs.Push.Dialog.v2" timestamp="1612241379563">
+      <screen x="0" y="25" width="1440" height="823" />
+    </state>
+    <state x="320" y="173" key="Vcs.Push.Dialog.v2/0.25.1440.823@0.25.1440.823" timestamp="1612241379563" />
+    <state x="-1180" y="322" key="chooseDestDirectoryDialog" timestamp="1612538077578">
+      <screen x="-1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="-1180" y="322" key="chooseDestDirectoryDialog/0.25.1440.823/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1612538077578" />
+    <state x="412" y="191" width="675" height="490" key="find.popup" timestamp="1612537400451">
+      <screen x="0" y="25" width="1440" height="823" />
+    </state>
+    <state x="412" y="191" width="675" height="490" key="find.popup/0.25.1440.823/-1920.0.1920.1080@0.25.1440.823" timestamp="1612537400451" />
+    <state x="412" y="191" width="977" height="582" key="find.popup/0.25.1440.823@0.25.1440.823" timestamp="1612240738230" />
+    <state x="385" y="172" width="670" height="676" key="search.everywhere.popup" timestamp="1611770885274">
+      <screen x="0" y="25" width="1440" height="823" />
+    </state>
+    <state x="385" y="172" width="670" height="676" key="search.everywhere.popup/0.25.1440.823/-1920.0.1920.1080@0.25.1440.823" timestamp="1611770885274" />
+  </component>
+</project>
