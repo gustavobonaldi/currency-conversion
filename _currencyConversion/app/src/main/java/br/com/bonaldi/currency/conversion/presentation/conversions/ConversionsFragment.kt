@@ -54,13 +54,13 @@ class ConversionsFragment : BaseFragment() {
                 showCurrencyList(CurrencyType.TO)
             }
 
-            NumberFormat.getCurrencyInstance(Locale.US).let {currencyInstance ->
+            NumberFormat.getCurrencyInstance(Locale.US).let { currencyInstance ->
                 currencyFromEditText.apply {
                     addTextChangedListener(CustomTextWatcher(this) { typedValue ->
                         getConvertedValue(typedValue)
                         currencyInstance.format((typedValue)).let { formattedNumber ->
-                                setText(formattedNumber)
-                                setSelection(formattedNumber.length)
+                            setText(formattedNumber)
+                            setSelection(formattedNumber.length)
                         }
                     })
                 }
@@ -81,7 +81,8 @@ class ConversionsFragment : BaseFragment() {
 
     private fun getConvertedValue(value: Double) {
         try {
-            viewModel.getConversionFromTo(currencyFrom.currency,
+            viewModel.getConversionFromTo(
+                currencyFrom.currency,
                 currencyTo.currency,
                 value.toString().toDouble(),
                 onSuccess = {
@@ -102,7 +103,7 @@ class ConversionsFragment : BaseFragment() {
         }
     }
 
-    private fun showCurrencyList(currencyType: CurrencyType){
+    private fun showCurrencyList(currencyType: CurrencyType) {
         val currencyListFragment = CurrencyListFragment(currencyType).apply {
             addOnCurrencyClickedListener { currency ->
                 binding.apply {
@@ -133,7 +134,9 @@ class ConversionsFragment : BaseFragment() {
             message?.let {
                 Snackbar.make(binding.currencyFromEditText, it, Snackbar.LENGTH_LONG).show()
             }
-        } catch (ex: Exception) { Log.e("error", ex.message, ex.cause)}
+        } catch (ex: Exception) {
+            Log.e("error", ex.message, ex.cause)
+        }
     }
 
     private fun clearFields() {
