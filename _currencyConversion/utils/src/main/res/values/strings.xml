@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Currency Conversion</string>
+    <string name="app_name">Conv: CurrencyConverter</string>
     <string name="currency_conversion">Currency Converter</string>
     <string name="select_currency">Select a currency</string>
     <string name="select_another_currency">Select another currency</string>
