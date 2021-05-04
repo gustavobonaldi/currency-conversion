@@ -1,4 +1,4 @@
-package br.com.bonaldi.currency.conversion.presentation.controls
+package br.com.bonaldi.currency.conversion.utils.customcomponents.controls
 
 import android.text.Editable
 import android.text.TextWatcher

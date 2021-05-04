@@ -2,22 +2,21 @@ package br.com.bonaldi.currency.conversion.domain
 
 import br.com.bonaldi.currency.conversion.data.repository.CurrencyLayerRepositoryImpl
 import br.com.bonaldi.currency.conversion.api.api.config.Resource
+import br.com.bonaldi.currency.conversion.data.repository.CurrencyLayerRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class CurrencyLayerUseCaseImpl(
-    private val currencyLayerRepository: CurrencyLayerRepositoryImpl
-    ): CurrencyLayerUseCase {
+class CurrencyLayerUseCaseImpl(private val currencyLayerRepository: CurrencyLayerRepository): CurrencyLayerUseCase {
 
-    override suspend fun getCurrencies(): Resource<Any> {
+    override suspend fun getCurrencies(showLoading: (Boolean) -> Unit): Resource<out Any> {
         return withContext(Dispatchers.IO) {
-            currencyLayerRepository.getCurrencies()
+            currencyLayerRepository.getCurrencies(showLoading)
         }
     }
 
-    override suspend fun getRealTimeRates(): Resource<Any> {
+    override suspend fun getRealTimeRates(showLoading: (Boolean) -> Unit): Resource<out Any> {
         return withContext(Dispatchers.IO) {
-            currencyLayerRepository.getRealTimeRates()
+            currencyLayerRepository.getRealTimeRates(showLoading)
         }
     }
 

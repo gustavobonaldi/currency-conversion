@@ -7,35 +7,29 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.SearchView
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.bonaldi.currency.conversion.R
-import br.com.bonaldi.currency.conversion.api.api.config.Status.*
 import br.com.bonaldi.currency.conversion.databinding.FragmentCurrencyListBinding
 import br.com.bonaldi.currency.conversion.presentation.conversions.Currency
 import br.com.bonaldi.currency.conversion.presentation.conversions.Currency.CurrencyType
-import kotlinx.android.synthetic.main.fragment_currency_list.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class CurrencyListFragment(
-    val currencyType: CurrencyType,
-    val listener: (Currency) -> Unit
-) : DialogFragment() {
+class CurrencyListFragment(private val currencyType: CurrencyType) : DialogFragment() {
 
     private val currencyListViewModel: CurrencyListViewModel by viewModel()
+    private var onCurrencyClicked: ((Currency) -> Unit?)? = null
     private var listAdapter: CurrencyAdapter? = null
     private lateinit var binding: FragmentCurrencyListBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
-        binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_currency_list, container, false)
-        binding.viewModel = currencyListViewModel
-        binding.lifecycleOwner = this
+        binding = FragmentCurrencyListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -49,11 +43,15 @@ class CurrencyListFragment(
         setWindowSettings()
     }
 
+    fun addOnCurrencyClickedListener(listener: ((Currency) -> Unit?)?){
+        onCurrencyClicked = listener
+    }
+
     private fun setCurrencyList(currencies: Map<String, String>?) {
         if (currencies != null && currencies.isNotEmpty()) {
-            recycler_currency_list.apply {
+            binding.recyclerCurrencyList.apply {
                 listAdapter = CurrencyAdapter(currencies, requireContext(), currencyType) {
-                    listener.invoke(it)
+                    onCurrencyClicked?.invoke(it)
                 }
 
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -71,8 +69,8 @@ class CurrencyListFragment(
     private fun setObservers() {
         currencyListViewModel.apply {
             addCurrenciesObserver(this@CurrencyListFragment) { currencies ->
-                loader_currency_list.visibility = View.GONE
-                recycler_currency_list.visibility = View.VISIBLE
+                binding.loaderCurrencyList.visibility = View.GONE
+                binding.recyclerCurrencyList.visibility = View.VISIBLE
                 setCurrencyList(currencies.currencies)
                 setSearchView()
             }
@@ -81,7 +79,7 @@ class CurrencyListFragment(
     }
 
     private fun setSearchView() {
-        currency_search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        binding.currencySearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }

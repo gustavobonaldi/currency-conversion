@@ -8,6 +8,8 @@ import br.com.bonaldi.currency.conversion.api.api.config.ResponseHandler
 import br.com.bonaldi.currency.conversion.api.room.CurrConversionRoomDatabase
 import br.com.bonaldi.currency.conversion.data.repository.CurrencyLayerRepositoryImpl
 import br.com.bonaldi.currency.conversion.data.api.CurrencyLayerServices
+import br.com.bonaldi.currency.conversion.data.repository.CurrencyLayerRepository
+import br.com.bonaldi.currency.conversion.domain.CurrencyLayerUseCase
 import br.com.bonaldi.currency.conversion.domain.CurrencyLayerUseCaseImpl
 import org.koin.dsl.module
 
@@ -18,8 +20,8 @@ val apiModule = module {
     factory { ResponseHandler() }
 
 
-    single  { CurrencyLayerRepositoryImpl(get(), get(), get(), get()) }
-    single  { CurrencyLayerUseCaseImpl(get()) }
-    single  { Room.databaseBuilder(get(), CurrConversionRoomDatabase::class.java, CurrConversionRoomDatabase.db_name).build()}
-    single  { get<CurrConversionRoomDatabase>().currencyDao() }
+    single<CurrencyLayerRepository> { CurrencyLayerRepositoryImpl(get(), get(), get()) }
+    single<CurrencyLayerUseCase> { CurrencyLayerUseCaseImpl(get()) }
+    single { Room.databaseBuilder(get(), CurrConversionRoomDatabase::class.java, CurrConversionRoomDatabase.db_name).build()}
+    single { get<CurrConversionRoomDatabase>().currencyDao() }
 }

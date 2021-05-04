@@ -2,9 +2,9 @@ package br.com.bonaldi.currency.conversion.api.api.config
 
 import br.com.bonaldi.currency.conversion.api.dto.ApiResponse
 
-data class Resource<T>(val status: Status, val data: ApiResponse<*>?, val message: String?) {
+data class Resource<T>(val status: Status, val data: T?, val message: String?) {
     companion object {
-        fun <T> success(data: ApiResponse<T>?): Resource<T> {
+        fun <T: ApiResponse> success(data: T?): Resource<T> {
             return Resource(
                 Status.SUCCESS,
                 data,
@@ -12,16 +12,11 @@ data class Resource<T>(val status: Status, val data: ApiResponse<*>?, val messag
             )
         }
 
-        fun <T> error(message: String, data: ApiResponse<*>?): Resource<T> {
-            var msg = message
-            if(data?.error?.info != null)
-            {
-                msg = data?.error?.info.toString()
-            }
+        fun <T: ApiResponse?> error(message: String, data: T?): Resource<T> {
             return Resource(
                 Status.ERROR,
                 data,
-                msg
+                data?.error?.info ?: message
             )
         }
 

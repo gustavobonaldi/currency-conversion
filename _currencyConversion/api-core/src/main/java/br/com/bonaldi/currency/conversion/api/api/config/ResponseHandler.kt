@@ -12,22 +12,20 @@ enum class ErrorCodes(val code: Int) {
 }
 
 open class ResponseHandler {
-    fun <T : Any> handleSuccess(data: ApiResponse<T>): Resource<T> {
+    fun <T : ApiResponse> handleSuccess(data: T): Resource<T> {
         return Resource.success(data)
     }
 
-    fun <T : Any> handleException(e: Exception): Resource<T> {
-        var apiResponse : ApiResponse<*>
+    fun <T: Exception> handleException(e: T): Resource<out ApiResponse> {
         if(e is HttpException)
         {
             if(e.response()?.errorBody() != null && e.response()?.errorBody() != null) {
                 val errorString = e.response()?.errorBody()?.string()
-                apiResponse = Gson().fromJson(errorString, ApiResponse::class.java)
+                val apiResponse: ApiResponse = Gson().fromJson(errorString, ApiResponse::class.java)
                 return Resource.error(getErrorMessage(e.code()), apiResponse)
             }
         }
         return when (e) {
-            is HttpException -> Resource.error(getErrorMessage(e.code()) , null)
             is SocketTimeoutException -> Resource.error(getErrorMessage( ErrorCodes.SocketTimeOut.code), null)
             else -> Resource.error(getErrorMessage(Int.MAX_VALUE), null)
         }

@@ -1,87 +1,74 @@
 package br.com.bonaldi.currency.conversion.presentation.currencylist
 
 import android.content.Context
-import android.view.View
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
-import br.com.bonaldi.currency.conversion.R
+import br.com.bonaldi.currency.conversion.databinding.CurrencyItemBinding
 import br.com.bonaldi.currency.conversion.presentation.conversions.Currency
 import br.com.bonaldi.currency.conversion.presentation.conversions.Currency.CurrencyType
-import br.com.bonaldi.currency.conversion.presentation.extensions.inflate
+import br.com.bonaldi.currency.conversion.presentation.extensions.getCurrencyMapped
 import br.com.bonaldi.currency.conversion.presentation.extensions.listen
-import kotlinx.android.synthetic.main.currency_item.view.*
+import br.com.bonaldi.currency.conversion.presentation.extensions.setDrawableFlag
 
 
 class CurrencyAdapter(
     private val currencies: Map<String, String>,
     val context: Context,
     val currencyType: CurrencyType,
-    val event: (Currency) -> Unit) : RecyclerView.Adapter<CurrencyAdapter.CurrencyHolder>(), Filterable {
+    val onItemClicked: (Currency) -> Unit) : RecyclerView.Adapter<CurrencyAdapter.CurrencyHolder>(), Filterable {
+    var filteredCurencies : Map<String, String>
 
-    lateinit var filteredCurencies : Map<String, String>
     init {
         filteredCurencies = currencies
     }
 
+    override fun getItemCount(): Int = filteredCurencies.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyHolder {
-        val inflatedView = parent.inflate(R.layout.currency_item, false)
-        return CurrencyHolder(inflatedView, context).listen{ pos, type ->
-            val item = filteredCurencies.toList().get(pos)
-            event.invoke(Currency(item, currencyType))
+        val binding = CurrencyItemBinding.inflate(LayoutInflater.from(context), parent, false)
+        return CurrencyHolder(binding, context).listen { pos, type ->
+            onItemClicked.invoke(Currency(filteredCurencies.toList().get(pos), currencyType))
         }
     }
 
-    override fun getItemCount(): Int = filteredCurencies.size
-
     override fun onBindViewHolder(holder: CurrencyHolder, position: Int) {
-        val itemCurrency = filteredCurencies.toList().get(position)
+        val itemCurrency = filteredCurencies.toList()[position]
         holder.bindName(itemCurrency, context)
     }
 
-    class CurrencyHolder(private val view: View, context: Context) : RecyclerView.ViewHolder(view) {
-        private var currency: Pair<String, String>? = null
-
-
+    class CurrencyHolder(private val binding: CurrencyItemBinding, context: Context) : RecyclerView.ViewHolder(binding.root) {
         fun bindName(currency: Pair<String, String>, context: Context) {
-            this.currency = currency
-            view.currency_name.text = currency.first
-            view.currency_country.text = currency.second
-            val uri = "@drawable/flag_"+currency.first.toString().toLowerCase()
-            var imageResource: Int = context.resources.getIdentifier(uri, null, context.getPackageName())
-            if(imageResource == 0)
-            {
-                imageResource = R.drawable.globe
+            binding.apply {
+                currencyName.text = currency.first
+                currencyCountry.text = currency.second
+                currencyCountryImage.setDrawableFlag(context, currency.getCurrencyMapped())
             }
-            view.currency_country_image.setImageResource(imageResource)
         }
     }
 
     override fun getFilter(): Filter {
-        return object : Filter()
-        {
+        return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
-               if(constraint == null || constraint.length == 0)
-               {
-                   filteredCurencies = currencies
-               }
-                else
-               {
-                   filteredCurencies = currencies.filterValues { it.toLowerCase().contains(constraint.toString().toLowerCase()) }
-               }
-                val filterResults = FilterResults()
-                filterResults.values = filteredCurencies
-                return filterResults
+                constraint?.takeIf { it.isEmpty() }?.let {
+                    filteredCurencies = currencies
+                } ?: kotlin.run {
+                    filteredCurencies = currencies.filterValues { it.toLowerCase().contains(constraint.toString().toLowerCase()) }
+                }
+
+                return FilterResults().apply {
+                    values = filteredCurencies
+                }
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                filteredCurencies = results?.values as Map<String, String>
-                notifyDataSetChanged()
+                (results?.values as? Map<String, String>)?.let {
+                    filteredCurencies = it
+                    notifyDataSetChanged()
+                }
             }
         }
     }
-
-
 }

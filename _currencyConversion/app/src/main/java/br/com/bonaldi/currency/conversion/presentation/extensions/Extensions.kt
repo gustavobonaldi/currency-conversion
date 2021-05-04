@@ -59,3 +59,9 @@ fun ImageView.setDrawableFlag(context: Context?, currency: Currency){
 fun Currency.getFormattedString(): String{
   return (currency.second + " - " + currency.first)
 }
+
+fun String.Companion.empty() = ""
+
+fun Pair<String, String>.getCurrencyMapped(): Currency{
+  return Currency(this)
+}

@@ -1,35 +1,31 @@
 package br.com.bonaldi.currency.conversion.presentation.conversions
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import br.com.bonaldi.currency.conversion.R
 import br.com.bonaldi.currency.conversion.databinding.FragmentConversionsBinding
 import br.com.bonaldi.currency.conversion.presentation.BaseFragment
+import br.com.bonaldi.currency.conversion.utils.customcomponents.controls.CustomTextWatcher
 import br.com.bonaldi.currency.conversion.presentation.conversions.Currency.CurrencyType
 import br.com.bonaldi.currency.conversion.presentation.currencylist.CurrencyListFragment
+import br.com.bonaldi.currency.conversion.presentation.extensions.empty
 import br.com.bonaldi.currency.conversion.presentation.extensions.getFormattedString
 import br.com.bonaldi.currency.conversion.presentation.extensions.setDrawableFlag
-import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_conversions.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.text.NumberFormat
 import java.util.*
 
 class ConversionsFragment : BaseFragment() {
 
-    val conversionViewModel: ConversionViewModel by viewModel()
+    private val viewModel: ConversionViewModel by viewModel()
     private lateinit var binding: FragmentConversionsBinding
-    private var currencyFrom = Currency(Pair("", ""), CurrencyType.FROM)
-    private var currencyTo = Currency(Pair("", ""), CurrencyType.TO)
-    private var current = ""
-
+    private var currencyFrom = Currency(Pair(String.empty(), String.empty()), CurrencyType.FROM)
+    private var currencyTo = Currency(Pair(String.empty(), String.empty()), CurrencyType.TO)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,12 +33,8 @@ class ConversionsFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_conversions, container, false)
-        binding.apply {
-            viewModel = conversionViewModel
-            lifecycleOwner = this@ConversionsFragment
-            return root
-        }
+        binding = FragmentConversionsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,59 +44,55 @@ class ConversionsFragment : BaseFragment() {
         setAds()
     }
 
-    private fun setAds()
-    {
-        val adRequest: AdRequest = AdRequest.Builder().build()
-        binding.adView.loadAd(adRequest)
-    }
-
-    private fun setListeners(){
-        container_from.setOnClickListener{
-            showCurrencyList(CurrencyType.FROM)
-        }
-
-        container_to.setOnClickListener {
-            showCurrencyList(CurrencyType.TO)
-        }
-
-        currency_from_edit_text.addTextChangedListener(convertCurrency())
-    }
-
-    private fun showCurrencyList(currencyType: CurrencyType) {
-        var currencyListFragment: CurrencyListFragment? = null
-        currencyListFragment = CurrencyListFragment(currencyType) { currency ->
-            if (currencyType == CurrencyType.FROM) {
-                clearFields()
-                currencyFrom = currency
-                container_from.getImageView().setDrawableFlag(context, currency)
-                container_from.setCurrencyText(currency.getFormattedString())
-            } else if (currencyType == CurrencyType.TO) {
-                clearFields()
-                currencyTo = currency
-                container_to.getImageView().setDrawableFlag(context, currency)
-                container_to.setCurrencyText(currency.getFormattedString())
+    private fun setListeners() {
+        binding.apply {
+            containerFrom.setOnClickListener {
+                showCurrencyList(CurrencyType.FROM)
             }
-            currencyListFragment?.dismiss()
+
+            containerTo.setOnClickListener {
+                showCurrencyList(CurrencyType.TO)
+            }
+
+            NumberFormat.getCurrencyInstance(Locale.US).let {currencyInstance ->
+                currencyFromEditText.apply {
+                    addTextChangedListener(CustomTextWatcher(this) { typedValue ->
+                        getConvertedValue(typedValue)
+                        currencyInstance.format((typedValue)).let { formattedNumber ->
+                                setText(formattedNumber)
+                                setSelection(formattedNumber.length)
+                        }
+                    })
+                }
+            }
         }
-        currencyListFragment.show(activity?.supportFragmentManager!!, "teste")
     }
 
     private fun setObservers() {
-        conversionViewModel.apply {
-            addRealtimeRatesObserver(this@ConversionsFragment){}
+        viewModel.apply {
+            addRealtimeRatesObserver(this@ConversionsFragment)
             updateRealtimeRates()
         }
     }
 
-    private fun setValueConverted(value: Double) {
+    private fun setAds() = binding.apply {
+        adView.loadAd(AdRequest.Builder().build())
+    }
+
+    private fun getConvertedValue(value: Double) {
         try {
-            conversionViewModel.getConversionFromTo(
-                currencyFrom.currency,
+            viewModel.getConversionFromTo(currencyFrom.currency,
                 currencyTo.currency,
-                ((value).toString().toDouble())
-            ) {
-                showSnackBar(resources.getString(it.errorMessage))
-            }
+                value.toString().toDouble(),
+                onSuccess = {
+                    binding.apply {
+                        textViewConvertedValue.text = it
+                        step4.visibility = if (it.length > 0) View.VISIBLE else View.GONE
+                    }
+                },
+                onError = {
+                    showSnackBar(resources.getString(it.errorMessage))
+                })
         } catch (ex: Exception) {
             when {
                 ex is NumberFormatException -> {
@@ -114,43 +102,44 @@ class ConversionsFragment : BaseFragment() {
         }
     }
 
-    private fun convertCurrency(): TextWatcher {
-        return object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
-
-            override fun beforeTextChanged(
-                s: CharSequence,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (!s.toString().equals(current)) {
-                    currency_from_edit_text.removeTextChangedListener(this)
-                    val cleanString = s?.filter { it.isDigit() }
-                    if (!cleanString?.isEmpty()!!) {
-                        val parsed = cleanString.toString().toDouble()
-                        setValueConverted(parsed / 100)
-                        val formatted = NumberFormat.getCurrencyInstance(Locale.US).format((parsed / 100))
-                        current = formatted
-                        currency_from_edit_text.setText(formatted)
-                        currency_from_edit_text.setSelection(formatted.length)
+    private fun showCurrencyList(currencyType: CurrencyType){
+        val currencyListFragment = CurrencyListFragment(currencyType).apply {
+            addOnCurrencyClickedListener { currency ->
+                binding.apply {
+                    if (currencyType == CurrencyType.FROM) {
+                        clearFields()
+                        currencyFrom = currency
+                        containerFrom.getImageView().setDrawableFlag(context, currency)
+                        containerFrom.setCurrencyText(currency.getFormattedString())
+                    } else if (currencyType == CurrencyType.TO) {
+                        clearFields()
+                        currencyTo = currency
+                        containerTo.getImageView().setDrawableFlag(context, currency)
+                        containerTo.setCurrencyText(currency.getFormattedString())
                     }
-                    currency_from_edit_text.addTextChangedListener(this)
                 }
+                dismiss()
             }
+        }
+
+        activity?.supportFragmentManager?.let {
+            currencyListFragment.show(it, "currency-list-tag")
         }
     }
 
+
     private fun showSnackBar(message: String?) {
         try {
-            message?.let { Snackbar.make(currency_from_edit_text, it, Snackbar.LENGTH_LONG).show() }
-        } catch (ex: Exception) { }
+            message?.let {
+                Snackbar.make(binding.currencyFromEditText, it, Snackbar.LENGTH_LONG).show()
+            }
+        } catch (ex: Exception) { Log.e("error", ex.message, ex.cause)}
     }
 
     private fun clearFields() {
-        text_view_converted_value.text = ""
-        currency_from_edit_text.setText("")
+        binding.apply {
+            textViewConvertedValue.text = String.empty()
+            currencyFromEditText.setText(String.empty())
+        }
     }
 }
