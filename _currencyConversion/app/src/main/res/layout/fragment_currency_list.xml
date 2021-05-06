@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="br.com.bonaldi.currency.conversion.presentation.MainActivity">
+    tools:context="br.com.bonaldi.currency.conversion.presentation.ConversionActivity">
 
     <SearchView
         android:id="@+id/currency_search_view"

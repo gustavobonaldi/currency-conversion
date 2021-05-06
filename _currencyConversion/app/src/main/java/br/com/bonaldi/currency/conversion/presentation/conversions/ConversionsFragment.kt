@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import br.com.bonaldi.currency.conversion.R
 import br.com.bonaldi.currency.conversion.databinding.FragmentConversionsBinding
 import br.com.bonaldi.currency.conversion.presentation.BaseFragment
+import br.com.bonaldi.currency.conversion.presentation.ConversionViewModel
 import br.com.bonaldi.currency.conversion.utils.customcomponents.controls.CustomTextWatcher
 import br.com.bonaldi.currency.conversion.presentation.conversions.Currency.CurrencyType
 import br.com.bonaldi.currency.conversion.presentation.currencylist.CurrencyListFragment
@@ -16,16 +17,15 @@ import br.com.bonaldi.currency.conversion.presentation.extensions.getFormattedSt
 import br.com.bonaldi.currency.conversion.presentation.extensions.setDrawableFlag
 import com.google.android.gms.ads.AdRequest
 import com.google.android.material.snackbar.Snackbar
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.text.NumberFormat
 import java.util.*
 
 class ConversionsFragment : BaseFragment() {
 
-    private val viewModel: ConversionViewModel by viewModel()
+    private val viewModel: ConversionViewModel by sharedViewModel()
     private lateinit var binding: FragmentConversionsBinding
-    private var currencyFrom = Currency(Pair(String.empty(), String.empty()), CurrencyType.FROM)
-    private var currencyTo = Currency(Pair(String.empty(), String.empty()), CurrencyType.TO)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -82,8 +82,8 @@ class ConversionsFragment : BaseFragment() {
     private fun getConvertedValue(value: Double) {
         try {
             viewModel.getConversionFromTo(
-                currencyFrom.currency,
-                currencyTo.currency,
+                viewModel.currencyFrom.currency,
+                viewModel.currencyTo.currency,
                 value.toString().toDouble(),
                 onSuccess = {
                     binding.apply {
@@ -109,12 +109,12 @@ class ConversionsFragment : BaseFragment() {
                 binding.apply {
                     if (currencyType == CurrencyType.FROM) {
                         clearFields()
-                        currencyFrom = currency
+                        viewModel.currencyFrom = currency
                         containerFrom.getImageView().setDrawableFlag(context, currency)
                         containerFrom.setCurrencyText(currency.getFormattedString())
                     } else if (currencyType == CurrencyType.TO) {
                         clearFields()
-                        currencyTo = currency
+                        viewModel.currencyTo = currency
                         containerTo.getImageView().setDrawableFlag(context, currency)
                         containerTo.setCurrencyText(currency.getFormattedString())
                     }

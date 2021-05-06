@@ -1,8 +1,7 @@
 package br.com.bonaldi.currency.conversion
 
 import android.app.Application
-import br.com.bonaldi.currency.conversion.data.di.apiModule
-import br.com.bonaldi.currency.conversion.data.di.viewModelModule
+import br.com.bonaldi.currency.conversion.data.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidFileProperties
 import org.koin.android.ext.koin.androidLogger
@@ -18,7 +17,7 @@ open class MainApplication : Application() {
             androidLogger(Level.ERROR)
             androidContext(this@MainApplication)
             androidFileProperties()
-            modules(listOf(viewModelModule, apiModule))
+            modules(listOf(appModule))
         }
     }
 }

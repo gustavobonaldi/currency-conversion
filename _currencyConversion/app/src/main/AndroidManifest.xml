@@ -13,7 +13,14 @@
         android:theme="@style/AppTheme"
         android:name="br.com.bonaldi.currency.conversion.MainApplication"
         android:usesCleartextTraffic="true">
-        <activity android:name="br.com.bonaldi.currency.conversion.presentation.MainActivity"
+
+
+        <uses-library android:name="android.test.runner"
+            android:required="false" />
+        <uses-library android:name="android.test.base"
+            android:required="false" />
+
+        <activity android:name="br.com.bonaldi.currency.conversion.presentation.ConversionActivity"
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
             <intent-filter>

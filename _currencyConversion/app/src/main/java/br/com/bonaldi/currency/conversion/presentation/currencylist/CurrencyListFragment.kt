@@ -11,16 +11,19 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.bonaldi.currency.conversion.R
 import br.com.bonaldi.currency.conversion.databinding.FragmentCurrencyListBinding
+import br.com.bonaldi.currency.conversion.presentation.ConversionViewModel
 import br.com.bonaldi.currency.conversion.presentation.conversions.Currency
 import br.com.bonaldi.currency.conversion.presentation.conversions.Currency.CurrencyType
+import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class CurrencyListFragment(private val currencyType: CurrencyType) : DialogFragment() {
 
-    private val currencyListViewModel: CurrencyListViewModel by viewModel()
-    private var onCurrencyClicked: ((Currency) -> Unit?)? = null
-    private var listAdapter: CurrencyAdapter? = null
+    private val currencyListViewModel: ConversionViewModel by sharedViewModel()
+    private var onCurrencyClicked: ((Currency) -> Unit)? = null
+    private val listAdapter: CurrencyAdapter by lazy { CurrencyAdapter(requireContext(), currencyType, onCurrencyClicked) }
     private lateinit var binding: FragmentCurrencyListBinding
 
     override fun onCreateView(
@@ -43,19 +46,16 @@ class CurrencyListFragment(private val currencyType: CurrencyType) : DialogFragm
         setWindowSettings()
     }
 
-    fun addOnCurrencyClickedListener(listener: ((Currency) -> Unit?)?){
+    fun addOnCurrencyClickedListener(listener: ((Currency) -> Unit)?){
         onCurrencyClicked = listener
     }
 
     private fun setCurrencyList(currencies: Map<String, String>?) {
         if (currencies != null && currencies.isNotEmpty()) {
             binding.recyclerCurrencyList.apply {
-                listAdapter = CurrencyAdapter(currencies, requireContext(), currencyType) {
-                    onCurrencyClicked?.invoke(it)
-                }
-
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                layoutManager = LinearLayoutManager(context)
                 adapter = listAdapter
+                listAdapter.addItems(currencies)
             }
         } else {
             Toast.makeText(

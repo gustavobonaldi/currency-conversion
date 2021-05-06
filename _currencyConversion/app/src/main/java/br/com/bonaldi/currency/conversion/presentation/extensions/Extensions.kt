@@ -65,3 +65,5 @@ fun String.Companion.empty() = ""
 fun Pair<String, String>.getCurrencyMapped(): Currency{
   return Currency(this)
 }
+
+fun Double.Companion.Zero() = 0.0

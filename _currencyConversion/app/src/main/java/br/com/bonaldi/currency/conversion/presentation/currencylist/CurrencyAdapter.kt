@@ -15,10 +15,11 @@ import br.com.bonaldi.currency.conversion.presentation.extensions.setDrawableFla
 
 
 class CurrencyAdapter(
-    private val currencies: Map<String, String>,
     val context: Context,
     val currencyType: CurrencyType,
-    val onItemClicked: (Currency) -> Unit) : RecyclerView.Adapter<CurrencyAdapter.CurrencyHolder>(), Filterable {
+    val onItemClicked: ((Currency) -> Unit)?) : RecyclerView.Adapter<CurrencyAdapter.CurrencyHolder>(), Filterable {
+
+    private var currencies: Map<String, String> = mapOf()
     var filteredCurencies : Map<String, String>
 
     init {
@@ -30,7 +31,7 @@ class CurrencyAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyHolder {
         val binding = CurrencyItemBinding.inflate(LayoutInflater.from(context), parent, false)
         return CurrencyHolder(binding, context).listen { pos, type ->
-            onItemClicked.invoke(Currency(filteredCurencies.toList().get(pos), currencyType))
+            onItemClicked?.invoke(Currency(filteredCurencies.toList().get(pos), currencyType))
         }
     }
 
@@ -47,6 +48,12 @@ class CurrencyAdapter(
                 currencyCountryImage.setDrawableFlag(context, currency.getCurrencyMapped())
             }
         }
+    }
+
+    fun addItems(currencyList: Map<String, String>){
+        currencies = currencyList
+        filteredCurencies = currencyList
+        notifyDataSetChanged()
     }
 
     override fun getFilter(): Filter {
