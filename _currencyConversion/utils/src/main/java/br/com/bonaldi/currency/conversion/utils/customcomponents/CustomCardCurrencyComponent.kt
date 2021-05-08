@@ -9,10 +9,8 @@ import androidx.core.content.ContextCompat
 import br.com.bonaldi.currency.conversion.utils.R
 import br.com.bonaldi.currency.conversion.utils.databinding.CustomCardComponentBinding
 
-class CustomCardCurrencyComponent(context: Context, attrs: AttributeSet? = null) :
-    CardView(context, attrs) {
-    private val customCardBinding =
-        CustomCardComponentBinding.inflate(LayoutInflater.from(context), this)
+class CustomCardCurrencyComponent(context: Context, attrs: AttributeSet? = null): CardView(context, attrs) {
+    private val customCardBinding = CustomCardComponentBinding.inflate(LayoutInflater.from(context), this)
 
     init {
         setCardBackgroundColor(ContextCompat.getColor(context, R.color.transparent_blue))
@@ -34,11 +32,9 @@ class CustomCardCurrencyComponent(context: Context, attrs: AttributeSet? = null)
                 setCurrencyText(it)
             }
 
-            typedArray.getResourceId(R.styleable.CustomCardCurrencyComponent_currencyImage, 0)
-                .takeIf { it != 0 }
-                ?.let {
-                    setCurrencyImage(it)
-                }
+            typedArray.getResourceId(R.styleable.CustomCardCurrencyComponent_currencyImage, 0).takeIf { it != 0 }?.let {
+                setCurrencyImage(it)
+            }
         }
     }
 
@@ -52,15 +48,12 @@ class CustomCardCurrencyComponent(context: Context, attrs: AttributeSet? = null)
     }
 
     private fun setCurrencyImage(drawable: Int) {
-        customCardBinding.apply {
-            imageView.setImageDrawable(ContextCompat.getDrawable(context, drawable))
-        }
+        customCardBinding.imageView.setImageDrawable(ContextCompat.getDrawable(context, drawable))
+
     }
 
     fun setCurrencyImage(drawable: Drawable) {
-        customCardBinding.apply {
-            imageView.setImageDrawable(drawable)
-        }
+        customCardBinding.imageView.setImageDrawable(drawable)
     }
 
     fun setCurrencyText(text: String) {

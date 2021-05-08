@@ -35,8 +35,8 @@ android {
     useLibrary 'android.test.base'
 
     compileOptions {
-        sourceCompatibility kotlin_version
-        targetCompatibility kotlin_version
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
@@ -65,9 +65,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     /* View Model */
-    implementation "androidx.lifecycle:lifecycle-viewmodel:$viewModelVersion"
-    implementation "androidx.lifecycle:lifecycle-livedata:$viewModelVersion"
-    implementation "androidx.lifecycle:lifecycle-runtime:$viewModelVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewModelVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$viewModelVersion"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$viewModelVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$viewModelVersion"
 
     /* Lifecycle */
