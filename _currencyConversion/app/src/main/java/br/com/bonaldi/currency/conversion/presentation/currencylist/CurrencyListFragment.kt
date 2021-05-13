@@ -14,6 +14,7 @@ import br.com.bonaldi.currency.conversion.databinding.FragmentCurrencyListBindin
 import br.com.bonaldi.currency.conversion.presentation.ConversionViewModel
 import br.com.bonaldi.currency.conversion.presentation.conversions.Currency
 import br.com.bonaldi.currency.conversion.presentation.conversions.Currency.CurrencyType
+import br.com.bonaldi.currency.conversion.presentation.extensions.setWindowSettings
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -43,7 +44,7 @@ class CurrencyListFragment(private val currencyType: CurrencyType) : DialogFragm
 
     override fun onResume() {
         super.onResume()
-        setWindowSettings()
+        dialog?.setWindowSettings()
     }
 
     fun addOnCurrencyClickedListener(listener: ((Currency) -> Unit)?){
@@ -89,12 +90,5 @@ class CurrencyListFragment(private val currencyType: CurrencyType) : DialogFragm
                 return false
             }
         })
-    }
-
-    private fun setWindowSettings() {
-        val params: ViewGroup.LayoutParams = dialog!!.window!!.attributes
-        params.width = ViewGroup.LayoutParams.MATCH_PARENT
-        params.height = ViewGroup.LayoutParams.MATCH_PARENT
-        dialog!!.window!!.attributes = params as WindowManager.LayoutParams
     }
 }

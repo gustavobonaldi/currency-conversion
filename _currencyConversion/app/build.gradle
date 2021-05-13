@@ -6,7 +6,7 @@ apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "29.0.3"
+    buildToolsVersion '30.0.3'
 
     defaultConfig {
         applicationId "br.com.bonaldi.currency.conversion"

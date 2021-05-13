@@ -23,10 +23,12 @@
 package br.com.bonaldi.currency.conversion.presentation.extensions
 
 
+import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.ImageView
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
@@ -64,6 +66,16 @@ fun String.Companion.empty() = ""
 
 fun Pair<String, String>.getCurrencyMapped(): Currency{
   return Currency(this)
+}
+
+fun Dialog.setWindowSettings(){
+  window?.attributes?.let {winAttrs ->
+    val params: ViewGroup.LayoutParams = winAttrs
+    params.width = ViewGroup.LayoutParams.MATCH_PARENT
+    params.height = ViewGroup.LayoutParams.MATCH_PARENT
+    window?.attributes = params as WindowManager.LayoutParams
+  }
+
 }
 
 fun Double.Companion.Zero() = 0.0
