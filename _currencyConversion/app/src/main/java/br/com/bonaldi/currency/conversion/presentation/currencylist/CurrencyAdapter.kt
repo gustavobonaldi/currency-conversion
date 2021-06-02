@@ -12,6 +12,7 @@ import br.com.bonaldi.currency.conversion.presentation.conversions.Currency.Curr
 import br.com.bonaldi.currency.conversion.presentation.extensions.getCurrencyMapped
 import br.com.bonaldi.currency.conversion.presentation.extensions.listen
 import br.com.bonaldi.currency.conversion.presentation.extensions.setDrawableFlag
+import kotlin.properties.Delegates
 
 
 class CurrencyAdapter(
@@ -21,6 +22,7 @@ class CurrencyAdapter(
 
     private var currencies: Map<String, String> = mapOf()
     var filteredCurencies : Map<String, String>
+    var na
 
     init {
         filteredCurencies = currencies
@@ -74,8 +76,13 @@ class CurrencyAdapter(
                 (results?.values as? Map<String, String>)?.let {
                     filteredCurencies = it
                     notifyDataSetChanged()
+                    Delegates.vetoable()
                 }
             }
         }
+    }
+
+    fun filterListTest(): Boolean{
+
     }
 }
