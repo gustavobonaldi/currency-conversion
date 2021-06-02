@@ -8,6 +8,7 @@ import br.com.bonaldi.currency.conversion.api.api.config.ResponseHandler
 import br.com.bonaldi.currency.conversion.api.room.CurrConversionRoomDatabase
 import br.com.bonaldi.currency.conversion.data.repository.CurrencyLayerRepositoryImpl
 import br.com.bonaldi.currency.conversion.data.api.CurrencyLayerServices
+import br.com.bonaldi.currency.conversion.data.repository.BaseRepository
 import br.com.bonaldi.currency.conversion.data.repository.CurrencyLayerRepository
 import br.com.bonaldi.currency.conversion.domain.CurrencyLayerUseCase
 import br.com.bonaldi.currency.conversion.domain.CurrencyLayerUseCaseImpl

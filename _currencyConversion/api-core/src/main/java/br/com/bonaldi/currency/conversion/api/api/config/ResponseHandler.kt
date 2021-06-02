@@ -5,6 +5,8 @@ import com.google.gson.Gson
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
 import java.lang.Exception
+import kotlin.reflect.javaType
+import kotlin.reflect.typeOf
 
 
 enum class ErrorCodes(val code: Int) {
@@ -16,12 +18,13 @@ open class ResponseHandler {
         return Resource.success(data)
     }
 
-    fun <T: Exception> handleException(e: T): Resource<out ApiResponse> {
+
+    fun <T: Exception, R: ApiResponse> handleException(e: T, clazz: Class<R>): Resource<R> {
         if(e is HttpException)
         {
             if(e.response()?.errorBody() != null && e.response()?.errorBody() != null) {
                 val errorString = e.response()?.errorBody()?.string()
-                val apiResponse: ApiResponse = Gson().fromJson(errorString, ApiResponse::class.java)
+                val apiResponse: R = Gson().fromJson(errorString, clazz)
                 return Resource.error(getErrorMessage(e.code()), apiResponse)
             }
         }
