@@ -5,21 +5,23 @@ import br.com.bonaldi.currency.conversion.data.api.CurrencyLayerServices
 import br.com.bonaldi.currency.conversion.api.api.config.Resource
 import br.com.bonaldi.currency.conversion.api.api.config.ResponseHandler
 import br.com.bonaldi.currency.conversion.api.dto.currency.CurrenciesDTO
+import br.com.bonaldi.currency.conversion.api.dto.currency.CurrenciesResponseDTO
 import br.com.bonaldi.currency.conversion.api.dto.currency.QuotesDTO
+import br.com.bonaldi.currency.conversion.api.dto.currency.QuotesResponseDTO
 import br.com.bonaldi.currency.conversion.api.room.dao.CurrencyDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class CurrencyLayerRepositoryImpl(
     private val currencyLayerApi: CurrencyLayerServices,
-    private val responseHandler: ResponseHandler,
+    override var responseHandler: ResponseHandler,
     private val currencyDao: CurrencyDao
 ): BaseRepository(responseHandler), CurrencyLayerRepository {
 
     override fun getCurrenciesLiveData() = currencyDao.getCurrenciesLiveData()
     override fun getRealtimeRatesLiveData() = currencyDao.getQuotesLiveData()
 
-    override suspend fun getCurrencies(showLoading: (Boolean) -> Unit): Resource<out Any> {
+    override suspend fun getCurrencies(showLoading: (Boolean) -> Unit): Resource<out CurrenciesResponseDTO> {
         return withContext(Dispatchers.IO){
             createRequest(showLoading, request = {
                 currencyLayerApi.getCurrencies().let { response ->
@@ -30,7 +32,7 @@ class CurrencyLayerRepositoryImpl(
         }
     }
 
-    override suspend fun getRealTimeRates(showLoading: (Boolean) -> Unit): Resource<out Any> {
+    override suspend fun getRealTimeRates(showLoading: (Boolean) -> Unit): Resource<out QuotesResponseDTO> {
         return withContext(Dispatchers.IO) {
             createRequest(showLoading, request = {
                 currencyLayerApi.getRealTimeRates().let { response ->

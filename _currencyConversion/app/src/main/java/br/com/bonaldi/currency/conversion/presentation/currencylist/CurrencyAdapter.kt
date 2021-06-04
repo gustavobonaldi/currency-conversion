@@ -22,7 +22,6 @@ class CurrencyAdapter(
 
     private var currencies: Map<String, String> = mapOf()
     var filteredCurencies : Map<String, String>
-    var na
 
     init {
         filteredCurencies = currencies
@@ -76,13 +75,8 @@ class CurrencyAdapter(
                 (results?.values as? Map<String, String>)?.let {
                     filteredCurencies = it
                     notifyDataSetChanged()
-                    Delegates.vetoable()
                 }
             }
         }
-    }
-
-    fun filterListTest(): Boolean{
-
     }
 }
