@@ -21,11 +21,7 @@ class NetworkUtils {
         fun provideOkHttpClient(requestInterceptor: RequestInterceptor): OkHttpClient {
             val loggingInterceptor = HttpLoggingInterceptor()
             loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-            return OkHttpClient()
-                .newBuilder()
-                .addInterceptor(requestInterceptor)
-                .addInterceptor(loggingInterceptor)
-                .build()
+            return OkHttpClient().newBuilder().addInterceptor(requestInterceptor).addInterceptor(loggingInterceptor).build()
         }
     }
 }

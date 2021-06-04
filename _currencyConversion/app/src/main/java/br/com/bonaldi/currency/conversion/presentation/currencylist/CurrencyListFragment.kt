@@ -21,7 +21,6 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class CurrencyListFragment(private val currencyType: CurrencyType) : DialogFragment() {
-
     private val currencyListViewModel: ConversionViewModel by sharedViewModel()
     private var onCurrencyClicked: ((Currency) -> Unit)? = null
     private val listAdapter: CurrencyAdapter by lazy { CurrencyAdapter(requireContext(), currencyType, onCurrencyClicked) }
@@ -72,7 +71,7 @@ class CurrencyListFragment(private val currencyType: CurrencyType) : DialogFragm
             addCurrenciesObserver(this@CurrencyListFragment) { currencies ->
                 binding.loaderCurrencyList.visibility = View.GONE
                 binding.recyclerCurrencyList.visibility = View.VISIBLE
-                setCurrencyList(currencies.currencies)
+                setCurrencyList(currencies?.currencies)
                 setSearchView()
             }
             updateCurrencies()
@@ -86,7 +85,7 @@ class CurrencyListFragment(private val currencyType: CurrencyType) : DialogFragm
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                listAdapter?.filter?.filter(newText)
+                listAdapter.filter.filter(newText)
                 return false
             }
         })

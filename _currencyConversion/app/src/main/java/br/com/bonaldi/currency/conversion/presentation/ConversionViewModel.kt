@@ -45,7 +45,7 @@ class ConversionViewModel(private val currencyLayerUseCase: CurrencyLayerUseCase
     override fun getConversionFromTo(currencyFrom: Pair<String, String>?,
                                      currencyTo: Pair<String, String>?,
                                      valueToConvert: Double,
-                                     onSuccess: (String) -> Unit,
+                                     onSuccess: (String?) -> Unit,
                                      onError: (ErrorDTO) -> Unit?)
     {
         if(currencyFrom == null || currencyTo == null || currencyFrom.first.isEmpty() || currencyTo.first.isEmpty()){
@@ -77,7 +77,7 @@ class ConversionViewModel(private val currencyLayerUseCase: CurrencyLayerUseCase
 
     override fun addCurrenciesObserver(
         lifecycleOwner: LifecycleOwner,
-        onSuccess: (CurrenciesDTO) -> Unit
+        onSuccess: (CurrenciesDTO?) -> Unit
     ){
         currencyLayerUseCase.getCurrenciesLiveData()?.observe(lifecycleOwner, Observer {currencies ->
             onSuccess(currencies)

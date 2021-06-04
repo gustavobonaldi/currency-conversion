@@ -14,13 +14,13 @@ interface Conversions {
         currencyFrom: Pair<String, String>?,
         currencyTo: Pair<String, String>?,
         valueToConvert: Double,
-        onSuccess: (String) -> Unit,
+        onSuccess: (String?) -> Unit,
         onError: (ErrorDTO) -> Unit?)
 
     fun updateCurrencies()
     fun addCurrenciesObserver(
         lifecycleOwner: LifecycleOwner,
-        onSuccess: (CurrenciesDTO) -> Unit
+        onSuccess: (CurrenciesDTO?) -> Unit
     )
 
 }

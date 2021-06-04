@@ -88,7 +88,7 @@ class ConversionsFragment : BaseFragment() {
                 onSuccess = {
                     binding.apply {
                         textViewConvertedValue.text = it
-                        step4.visibility = if (it.length > 0) View.VISIBLE else View.GONE
+                        step4.visibility = if (it?.length ?: 0 > 0) View.VISIBLE else View.GONE
                     }
                 },
                 onError = {
