@@ -9,9 +9,9 @@ buildscript {
     ext {
         // Sdk and tools
         // Support library and architecture components support minSdk 14 and above.
-        minSdkVersion = 14
-        targetSdkVersion = 28
-        compileSdkVersion = 28
+        minSdkVersion = 21
+        targetSdkVersion = 31
+        compileSdkVersion = 31
 
         // App dependencies
         androidXVersion = '1.0.0'
@@ -49,7 +49,7 @@ buildscript {
     }
     
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.1'
+        classpath 'com.android.tools.build:gradle:4.1.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         /* Navigation */
@@ -59,7 +59,7 @@ buildscript {
         classpath 'com.google.gms:google-services:4.3.8'
 
         /* Firebase Crashlytics*/
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.7.0'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.7.1'
     }
 }
 

@@ -1,20 +1,20 @@
 package br.com.bonaldi.currency.conversion.presentation.conversions
 
+import br.com.bonaldi.currency.conversion.api.dto.RatesDTO
 import br.com.bonaldi.currency.conversion.presentation.extensions.Zero
 
 class ConversionUtils{
     companion object {
         fun convertValue(
-            quoteFrom: Pair<String, Double>?,
-            quoteTo: Pair<String, Double>?,
+            quoteFrom: RatesDTO?,
+            quoteTo: RatesDTO?,
             valueToConvert: Double
         ): Double {
-            if (quoteFrom != null && quoteTo != null) {
-                val valueInDolar = valueToConvert / quoteFrom.second
-                val convertedValue = valueInDolar * quoteTo.second
-                return convertedValue
+            return if (quoteFrom != null && quoteTo != null) {
+                val valueInDollar = valueToConvert / quoteFrom.currencyValueInDollar
+                valueInDollar * quoteTo.currencyValueInDollar
             } else {
-                return Double.Zero()
+                Double.Zero()
             }
         }
     }

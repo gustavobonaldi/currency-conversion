@@ -34,8 +34,8 @@ class Converters {
     }
 
     @TypeConverter
-    fun stringToHashMapString(json: String?): HashMap<String, String> {
-        return Gson().fromJson(json,  object : TypeToken<HashMap<String, String>>() {}.type)
+    fun stringToHashMapString(json: String?): HashMap<String, String>? {
+        return Gson().fromJson(json,  object : TypeToken<HashMap<String, String>?>() {}.type)
     }
 
     @TypeConverter

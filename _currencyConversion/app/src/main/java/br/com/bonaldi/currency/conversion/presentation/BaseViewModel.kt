@@ -2,6 +2,7 @@ package br.com.bonaldi.currency.conversion.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.bonaldi.currency.conversion.api.cache.CurrencyDataStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

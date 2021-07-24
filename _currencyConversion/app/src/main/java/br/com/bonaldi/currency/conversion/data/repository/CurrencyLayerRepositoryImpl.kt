@@ -1,45 +1,72 @@
 package br.com.bonaldi.currency.conversion.data.repository;
 
 
-import br.com.bonaldi.currency.conversion.data.api.CurrencyLayerServices
-import br.com.bonaldi.currency.conversion.api.api.config.Resource
-import br.com.bonaldi.currency.conversion.api.api.config.ResponseHandler
-import br.com.bonaldi.currency.conversion.api.dto.currency.CurrenciesDTO
-import br.com.bonaldi.currency.conversion.api.dto.currency.CurrenciesResponseDTO
-import br.com.bonaldi.currency.conversion.api.dto.currency.QuotesDTO
-import br.com.bonaldi.currency.conversion.api.dto.currency.QuotesResponseDTO
+import br.com.bonaldi.currency.conversion.api.cache.CurrencyDataStore
+import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO2
+import br.com.bonaldi.currency.conversion.api.dto.ErrorDTO
+import br.com.bonaldi.currency.conversion.api.dto.RatesDTO
 import br.com.bonaldi.currency.conversion.api.room.dao.CurrencyDao
+import br.com.bonaldi.currency.conversion.api.room.dao.CurrencyRateDao
+import br.com.bonaldi.currency.conversion.api.utils.DataUtils.mapCurrencyResponseToModel
+import br.com.bonaldi.currency.conversion.api.utils.DataUtils.mapRatesResponseToModel
+import br.com.bonaldi.currency.conversion.data.api.CurrencyLayerServices
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class CurrencyLayerRepositoryImpl(
     private val currencyLayerApi: CurrencyLayerServices,
-    override var responseHandler: ResponseHandler,
-    private val currencyDao: CurrencyDao
-): BaseRepository(responseHandler), CurrencyLayerRepository {
+    private val currencyDao: CurrencyDao,
+    private val currencyRateDao: CurrencyRateDao,
+    private val currencyDataStore: CurrencyDataStore
+) : BaseRepository(), CurrencyLayerRepository {
 
-    override fun getCurrenciesLiveData() = currencyDao.getCurrenciesLiveData()
-    override fun getRealtimeRatesLiveData() = currencyDao.getQuotesLiveData()
-
-    override suspend fun getCurrencies(showLoading: (Boolean) -> Unit): Resource<out CurrenciesResponseDTO> {
-        return withContext(Dispatchers.IO){
-            createRequest(showLoading, request = {
-                currencyLayerApi.getCurrencies().let { response ->
-                    currencyDao.insertCurrencies(CurrenciesDTO(1, response.currencies, response.timestamp))
-                    responseHandler.handleSuccess(response)
-                }
-            })
+    override suspend fun updateCurrencyList(
+        shouldShowLoading: (Boolean) -> Unit,
+        onError: (ErrorDTO) -> Unit,
+        onSuccess: (List<CurrencyDTO2>) -> Unit
+    ) {
+        withContext(Dispatchers.IO) {
+            createRequest(
+                shouldShowLoading,
+                onError,
+                request = {
+                    currencyLayerApi.getCurrencies()
+                },
+                onSuccess = { response ->
+                    mapCurrencyResponseToModel(response.currencies).let { currencyList ->
+                        runOnBG {
+                            currencyDao.insert(currencyList)
+                        }
+                        onSuccess.invoke(currencyList)
+                    }
+                })
         }
     }
 
-    override suspend fun getRealTimeRates(showLoading: (Boolean) -> Unit): Resource<out QuotesResponseDTO> {
-        return withContext(Dispatchers.IO) {
-            createRequest(showLoading, request = {
-                currencyLayerApi.getRealTimeRates().let { response ->
-                    currencyDao.insertQuotes(QuotesDTO(1, response.quotes, response.timestamp))
-                    responseHandler.handleSuccess(response)
+    override suspend fun updateCurrencyRateList(
+        shouldShowLoading: (Boolean) -> Unit,
+        onError: (ErrorDTO) -> Unit,
+        onSuccess: (List<RatesDTO>) -> Unit
+    ) {
+        withContext(Dispatchers.IO) {
+            createRequest(
+                shouldShowLoading,
+                onError,
+                request = {
+                    currencyLayerApi.getRealTimeRates()
+                },
+                onSuccess = { response ->
+                    mapRatesResponseToModel(response.quotes).let { currencyRateList ->
+                        runOnBG {
+                            currencyRateDao.insert(currencyRateList)
+                        }
+                        onSuccess.invoke(currencyRateList)
+                    }
                 }
-            })
+            )
         }
     }
+
+    override fun getCurrencyListLiveData() = currencyDao.getCurrenciesLiveData()
+    override fun getCurrencyRateListLiveData() = currencyRateDao.getRatesLiveData()
 }

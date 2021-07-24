@@ -6,11 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import br.com.bonaldi.currency.conversion.R
+import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO2
+import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO2.*
 import br.com.bonaldi.currency.conversion.databinding.FragmentConversionsBinding
 import br.com.bonaldi.currency.conversion.presentation.BaseFragment
 import br.com.bonaldi.currency.conversion.presentation.ConversionViewModel
 import br.com.bonaldi.currency.conversion.utils.customcomponents.controls.CustomTextWatcher
-import br.com.bonaldi.currency.conversion.presentation.conversions.Currency.CurrencyType
 import br.com.bonaldi.currency.conversion.presentation.currencylist.CurrencyListFragment
 import br.com.bonaldi.currency.conversion.presentation.extensions.empty
 import br.com.bonaldi.currency.conversion.presentation.extensions.getFormattedString
@@ -18,7 +19,6 @@ import br.com.bonaldi.currency.conversion.presentation.extensions.setDrawableFla
 import com.google.android.gms.ads.AdRequest
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.viewmodel.ext.android.sharedViewModel
-import org.koin.android.viewmodel.ext.android.viewModel
 import java.text.NumberFormat
 import java.util.*
 
@@ -76,14 +76,14 @@ class ConversionsFragment : BaseFragment() {
     }
 
     private fun setAds() = binding.apply {
-        adView.loadAd(AdRequest.Builder().build())
+        //adView.loadAd(AdRequest.Builder().build())
     }
 
     private fun getConvertedValue(value: Double) {
         try {
             viewModel.getConversionFromTo(
-                viewModel.currencyFrom.currency,
-                viewModel.currencyTo.currency,
+                viewModel.currencyFrom,
+                viewModel.currencyTo,
                 value.toString().toDouble(),
                 onSuccess = {
                     binding.apply {
@@ -92,7 +92,7 @@ class ConversionsFragment : BaseFragment() {
                     }
                 },
                 onError = {
-                    showSnackBar(resources.getString(it.errorMessage))
+                    showSnackBar(it.info)
                 })
         } catch (ex: Exception) {
             when {
@@ -118,6 +118,7 @@ class ConversionsFragment : BaseFragment() {
                         containerTo.getImageView().setDrawableFlag(context, currency)
                         containerTo.setCurrencyText(currency.getFormattedString())
                     }
+
                 }
                 dismiss()
             }

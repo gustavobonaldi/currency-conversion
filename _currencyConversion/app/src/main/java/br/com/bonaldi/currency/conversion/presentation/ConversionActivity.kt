@@ -8,12 +8,9 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class ConversionActivity : AppCompatActivity() {
-    private val viewModel: ConversionViewModel by viewModel()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         MobileAds.initialize(this) { }
     }
 }

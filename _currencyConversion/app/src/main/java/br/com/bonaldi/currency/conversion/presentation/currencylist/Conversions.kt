@@ -1,26 +1,29 @@
 package br.com.bonaldi.currency.conversion.presentation.currencylist
 
 import androidx.lifecycle.LifecycleOwner
+import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO2
 import br.com.bonaldi.currency.conversion.api.dto.ErrorDTO
-import br.com.bonaldi.currency.conversion.api.dto.currency.CurrenciesDTO
 
 interface Conversions {
 
+    fun updateCurrencies()
     fun updateRealtimeRates()
+
     fun addRealtimeRatesObserver(
-        lifecycleOwner: LifecycleOwner
-    )
+        lifecycleOwner: LifecycleOwner)
+    fun addCurrenciesObserver(
+        lifecycleOwner: LifecycleOwner,
+        onSuccess: (List<CurrencyDTO2>?) -> Unit)
+
     fun getConversionFromTo(
-        currencyFrom: Pair<String, String>?,
-        currencyTo: Pair<String, String>?,
+        currencyFrom: CurrencyDTO2?,
+        currencyTo: CurrencyDTO2?,
         valueToConvert: Double,
         onSuccess: (String?) -> Unit,
         onError: (ErrorDTO) -> Unit?)
 
-    fun updateCurrencies()
-    fun addCurrenciesObserver(
-        lifecycleOwner: LifecycleOwner,
-        onSuccess: (CurrenciesDTO?) -> Unit
-    )
+
+
+
 
 }

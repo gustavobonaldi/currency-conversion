@@ -1,14 +1,13 @@
 package br.com.bonaldi.currency.conversion.data.api;
 
-import br.com.bonaldi.currency.conversion.api.dto.ApiResponse
-import br.com.bonaldi.currency.conversion.api.dto.currency.CurrenciesResponseDTO
-import br.com.bonaldi.currency.conversion.api.dto.currency.QuotesResponseDTO
+import br.com.bonaldi.currency.conversion.api.dto.currency.SupportedCurrenciesDTO
+import br.com.bonaldi.currency.conversion.api.dto.currency.ExchangeRateDataDTO
 import retrofit2.http.*
 
 interface CurrencyLayerServices {
     @GET("/list")
-    suspend fun getCurrencies(): CurrenciesResponseDTO
+    suspend fun getCurrencies(): SupportedCurrenciesDTO
 
     @GET("/live")
-    suspend fun getRealTimeRates(): QuotesResponseDTO
+    suspend fun getRealTimeRates(): ExchangeRateDataDTO
 }
