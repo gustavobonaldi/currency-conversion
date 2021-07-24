@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import java.io.Serializable
 
 @Entity(tableName = "tb_currency")
-data class CurrencyDTO2(
+data class CurrencyDTO(
     @PrimaryKey
     val currencyCode: String = "",
     val currencyCountry: String = "",

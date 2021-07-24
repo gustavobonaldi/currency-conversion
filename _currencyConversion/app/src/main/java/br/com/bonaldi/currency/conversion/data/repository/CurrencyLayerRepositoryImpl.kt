@@ -2,7 +2,7 @@ package br.com.bonaldi.currency.conversion.data.repository;
 
 
 import br.com.bonaldi.currency.conversion.api.cache.CurrencyDataStore
-import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO2
+import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO
 import br.com.bonaldi.currency.conversion.api.dto.ErrorDTO
 import br.com.bonaldi.currency.conversion.api.dto.RatesDTO
 import br.com.bonaldi.currency.conversion.api.room.dao.CurrencyDao
@@ -23,7 +23,7 @@ class CurrencyLayerRepositoryImpl(
     override suspend fun updateCurrencyList(
         shouldShowLoading: (Boolean) -> Unit,
         onError: (ErrorDTO) -> Unit,
-        onSuccess: (List<CurrencyDTO2>) -> Unit
+        onSuccess: (List<CurrencyDTO>) -> Unit
     ) {
         withContext(Dispatchers.IO) {
             createRequest(
@@ -35,7 +35,7 @@ class CurrencyLayerRepositoryImpl(
                 onSuccess = { response ->
                     mapCurrencyResponseToModel(response.currencies).let { currencyList ->
                         runOnBG {
-                            currencyDao.insert(currencyList)
+                            currencyDao.setCurrencyList(currencyList)
                         }
                         onSuccess.invoke(currencyList)
                     }

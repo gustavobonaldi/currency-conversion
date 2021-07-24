@@ -6,20 +6,19 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
-import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO2
+import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO
 import br.com.bonaldi.currency.conversion.databinding.CurrencyItemBinding
 import br.com.bonaldi.currency.conversion.presentation.extensions.listen
 import br.com.bonaldi.currency.conversion.presentation.extensions.setDrawableFlag
-import java.util.*
 
 
 class CurrencyAdapter(
     val context: Context,
-    private val currencyType: CurrencyDTO2.CurrencyType,
-    private val onItemClicked: ((CurrencyDTO2) -> Unit)?) : RecyclerView.Adapter<CurrencyAdapter.CurrencyHolder>(), Filterable {
+    private val currencyType: CurrencyDTO.CurrencyType,
+    private val onItemClicked: ((CurrencyDTO) -> Unit)?) : RecyclerView.Adapter<CurrencyAdapter.CurrencyHolder>(), Filterable {
 
-    private var currencies: List<CurrencyDTO2> = listOf()
-    var filteredCurrencies: List<CurrencyDTO2>
+    private var currencies: List<CurrencyDTO> = listOf()
+    var filteredCurrencies: List<CurrencyDTO>
 
     init {
         filteredCurrencies = currencies
@@ -41,7 +40,7 @@ class CurrencyAdapter(
     }
 
     class CurrencyHolder(private val binding: CurrencyItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bindName(currency: CurrencyDTO2, context: Context) {
+        fun bindName(currency: CurrencyDTO, context: Context) {
             binding.apply {
                 currencyName.text = currency.currencyCode
                 currencyCountry.text = currency.currencyCountry
@@ -50,7 +49,7 @@ class CurrencyAdapter(
         }
     }
 
-    fun addItems(currencyList: List<CurrencyDTO2>){
+    fun addItems(currencyList: List<CurrencyDTO>){
         currencies = currencyList
         filteredCurrencies = currencyList
         notifyDataSetChanged()
@@ -73,7 +72,7 @@ class CurrencyAdapter(
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                (results?.values as? List<CurrencyDTO2>)?.let {
+                (results?.values as? List<CurrencyDTO>)?.let {
                     filteredCurrencies = it
                     notifyDataSetChanged()
                 }

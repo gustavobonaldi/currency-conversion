@@ -1,14 +1,14 @@
 package br.com.bonaldi.currency.conversion.api.utils
 
-import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO2
+import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO
 import br.com.bonaldi.currency.conversion.api.dto.RatesDTO
 
 object DataUtils {
-    fun mapCurrencyResponseToModel(currencyMap: Map<String, String>?): List<CurrencyDTO2> {
-        return mutableListOf<CurrencyDTO2>().apply {
+    fun mapCurrencyResponseToModel(currencyMap: Map<String, String>?): List<CurrencyDTO> {
+        return mutableListOf<CurrencyDTO>().apply {
             currencyMap?.map { entry ->
                 add(
-                    CurrencyDTO2(
+                    CurrencyDTO(
                         currencyCode = entry.key,
                         currencyCountry = entry.value
                     )

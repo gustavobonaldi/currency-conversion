@@ -9,16 +9,16 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.bonaldi.currency.conversion.R
-import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO2
+import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO
 import br.com.bonaldi.currency.conversion.databinding.FragmentCurrencyListBinding
 import br.com.bonaldi.currency.conversion.presentation.ConversionViewModel
 import br.com.bonaldi.currency.conversion.presentation.extensions.setWindowSettings
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 
-class CurrencyListFragment(private val currencyType: CurrencyDTO2.CurrencyType) : DialogFragment() {
+class CurrencyListFragment(private val currencyType: CurrencyDTO.CurrencyType) : DialogFragment() {
     private val viewModel: ConversionViewModel by sharedViewModel()
-    private var onCurrencyClicked: ((CurrencyDTO2) -> Unit)? = null
+    private var onCurrencyClicked: ((CurrencyDTO) -> Unit)? = null
     private val listAdapter: CurrencyAdapter by lazy { CurrencyAdapter(requireContext(), currencyType, onCurrencyClicked) }
     private lateinit var binding: FragmentCurrencyListBinding
 
@@ -42,11 +42,11 @@ class CurrencyListFragment(private val currencyType: CurrencyDTO2.CurrencyType) 
         dialog?.setWindowSettings()
     }
 
-    fun addOnCurrencyClickedListener(listener: ((CurrencyDTO2) -> Unit)?){
+    fun addOnCurrencyClickedListener(listener: ((CurrencyDTO) -> Unit)?){
         onCurrencyClicked = listener
     }
 
-    private fun setCurrencyList(currencies: List<CurrencyDTO2>) {
+    private fun setCurrencyList(currencies: List<CurrencyDTO>) {
         if (currencies.isNotEmpty()) {
             binding.recyclerCurrencyList.apply {
                 layoutManager = LinearLayoutManager(context)

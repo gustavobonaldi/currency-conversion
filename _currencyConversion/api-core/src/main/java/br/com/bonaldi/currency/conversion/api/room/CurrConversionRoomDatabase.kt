@@ -3,14 +3,14 @@ package br.com.bonaldi.currency.conversion.api.room
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO2
+import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO
 import br.com.bonaldi.currency.conversion.api.dto.RatesDTO
 import br.com.bonaldi.currency.conversion.api.room.dao.CurrencyDao
 import br.com.bonaldi.currency.conversion.api.room.dao.CurrencyRateDao
 
 @Database(
     entities = [
-        CurrencyDTO2::class,
+        CurrencyDTO::class,
         RatesDTO::class
     ],
     version = 1,

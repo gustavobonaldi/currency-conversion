@@ -6,8 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import br.com.bonaldi.currency.conversion.R
-import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO2
-import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO2.*
+import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO.*
 import br.com.bonaldi.currency.conversion.databinding.FragmentConversionsBinding
 import br.com.bonaldi.currency.conversion.presentation.BaseFragment
 import br.com.bonaldi.currency.conversion.presentation.ConversionViewModel
@@ -16,7 +15,6 @@ import br.com.bonaldi.currency.conversion.presentation.currencylist.CurrencyList
 import br.com.bonaldi.currency.conversion.presentation.extensions.empty
 import br.com.bonaldi.currency.conversion.presentation.extensions.getFormattedString
 import br.com.bonaldi.currency.conversion.presentation.extensions.setDrawableFlag
-import com.google.android.gms.ads.AdRequest
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import java.text.NumberFormat

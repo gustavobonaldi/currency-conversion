@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.*
 import androidx.lifecycle.Observer
 import br.com.bonaldi.currency.conversion.R
-import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO2
+import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO
 import br.com.bonaldi.currency.conversion.api.dto.ErrorDTO
 import br.com.bonaldi.currency.conversion.api.dto.RatesDTO
 import br.com.bonaldi.currency.conversion.domain.CurrencyLayerUseCase
@@ -19,14 +19,14 @@ class ConversionViewModel(
     private val currencyLayerUseCase: CurrencyLayerUseCase
 ) : BaseViewModel(), Conversions {
 
-    var currencyFrom = CurrencyDTO2(String.empty())
-    var currencyTo = CurrencyDTO2(String.empty(), String.empty(), CurrencyDTO2.CurrencyType.TO)
+    var currencyFrom = CurrencyDTO(String.empty())
+    var currencyTo = CurrencyDTO(String.empty(), String.empty(), CurrencyDTO.CurrencyType.TO)
 
     private val _realTimeRates = MutableLiveData<List<RatesDTO>>()
     private val realTimeRatesLiveData: LiveData<List<RatesDTO>> = _realTimeRates
 
-    private val _getCurrencies = MutableLiveData<List<CurrencyDTO2>>()
-    val getCurrencies: LiveData<List<CurrencyDTO2>> = _getCurrencies
+    private val _getCurrencies = MutableLiveData<List<CurrencyDTO>>()
+    val getCurrencies: LiveData<List<CurrencyDTO>> = _getCurrencies
 
     override fun updateRealtimeRates() {
         launch {
@@ -52,8 +52,8 @@ class ConversionViewModel(
     }
 
     override fun getConversionFromTo(
-        currencyFrom: CurrencyDTO2?,
-        currencyTo: CurrencyDTO2?,
+        currencyFrom: CurrencyDTO?,
+        currencyTo: CurrencyDTO?,
         valueToConvert: Double,
         onSuccess: (String?) -> Unit,
         onError: (ErrorDTO) -> Unit?
@@ -93,7 +93,7 @@ class ConversionViewModel(
 
     override fun addCurrenciesObserver(
         lifecycleOwner: LifecycleOwner,
-        onSuccess: (List<CurrencyDTO2>?) -> Unit
+        onSuccess: (List<CurrencyDTO>?) -> Unit
     ){
         currencyLayerUseCase.getCurrencyListLiveData()?.observe(lifecycleOwner, Observer {currencies ->
             onSuccess(currencies)
