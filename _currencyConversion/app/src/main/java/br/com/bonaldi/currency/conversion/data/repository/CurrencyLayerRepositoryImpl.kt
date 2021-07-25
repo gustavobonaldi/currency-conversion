@@ -58,13 +58,22 @@ class CurrencyLayerRepositoryImpl(
                 onSuccess = { response ->
                     mapRatesResponseToModel(response.quotes).let { currencyRateList ->
                         runOnBG {
-                            currencyRateDao.insert(currencyRateList)
+                            currencyRateDao.insertAll(currencyRateList)
                         }
                         onSuccess.invoke(currencyRateList)
                     }
                 }
             )
         }
+    }
+
+    override suspend fun selectRecentlyUsedCurrencies(): List<CurrencyDTO> {
+        return currencyDao.selectRecentlyUsedCurrencies()
+    }
+
+    override suspend fun updateCurrencyRecentlyUsed(currencyCode: String, recentlyUsed: Boolean) {
+        val timeInMillis = if(recentlyUsed) System.currentTimeMillis() else 0L
+         currencyDao.updateCurrencyRecentlyUsed(currencyCode, recentlyUsed, timeInMillis)
     }
 
     override fun getCurrencyListLiveData() = currencyDao.getCurrenciesLiveData()

@@ -7,11 +7,16 @@ import br.com.bonaldi.currency.conversion.data.repository.CurrencyLayerRepositor
 
 class CurrencyLayerUseCaseImpl(private val currencyLayerRepository: CurrencyLayerRepository): CurrencyLayerUseCase {
 
+    companion object {
+        const val RECENTLY_USED_SECTION_SIZE = 5
+    }
+
     override suspend fun updateCurrencyList(
         shouldShowLoading: (Boolean) -> Unit,
         onError: (ErrorDTO) -> Unit,
         onSuccess: (List<CurrencyDTO>) -> Unit
     ) {
+
         currencyLayerRepository.updateCurrencyList(
             shouldShowLoading,
             onError,
@@ -29,6 +34,20 @@ class CurrencyLayerUseCaseImpl(private val currencyLayerRepository: CurrencyLaye
             onError,
             onSuccess
         )
+    }
+
+    override suspend fun updateCurrencyRecentlyUsed(currencyCode: String) {
+        currencyLayerRepository.selectRecentlyUsedCurrencies().let { recentlyUsedCurrencies ->
+            if(recentlyUsedCurrencies.isNullOrEmpty() || recentlyUsedCurrencies.size < RECENTLY_USED_SECTION_SIZE){
+                currencyLayerRepository.updateCurrencyRecentlyUsed(currencyCode, true)
+            }
+            else {
+                recentlyUsedCurrencies.lastOrNull()?.let { currency ->
+                    currencyLayerRepository.updateCurrencyRecentlyUsed(currency.currencyCode, false)
+                    currencyLayerRepository.updateCurrencyRecentlyUsed(currencyCode, true)
+                }
+            }
+        }
     }
 
     override fun getCurrencyListLiveData() = currencyLayerRepository.getCurrencyListLiveData()

@@ -15,8 +15,9 @@ import br.com.bonaldi.currency.conversion.presentation.currencylist.CurrencyList
 import br.com.bonaldi.currency.conversion.presentation.extensions.empty
 import br.com.bonaldi.currency.conversion.presentation.extensions.getFormattedString
 import br.com.bonaldi.currency.conversion.presentation.extensions.setDrawableFlag
+import com.google.android.gms.ads.AdRequest
 import com.google.android.material.snackbar.Snackbar
-import org.koin.android.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.text.NumberFormat
 import java.util.*
 
@@ -68,20 +69,21 @@ class ConversionsFragment : BaseFragment() {
 
     private fun setObservers() {
         viewModel.apply {
-            addRealtimeRatesObserver(this@ConversionsFragment)
+            addRealtimeRatesObserver(this@ConversionsFragment) {
+
+            }
             updateRealtimeRates()
         }
     }
 
-    private fun setAds() = binding.apply {
-        //adView.loadAd(AdRequest.Builder().build())
+    private fun setAds(){
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
     }
-
     private fun getConvertedValue(value: Double) {
         try {
             viewModel.getConversionFromTo(
-                viewModel.currencyFrom,
-                viewModel.currencyTo,
+                viewModel.currencyConversionVO,
                 value.toString().toDouble(),
                 onSuccess = {
                     binding.apply {
@@ -93,8 +95,8 @@ class ConversionsFragment : BaseFragment() {
                     showSnackBar(it.info)
                 })
         } catch (ex: Exception) {
-            when {
-                ex is NumberFormatException -> {
+            when (ex) {
+                is NumberFormatException -> {
                     showSnackBar(resources.getString(R.string.type_valid_value))
                 }
             }
@@ -104,15 +106,16 @@ class ConversionsFragment : BaseFragment() {
     private fun showCurrencyList(currencyType: CurrencyType) {
         val currencyListFragment = CurrencyListFragment(currencyType).apply {
             addOnCurrencyClickedListener { currency ->
+                viewModel.updateCurrencyRecentlyUsed(currency.currencyCode)
                 binding.apply {
                     if (currencyType == CurrencyType.FROM) {
                         clearFields()
-                        viewModel.currencyFrom = currency
+                        viewModel.currencyConversionVO.currencyFrom = currency
                         containerFrom.getImageView().setDrawableFlag(context, currency)
                         containerFrom.setCurrencyText(currency.getFormattedString())
                     } else if (currencyType == CurrencyType.TO) {
                         clearFields()
-                        viewModel.currencyTo = currency
+                        viewModel.currencyConversionVO.currencyTo = currency
                         containerTo.getImageView().setDrawableFlag(context, currency)
                         containerTo.setCurrencyText(currency.getFormattedString())
                     }

@@ -13,13 +13,18 @@ import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO
 import br.com.bonaldi.currency.conversion.databinding.FragmentCurrencyListBinding
 import br.com.bonaldi.currency.conversion.presentation.ConversionViewModel
 import br.com.bonaldi.currency.conversion.presentation.extensions.setWindowSettings
-import org.koin.android.viewmodel.ext.android.sharedViewModel
-
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class CurrencyListFragment(private val currencyType: CurrencyDTO.CurrencyType) : DialogFragment() {
     private val viewModel: ConversionViewModel by sharedViewModel()
     private var onCurrencyClicked: ((CurrencyDTO) -> Unit)? = null
-    private val listAdapter: CurrencyAdapter by lazy { CurrencyAdapter(requireContext(), currencyType, onCurrencyClicked) }
+    private val listAdapter: CurrencyAdapter by lazy {
+        CurrencyAdapter(
+            requireContext(),
+            currencyType,
+            onCurrencyClicked
+        )
+    }
     private lateinit var binding: FragmentCurrencyListBinding
 
     override fun onCreateView(
@@ -42,23 +47,15 @@ class CurrencyListFragment(private val currencyType: CurrencyDTO.CurrencyType) :
         dialog?.setWindowSettings()
     }
 
-    fun addOnCurrencyClickedListener(listener: ((CurrencyDTO) -> Unit)?){
+    fun addOnCurrencyClickedListener(listener: ((CurrencyDTO) -> Unit)?) {
         onCurrencyClicked = listener
     }
 
     private fun setCurrencyList(currencies: List<CurrencyDTO>) {
-        if (currencies.isNotEmpty()) {
-            binding.recyclerCurrencyList.apply {
-                layoutManager = LinearLayoutManager(context)
-                adapter = listAdapter
-                listAdapter.addItems(currencies)
-            }
-        } else {
-            Toast.makeText(
-                requireContext(),
-                resources.getString(R.string.no_data_found),
-                Toast.LENGTH_LONG
-            ).show()
+        binding.recyclerCurrencyList.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = listAdapter
+            listAdapter.addItems(currencies)
         }
     }
 

@@ -9,8 +9,13 @@ import androidx.room.OnConflictStrategy
 interface BaseDao<T> {
 
      @Insert(onConflict = OnConflictStrategy.REPLACE)
-     fun insert(list: List<T>)
+     @JvmSuppressWildcards
+     suspend fun insertAll(list: List<T>)
+
+     @Insert(onConflict = OnConflictStrategy.REPLACE)
+     suspend fun insert(item: T)
 
      @Delete
-     fun delete(item: T)
+     @JvmSuppressWildcards
+     suspend fun delete(item: T)
 }

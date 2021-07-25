@@ -4,12 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -23,20 +17,20 @@
 
         <uses-library android:name="android.test.runner"
             android:required="false" />
+
         <uses-library android:name="android.test.base"
             android:required="false" />
 
         <activity android:name="br.com.bonaldi.currency.conversion.presentation.ConversionActivity"
             android:windowSoftInputMode="adjustResize"
+            android:exported="true"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-2101805177920749~8149289852"/>

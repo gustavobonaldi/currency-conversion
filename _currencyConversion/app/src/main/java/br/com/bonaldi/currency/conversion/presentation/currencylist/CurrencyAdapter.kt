@@ -2,10 +2,12 @@ package br.com.bonaldi.currency.conversion.presentation.currencylist
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
+import br.com.bonaldi.currency.conversion.R
 import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO
 import br.com.bonaldi.currency.conversion.databinding.CurrencyItemBinding
 import br.com.bonaldi.currency.conversion.presentation.extensions.listen
@@ -24,36 +26,23 @@ class CurrencyAdapter(
         filteredCurrencies = currencies
     }
 
-    override fun getItemCount(): Int = filteredCurrencies.size
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyHolder {
-        val binding = CurrencyItemBinding.inflate(LayoutInflater.from(context), parent, false)
-        return CurrencyHolder(binding).listen { pos, type ->
-            currencies[pos].type = currencyType
-            onItemClicked?.invoke(currencies[pos])
-        }
-    }
-
-    override fun onBindViewHolder(holder: CurrencyHolder, position: Int) {
-        val itemCurrency = filteredCurrencies.toList()[position]
-        holder.bindName(itemCurrency, context)
-    }
-
-    class CurrencyHolder(private val binding: CurrencyItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bindName(currency: CurrencyDTO, context: Context) {
-            binding.apply {
-                currencyName.text = currency.currencyCode
-                currencyCountry.text = currency.currencyCountry
-                currencyCountryImage.setDrawableFlag(context, currency)
-            }
-        }
-    }
-
     fun addItems(currencyList: List<CurrencyDTO>){
         currencies = currencyList
         filteredCurrencies = currencyList
         notifyDataSetChanged()
     }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyHolder {
+        val binding = CurrencyItemBinding.inflate(LayoutInflater.from(context), parent, false)
+        return CurrencyHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: CurrencyHolder, position: Int) {
+        val itemCurrency = filteredCurrencies.toList()[position]
+        holder.bindName(itemCurrency, position, context)
+    }
+
+    override fun getItemCount(): Int = filteredCurrencies.size
 
     override fun getFilter(): Filter {
         return object : Filter() {
@@ -76,6 +65,31 @@ class CurrencyAdapter(
                     filteredCurrencies = it
                     notifyDataSetChanged()
                 }
+            }
+        }
+    }
+
+    inner class CurrencyHolder(private val binding: CurrencyItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bindName(currency: CurrencyDTO, position: Int, context: Context) {
+            binding.headerContainer.visibility = View.GONE
+            if(position == 0 && !currencies.isNullOrEmpty() && currency.recentlyUsed){
+                binding.headerContainer.visibility = View.VISIBLE
+                binding.tvHeaderItem.text = context.resources.getString(R.string.recently_used_currencies)
+            }
+            else if(position > 0 && currencies.size > 1 && currencies[position-1].recentlyUsed && currencies.size-1 > position && !currency.recentlyUsed){
+                binding.headerContainer.visibility = View.VISIBLE
+                binding.tvHeaderItem.text = context.resources.getString(R.string.all_currencies)
+            }
+
+            binding.apply {
+                currencyName.text = currency.currencyCode
+                currencyCountry.text = currency.currencyCountry
+                currencyCountryImage.setDrawableFlag(context, currency)
+            }
+
+            itemView.setOnClickListener {
+                currencies[adapterPosition].selectionType = currencyType
+                onItemClicked?.invoke(currencies[position])
             }
         }
     }

@@ -8,4 +8,6 @@
     <string name="no_data_found">Nenhuma informação foi encontrada</string>
     <string name="type_valid_value">Digite um valor válido!</string>
     <string name="currencies_not_selected">Selecione duas moedas para fazer sua conversão</string>
+    <string name="recently_used_currencies">Usadas recentemente</string>
+    <string name="all_currencies">Todas as moedas</string>
 </resources>

@@ -13,7 +13,7 @@ android {
     defaultConfig {
         applicationId "br.com.bonaldi.currency.conversion"
         minSdkVersion 21
-        targetSdkVersion 31
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
@@ -21,15 +21,15 @@ android {
         multiDexEnabled true
     }
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-    }
-
-    viewBinding {
-        enabled true
     }
 
     compileOptions {
@@ -46,13 +46,13 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.6.0'
-    implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation "com.google.android.material:material:$materialVersion"
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation "com.google.android.material:material:${materialVersion}"
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'com.android.support:multidex:1.0.3'
 
     /* Coroutines */
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1-native-mt'
 
     /* Retrofit */
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'
@@ -79,9 +79,10 @@ dependencies {
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 
     /* Koin */
-    implementation "org.koin:koin-android:$koinVersion"
-    implementation "org.koin:koin-android-viewmodel:$koinVersion"
-    testImplementation "org.koin:koin-test:$koinVersion"
+    implementation "io.insert-koin:koin-core:${koinVersion}"
+    implementation "io.insert-koin:koin-android:${koinVersion}"
+    implementation "io.insert-koin:koin-androidx-workmanager:${koinVersion}"
+    testImplementation "io.insert-koin:koin-test:${koinVersion}"
 
     /* Google Truth */
     testImplementation "com.google.truth:truth:$googleTruthVersion"
@@ -96,26 +97,29 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
 
-    // Dependencies for local unit tests
+    /* Dependencies for local unit tests */
     testImplementation "junit:junit:$junitVersion"
 
-    // AndroidX Test - Instrumented testing
+    /* AndroidX Test - Instrumented testing */
     androidTestImplementation "androidx.test.ext:junit:$androidXTestExtKotlinRunnerVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
 
-    // Core library
+    /* Core library */
     androidTestImplementation 'androidx.test:core:1.4.0'
     testImplementation "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
 
-    // AndroidJUnitRunner and JUnit Rules
+    /* AndroidJUnitRunner and JUnit Rules */
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test:rules:1.4.0'
 
-    // Robolectric
+    /* Robolectric */
     testImplementation "org.robolectric:robolectric:$robolectricVersion"
 
     /* DataStore */
-    implementation "androidx.datastore:datastore-preferences:1.0.0-rc01"
+    implementation "androidx.datastore:datastore-preferences:1.0.0-rc02"
+
+    /* SDP - intuit*/
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
 
     /* Modules */
     implementation project(':api-core')

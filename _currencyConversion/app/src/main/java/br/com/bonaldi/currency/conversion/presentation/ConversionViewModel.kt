@@ -1,6 +1,7 @@
 package br.com.bonaldi.currency.conversion.presentation
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.*
 import androidx.lifecycle.Observer
 import br.com.bonaldi.currency.conversion.R
@@ -9,8 +10,10 @@ import br.com.bonaldi.currency.conversion.api.dto.ErrorDTO
 import br.com.bonaldi.currency.conversion.api.dto.RatesDTO
 import br.com.bonaldi.currency.conversion.domain.CurrencyLayerUseCase
 import br.com.bonaldi.currency.conversion.presentation.conversions.ConversionUtils
+import br.com.bonaldi.currency.conversion.presentation.conversions.CurrencyConversionVO
 import br.com.bonaldi.currency.conversion.presentation.currencylist.Conversions
 import br.com.bonaldi.currency.conversion.presentation.extensions.empty
+import br.com.bonaldi.currency.conversion.presentation.extensions.safeLet
 import java.text.NumberFormat
 import java.util.*
 
@@ -19,20 +22,20 @@ class ConversionViewModel(
     private val currencyLayerUseCase: CurrencyLayerUseCase
 ) : BaseViewModel(), Conversions {
 
-    var currencyFrom = CurrencyDTO(String.empty())
-    var currencyTo = CurrencyDTO(String.empty(), String.empty(), CurrencyDTO.CurrencyType.TO)
+    companion object {
+        private const val DOLLAR_CURRENCY_CODE = "USD"
+    }
 
+    val currencyConversionVO = CurrencyConversionVO()
+    private var currencyListMemory: List<CurrencyDTO>? = listOf()
     private val _realTimeRates = MutableLiveData<List<RatesDTO>>()
     private val realTimeRatesLiveData: LiveData<List<RatesDTO>> = _realTimeRates
-
-    private val _getCurrencies = MutableLiveData<List<CurrencyDTO>>()
-    val getCurrencies: LiveData<List<CurrencyDTO>> = _getCurrencies
 
     override fun updateRealtimeRates() {
         launch {
             currencyLayerUseCase.updateCurrencyRateList(
                 shouldShowLoading = {
-                //show loader //
+                    //show loader //
                 },
                 onError = {
 
@@ -45,33 +48,41 @@ class ConversionViewModel(
     }
 
     override fun addRealtimeRatesObserver(
-        lifecycleOwner: LifecycleOwner){
-        currencyLayerUseCase.getCurrencyRateListLiveData()?.observe(lifecycleOwner, Observer {quotes ->
-            _realTimeRates.postValue(quotes)
-        })
+        lifecycleOwner: LifecycleOwner,
+        onResult: (List<RatesDTO>?) -> Unit
+    ) {
+        currencyLayerUseCase.getCurrencyRateListLiveData().observe(
+            lifecycleOwner,
+            Observer { list ->
+                _realTimeRates.postValue(list)
+                onResult.invoke(list)
+            }
+        )
     }
 
     override fun getConversionFromTo(
-        currencyFrom: CurrencyDTO?,
-        currencyTo: CurrencyDTO?,
+        currencyConversionVO: CurrencyConversionVO,
         valueToConvert: Double,
         onSuccess: (String?) -> Unit,
         onError: (ErrorDTO) -> Unit?
     ) {
+        safeLet(
+            currencyConversionVO.currencyFrom?.currencyCode,
+            currencyConversionVO.currencyTo?.currencyCode
+        ) { currencyCodeFrom, currencyCodeTo ->
+            val ratesOfCurrencyFrom =
+                realTimeRatesLiveData.value?.firstOrNull { it.currencyCode == "$DOLLAR_CURRENCY_CODE$currencyCodeFrom" }
+            val ratesOfCurrencyTo =
+                realTimeRatesLiveData.value?.firstOrNull { it.currencyCode == "$DOLLAR_CURRENCY_CODE$currencyCodeTo" }
 
-        if (currencyFrom == null || currencyTo == null || currencyFrom.currencyCode.isEmpty() || currencyTo.currencyCode.isEmpty()) {
-            onError.invoke(ErrorDTO(info = context.getString(R.string.currencies_not_selected)))
-        } else {
-            val quoteFrom = realTimeRatesLiveData.value?.firstOrNull { it.currencyCode == "USD" + currencyFrom.currencyCode }
-            val quoteTo = realTimeRatesLiveData.value?.firstOrNull { it.currencyCode == "USD" + currencyTo.currencyCode }
-
-            ConversionUtils.convertValue(
-                quoteFrom,
-                quoteTo,
+            val convertedValue = ConversionUtils.convertValue(
+                ratesOfCurrencyFrom,
+                ratesOfCurrencyTo,
                 valueToConvert
-            ).let {
-                onSuccess.invoke(NumberFormat.getCurrencyInstance(Locale.US).format(it))
-            }
+            )
+            onSuccess.invoke(NumberFormat.getCurrencyInstance(Locale.US).format(convertedValue))
+        } ?: run {
+            onError.invoke(ErrorDTO(info = context.getString(R.string.currencies_not_selected)))
         }
     }
 
@@ -84,19 +95,31 @@ class ConversionViewModel(
                 onError = {
 
                 },
-                onSuccess = {
-
+                onSuccess = { list ->
+                    Log.d("GUSTAVO", list.toString())
                 }
             )
+        }
+    }
+
+    override fun updateCurrencyRecentlyUsed(currencyCode: String) {
+        launch {
+            currencyLayerUseCase.updateCurrencyRecentlyUsed(currencyCode)
         }
     }
 
     override fun addCurrenciesObserver(
         lifecycleOwner: LifecycleOwner,
         onSuccess: (List<CurrencyDTO>?) -> Unit
-    ){
-        currencyLayerUseCase.getCurrencyListLiveData()?.observe(lifecycleOwner, Observer {currencies ->
-            onSuccess(currencies)
-        })
+    ) {
+        onSuccess.invoke(currencyListMemory)
+        currencyLayerUseCase.getCurrencyListLiveData().observe(
+            lifecycleOwner,
+            Observer { currencies ->
+                currencyListMemory = currencies
+                onSuccess.invoke(currencies)
+            }
+        )
+
     }
 }

@@ -14,7 +14,7 @@ import br.com.bonaldi.currency.conversion.data.repository.CurrencyLayerRepositor
 import br.com.bonaldi.currency.conversion.domain.CurrencyLayerUseCase
 import br.com.bonaldi.currency.conversion.domain.CurrencyLayerUseCaseImpl
 import br.com.bonaldi.currency.conversion.presentation.ConversionViewModel
-import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {

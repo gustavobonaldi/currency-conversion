@@ -27,7 +27,7 @@ open class BaseRepository() {
         }
     }
 
-    fun runOnBG(run: () -> Unit){
+    fun runOnBG(run: suspend () -> Unit){
         GlobalScope.launch(Dispatchers.IO){
             run.invoke()
         }

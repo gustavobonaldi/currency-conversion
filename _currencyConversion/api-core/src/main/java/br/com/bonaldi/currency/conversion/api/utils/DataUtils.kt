@@ -14,7 +14,7 @@ object DataUtils {
                     )
                 )
             }
-        }
+        }.toList()
     }
 
     fun mapRatesResponseToModel(ratesMap: Map<String, Double>?): List<RatesDTO>{
@@ -27,6 +27,6 @@ object DataUtils {
                     )
                 )
             }
-        }
+        }.toList()
     }
 }

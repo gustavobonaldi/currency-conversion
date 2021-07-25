@@ -6,21 +6,40 @@ import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO
 
 @Dao
 interface CurrencyDao: BaseDao<CurrencyDTO> {
-    @Query("SELECT * from tb_currency ORDER BY currencyCode DESC LIMIT 1")
-    fun getAll(): List<CurrencyDTO>
+    @Query("SELECT * from tb_currency ORDER BY recentlyUsed DESC, updateTimeMillis DESC")
+    suspend fun getAll(): List<CurrencyDTO>
 
-    @Query("SELECT * from tb_currency ORDER BY currencyCode DESC LIMIT 1")
+    @Query("SELECT * from tb_currency ORDER BY recentlyUsed DESC, updateTimeMillis DESC")
     fun getCurrenciesLiveData(): LiveData<List<CurrencyDTO>?>
 
     @Query("DELETE FROM tb_currency")
-    fun deleteAll()
+    suspend fun deleteAll()
+
+    @Query("UPDATE tb_currency SET recentlyUsed = :recentlyUsed , updateTimeMillis = :timeMillis  WHERE currencyCode = :currencyCode")
+    suspend fun updateCurrencyRecentlyUsed(currencyCode: String, recentlyUsed: Boolean, timeMillis: Long)
+
+    @Query("SELECT * from tb_currency WHERE recentlyUsed = 1 ORDER BY updateTimeMillis DESC")
+    suspend fun selectRecentlyUsedCurrencies(): List<CurrencyDTO>
 
     @Transaction
-    fun setCurrencyList(list: List<CurrencyDTO>){
-        deleteAll()
-        setCurrencyList(list)
-    }
+    suspend fun setCurrencyList(list: List<CurrencyDTO>){
+        val localCurrenciesList = getAll()
+        if(!localCurrenciesList.isNullOrEmpty()) {
+            val localCurrencies = getAll().associateBy {
+                it.currencyCode
+            }
 
-//    @Query("UPDATE currencies_table SET isRecent = :isRecent WHERE  = :currencyId")
-//    suspend fun updateCurrencyRecentValue(isRecent: Boolean, currencyId: String): CurrenciesDTO?
+            for (currency in list) {
+                if (!localCurrencies.containsKey(currency.currencyCode)) {
+                    insert(currency)
+                } else {
+                    localCurrencies.get(currency.currencyCode)?.currencyCountry =
+                        currency.currencyCountry
+                }
+            }
+        }
+        else {
+            insertAll(list)
+        }
+    }
 }
