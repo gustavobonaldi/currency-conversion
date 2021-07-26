@@ -46,10 +46,11 @@
             android:gravity="center_vertical|end"
             android:maxLines="3"
             android:text="@string/select_another_currency"
+            android:layout_marginStart="@dimen/_10sdp"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/image_view"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/step_number"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </merge>

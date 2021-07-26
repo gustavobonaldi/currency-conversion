@@ -34,7 +34,7 @@ class CurrencyAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyHolder {
         val binding = CurrencyItemBinding.inflate(LayoutInflater.from(context), parent, false)
-        return CurrencyHolder(binding)
+        return CurrencyHolder(binding, parent)
     }
 
     override fun onBindViewHolder(holder: CurrencyHolder, position: Int) {
@@ -69,7 +69,10 @@ class CurrencyAdapter(
         }
     }
 
-    inner class CurrencyHolder(private val binding: CurrencyItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class CurrencyHolder(
+        private val binding: CurrencyItemBinding,
+        private val parent: ViewGroup
+    ) : BaseSwipeViewHolder<CurrencyItemBinding>(binding, parent) {
         fun bindName(currency: CurrencyDTO, position: Int, context: Context) {
             binding.headerContainer.visibility = View.GONE
             if(position == 0 && !currencies.isNullOrEmpty() && currency.recentlyUsed){
@@ -86,11 +89,16 @@ class CurrencyAdapter(
                 currencyCountry.text = currency.currencyCountry
                 currencyCountryImage.setDrawableFlag(context, currency)
             }
+        }
 
-            itemView.setOnClickListener {
-                currencies[adapterPosition].selectionType = currencyType
-                onItemClicked?.invoke(currencies[position])
-            }
+        override fun onPrimaryButtonClicked(position: Int) {
+            super.onPrimaryButtonClicked(position)
+        }
+
+        override fun onItemClicked(position: Int) {
+            super.onItemClicked(position)
+            currencies[adapterPosition].selectionType = currencyType
+            onItemClicked?.invoke(currencies[position])
         }
     }
 }

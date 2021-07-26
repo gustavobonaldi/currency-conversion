@@ -63,4 +63,18 @@
         <item name="android:gravity">center_horizontal|center_vertical</item>
     </style>
 
+    <style name="SwipeOptionButton">
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">@dimen/_20sdp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <style name="SwipeOptionButton.Image">
+        <item name="android:layout_width">@dimen/_20sdp</item>
+        <item name="android:layout_height">@dimen/_20sdp</item>
+    </style>
+
 </resources>
