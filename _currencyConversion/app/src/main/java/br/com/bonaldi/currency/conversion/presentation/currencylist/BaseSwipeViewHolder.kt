@@ -29,7 +29,6 @@ open class BaseSwipeViewHolder<T : ViewBinding>(
     private fun addSwipeListener() {
         baseViewBinding.apply {
             rootView.setSwipeListener { direction ->
-                Log.d(LogTags.LOG_TAG, "item swiped - Direction: $direction")
                 if(direction == OnSwipeListener.Direction.left) {
                     swipeableLayout.animate().translationX(-swipeOptions.width.toFloat())
                     isSwiped = true
@@ -42,19 +41,15 @@ open class BaseSwipeViewHolder<T : ViewBinding>(
         }
     }
 
-
     private fun addListeners() {
-        baseViewBinding.apply {
-            rootView.setOnItemClickListener {
-                Log.d(LogTags.LOG_TAG, "rootView: clicked")
-            }
+        baseViewBinding.rootView.setOnItemClickListener {
+            onItemClicked(layoutPosition)
+        }
 
-            swipeButton.setOnClickListener {
-                Log.d(LogTags.LOG_TAG, "swipeButton: clicked")
-            }
+        baseViewBinding.swipeButton.setOnClickListener {
+            onPrimaryButtonClicked(layoutPosition)
         }
     }
-
 }
 
 interface BaseSwipeHolder {

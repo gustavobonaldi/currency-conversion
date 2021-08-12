@@ -18,6 +18,7 @@ interface CurrencyLayerRepository {
 
     suspend fun selectRecentlyUsedCurrencies(): List<CurrencyDTO>
     suspend fun updateCurrencyRecentlyUsed(currencyCode: String, recentlyUsed: Boolean)
+    suspend fun updateFavoriteCurrency(currencyCode: String, isFavorite: Boolean)
 
     fun getCurrencyListLiveData(): LiveData<List<CurrencyDTO>?>
     fun getCurrencyRateListLiveData(): LiveData<List<RatesDTO>?>

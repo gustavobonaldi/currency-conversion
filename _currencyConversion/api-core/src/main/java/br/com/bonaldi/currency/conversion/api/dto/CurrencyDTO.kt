@@ -11,6 +11,7 @@ data class CurrencyDTO(
     val currencyCode: String,
     var currencyCountry: String?,
     val recentlyUsed: Boolean = false,
+    val isFavorite: Boolean = false,
     val updateTimeMillis: Long = 0L
 ): Serializable{
     @Ignore var selectionType: CurrencyType? = null

@@ -42,12 +42,16 @@ class CurrencyLayerUseCaseImpl(private val currencyLayerRepository: CurrencyLaye
                 currencyLayerRepository.updateCurrencyRecentlyUsed(currencyCode, true)
             }
             else {
-                recentlyUsedCurrencies.lastOrNull()?.let { currency ->
+                for(currency in recentlyUsedCurrencies.subList(RECENTLY_USED_SECTION_SIZE-1, recentlyUsedCurrencies.lastIndex)){
                     currencyLayerRepository.updateCurrencyRecentlyUsed(currency.currencyCode, false)
-                    currencyLayerRepository.updateCurrencyRecentlyUsed(currencyCode, true)
                 }
+                currencyLayerRepository.updateCurrencyRecentlyUsed(currencyCode, true)
             }
         }
+    }
+
+    override suspend fun updateFavoriteCurrency(currencyCode: String, isFavorite: Boolean) {
+        currencyLayerRepository.updateFavoriteCurrency(currencyCode, isFavorite)
     }
 
     override fun getCurrencyListLiveData() = currencyLayerRepository.getCurrencyListLiveData()
