@@ -17,7 +17,9 @@ import br.com.bonaldi.currency.conversion.presentation.extensions.setDrawableFla
 class CurrencyAdapter(
     val context: Context,
     private val currencyType: CurrencyDTO.CurrencyType,
-    private val onItemClicked: ((CurrencyDTO) -> Unit)?) : RecyclerView.Adapter<CurrencyAdapter.CurrencyHolder>(), Filterable {
+    private val onItemClicked: ((CurrencyDTO) -> Unit)?,
+    private val onFavoriteItemClicked: ((CurrencyDTO) -> Unit)?
+) : RecyclerView.Adapter<CurrencyAdapter.CurrencyHolder>(), Filterable {
 
     private var currencies: List<CurrencyDTO> = listOf()
     var filteredCurrencies: List<CurrencyDTO>
@@ -92,12 +94,12 @@ class CurrencyAdapter(
         }
 
         override fun onPrimaryButtonClicked(position: Int) {
-            super.onPrimaryButtonClicked(position)
+            onFavoriteItemClicked?.invoke(currencies[position])
         }
 
         override fun onItemClicked(position: Int) {
             super.onItemClicked(position)
-            currencies[adapterPosition].selectionType = currencyType
+            currencies[position].selectionType = currencyType
             onItemClicked?.invoke(currencies[position])
         }
     }

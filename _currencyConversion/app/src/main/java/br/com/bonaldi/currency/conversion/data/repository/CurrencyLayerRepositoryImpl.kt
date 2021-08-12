@@ -76,6 +76,10 @@ class CurrencyLayerRepositoryImpl(
          currencyDao.updateCurrencyRecentlyUsed(currencyCode, recentlyUsed, timeInMillis)
     }
 
+    override suspend fun updateFavoriteCurrency(currencyCode: String, isFavorite: Boolean) {
+        currencyDao.updateFavoriteCurrency(currencyCode, isFavorite)
+    }
+
     override fun getCurrencyListLiveData() = currencyDao.getCurrenciesLiveData()
     override fun getCurrencyRateListLiveData() = currencyRateDao.getRatesLiveData()
 }

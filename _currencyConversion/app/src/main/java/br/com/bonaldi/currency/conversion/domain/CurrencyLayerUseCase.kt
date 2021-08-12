@@ -17,6 +17,8 @@ interface CurrencyLayerUseCase{
         onSuccess: (List<RatesDTO>) -> Unit)
 
     suspend fun updateCurrencyRecentlyUsed(currencyCode: String)
+    suspend fun updateFavoriteCurrency(currencyCode: String, isFavorite: Boolean)
+
 
     fun getCurrencyListLiveData(): LiveData<List<CurrencyDTO>?>
     fun getCurrencyRateListLiveData(): LiveData<List<RatesDTO>?>
