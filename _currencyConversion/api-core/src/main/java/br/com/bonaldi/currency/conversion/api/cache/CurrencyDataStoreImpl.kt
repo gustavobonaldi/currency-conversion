@@ -32,10 +32,13 @@ class CurrencyDataStoreImpl(val context: Context): CurrencyDataStore {
 
     override suspend fun <T> observeValue(prefs: Preferences.Key<T>, observer: (T?) -> Unit) {
         context.dataStore.data.catch { exception ->
-            if (exception is IOException) { // 2
-                emit(emptyPreferences())
-            } else {
-                throw exception
+            when (exception) {
+                is IOException -> {
+                    emit(emptyPreferences())
+                }
+                else -> {
+                    throw exception
+                }
             }
         }.map { preferences ->
             observer.invoke(preferences[prefs])

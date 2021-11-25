@@ -16,16 +16,19 @@ import br.com.bonaldi.currency.conversion.presentation.extensions.setWindowSetti
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class CurrencyListFragment(private val currencyType: CurrencyDTO.CurrencyType) : DialogFragment() {
+    private lateinit var binding: FragmentCurrencyListBinding
     private val viewModel: ConversionViewModel by sharedViewModel()
-    private var onCurrencyClicked: ((CurrencyDTO) -> Unit)? = null
+
+    private var onCurrencyListener: CurrencyListener? = null
+
     private val listAdapter: CurrencyAdapter by lazy {
         CurrencyAdapter(
             requireContext(),
             currencyType,
-            onCurrencyClicked
+            ::onCurrencyClicked,
+            ::onFavoriteClicked
         )
     }
-    private lateinit var binding: FragmentCurrencyListBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,8 +50,8 @@ class CurrencyListFragment(private val currencyType: CurrencyDTO.CurrencyType) :
         dialog?.setWindowSettings()
     }
 
-    fun addOnCurrencyClickedListener(listener: ((CurrencyDTO) -> Unit)?) {
-        onCurrencyClicked = listener
+    fun addCurrencyListListener(currencyListener: CurrencyListener) {
+        onCurrencyListener = currencyListener
     }
 
     private fun setCurrencyList(currencies: List<CurrencyDTO>) {
@@ -84,4 +87,17 @@ class CurrencyListFragment(private val currencyType: CurrencyDTO.CurrencyType) :
             }
         })
     }
+
+    private fun onCurrencyClicked(currency: CurrencyDTO) {
+        onCurrencyListener?.onCurrencyClicked(currency)
+    }
+
+    private fun onFavoriteClicked(currency: CurrencyDTO) {
+        onCurrencyListener?.onFavoriteClicked(currency)
+    }
+}
+
+interface CurrencyListener {
+    fun onCurrencyClicked(currency: CurrencyDTO)
+    fun onFavoriteClicked(currency: CurrencyDTO)
 }

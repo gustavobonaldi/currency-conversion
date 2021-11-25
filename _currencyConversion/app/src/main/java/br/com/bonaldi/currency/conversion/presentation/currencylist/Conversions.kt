@@ -25,7 +25,7 @@ interface Conversions {
         onError: (ErrorDTO) -> Unit?)
 
     fun updateCurrencyRecentlyUsed(currencyCode: String)
-
+    fun updateCurrencyFavorite(currency: CurrencyDTO)
 
 
 

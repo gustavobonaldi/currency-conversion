@@ -1,8 +1,11 @@
 package br.com.bonaldi.currency.conversion.presentation.currencylist
 
+import android.animation.Animator
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import br.com.bonaldi.currency.conversion.utils.customcomponents.controls.LogTags
@@ -17,43 +20,72 @@ open class BaseSwipeViewHolder<T : ViewBinding>(
         parent,
         false
     ),
-    override var isSwiped: Boolean = false
+    var isSwiped: Boolean = false
 ) : RecyclerView.ViewHolder(baseViewBinding.root), BaseSwipeHolder {
 
     init {
         baseViewBinding.swipeableLayout.addView(binding.root)
-        addListeners()
+    }
+
+    override fun bindItem() {
         addSwipeListener()
+        addListeners()
     }
 
     private fun addSwipeListener() {
         baseViewBinding.apply {
-            rootView.setSwipeListener { direction ->
-                if(direction == OnSwipeListener.Direction.left) {
-                    swipeableLayout.animate().translationX(-swipeOptions.width.toFloat())
-                    isSwiped = true
-                }
-                else if(direction == OnSwipeListener.Direction.right){
-                    swipeableLayout.animate().translationX(0f)
-                    isSwiped = false
+            swipeableLayout.setSwipeListener { direction ->
+                when (direction) {
+                    OnSwipeListener.Direction.left -> {
+                        animateSwipeLayout(-swipeOptions.width.toFloat(), true)
+                    }
+                    OnSwipeListener.Direction.right -> {
+                        animateSwipeLayout(0f, false)
+                    }
                 }
             }
         }
     }
 
     private fun addListeners() {
-        baseViewBinding.rootView.setOnItemClickListener {
+        baseViewBinding.swipeableLayout.setOnItemClickListener {
             onItemClicked(layoutPosition)
         }
 
         baseViewBinding.swipeButton.setOnClickListener {
-            onPrimaryButtonClicked(layoutPosition)
+            onPrimaryButtonClicked(layoutPosition, baseViewBinding.imgFavorite)
+        }
+    }
+
+    override fun closeSwipeItem(animationEndCallback: (() -> Unit)?) {
+        animateSwipeLayout(0f, false, animationEndCallback)
+    }
+
+    fun setButtonDrawable(resId: Int){
+        baseViewBinding.imgFavorite.setImageResource(resId)
+    }
+
+    private fun animateSwipeLayout(translationX: Float, isSwipeOpen: Boolean, animationEndCallback: (() -> Unit)? = null){
+        baseViewBinding.apply{
+            swipeableLayout.animate().translationX(translationX).setListener(object: Animator.AnimatorListener{
+                override fun onAnimationStart(p0: Animator?) = Unit
+
+                override fun onAnimationEnd(p0: Animator?) {
+                    isSwiped = isSwipeOpen
+                    animationEndCallback?.invoke()
+                }
+
+                override fun onAnimationCancel(p0: Animator?) = Unit
+
+                override fun onAnimationRepeat(p0: Animator?) = Unit
+            })
         }
     }
 }
 
 interface BaseSwipeHolder {
-    fun onPrimaryButtonClicked(position: Int) = Unit
+    fun onPrimaryButtonClicked(position: Int, favoriteImage: ImageView) = Unit
     fun onItemClicked(position: Int) = Unit
-    var isSwiped: Boolean
+    fun closeSwipeItem(animationEndCallback: (() -> Unit)?)
+    fun bindItem()
 }
