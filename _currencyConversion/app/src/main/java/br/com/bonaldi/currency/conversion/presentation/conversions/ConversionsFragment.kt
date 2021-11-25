@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import br.com.bonaldi.currency.conversion.R
-import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO
-import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO.*
+import br.com.bonaldi.currency.conversion.api.model.CurrencyModel
+import br.com.bonaldi.currency.conversion.api.model.CurrencyModel.*
 import br.com.bonaldi.currency.conversion.databinding.FragmentConversionsBinding
 import br.com.bonaldi.currency.conversion.presentation.BaseFragment
 import br.com.bonaldi.currency.conversion.presentation.ConversionViewModel
@@ -109,7 +109,7 @@ class ConversionsFragment : BaseFragment() {
     private fun showCurrencyList(currencyType: CurrencyType) {
         val currencyListFragment = CurrencyListFragment(currencyType).apply {
             addCurrencyListListener(object: CurrencyListener {
-                override fun onCurrencyClicked(currency: CurrencyDTO) {
+                override fun onCurrencyClicked(currency: CurrencyModel) {
                     viewModel.updateCurrencyRecentlyUsed(currency.currencyCode)
                     binding.apply {
                         when (currencyType) {
@@ -131,7 +131,7 @@ class ConversionsFragment : BaseFragment() {
                     dismiss()
                 }
 
-                override fun onFavoriteClicked(currency: CurrencyDTO) {
+                override fun onFavoriteClicked(currency: CurrencyModel) {
                     viewModel.updateCurrencyFavorite(currency)
                 }
             })

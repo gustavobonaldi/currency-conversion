@@ -2,15 +2,15 @@ package br.com.bonaldi.currency.conversion.api.room.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO
+import br.com.bonaldi.currency.conversion.api.model.CurrencyModel
 
 @Dao
-interface CurrencyDao: BaseDao<CurrencyDTO> {
+interface CurrencyDao: BaseDao<CurrencyModel> {
     @Query("SELECT * from tb_currency ORDER BY isFavorite DESC, recentlyUsed DESC, updateTimeMillis DESC")
-    fun getAll(): List<CurrencyDTO>
+    fun getAll(): List<CurrencyModel>
 
     @Query("SELECT * from tb_currency ORDER BY isFavorite DESC, recentlyUsed DESC, updateTimeMillis DESC")
-    fun getCurrenciesLiveData(): LiveData<List<CurrencyDTO>?>
+    fun getCurrenciesLiveData(): LiveData<List<CurrencyModel>?>
 
     @Query("DELETE FROM tb_currency")
     fun deleteAll()
@@ -22,10 +22,10 @@ interface CurrencyDao: BaseDao<CurrencyDTO> {
     fun updateFavoriteCurrency(currencyCode: String, isFavorite: Boolean)
 
     @Query("SELECT * from tb_currency WHERE recentlyUsed = 1 AND isFavorite = 0 ORDER BY updateTimeMillis DESC")
-    fun selectRecentlyUsedCurrencies(): List<CurrencyDTO>
+    fun selectRecentlyUsedCurrencies(): List<CurrencyModel>
 
     @Transaction
-    fun setCurrencyList(list: List<CurrencyDTO>){
+    fun setCurrencyList(list: List<CurrencyModel>){
         val localCurrenciesList = getAll()
         if(!localCurrenciesList.isNullOrEmpty()) {
             val localCurrencies = getAll().associateBy {
