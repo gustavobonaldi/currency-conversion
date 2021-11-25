@@ -7,25 +7,25 @@ import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO
 @Dao
 interface CurrencyDao: BaseDao<CurrencyDTO> {
     @Query("SELECT * from tb_currency ORDER BY isFavorite DESC, recentlyUsed DESC, updateTimeMillis DESC")
-    suspend fun getAll(): List<CurrencyDTO>
+    fun getAll(): List<CurrencyDTO>
 
     @Query("SELECT * from tb_currency ORDER BY isFavorite DESC, recentlyUsed DESC, updateTimeMillis DESC")
     fun getCurrenciesLiveData(): LiveData<List<CurrencyDTO>?>
 
     @Query("DELETE FROM tb_currency")
-    suspend fun deleteAll()
+    fun deleteAll()
 
     @Query("UPDATE tb_currency SET recentlyUsed = :recentlyUsed , updateTimeMillis = :timeMillis  WHERE currencyCode = :currencyCode")
-    suspend fun updateCurrencyRecentlyUsed(currencyCode: String, recentlyUsed: Boolean, timeMillis: Long)
+    fun updateCurrencyRecentlyUsed(currencyCode: String, recentlyUsed: Boolean, timeMillis: Long)
 
     @Query("UPDATE tb_currency SET isFavorite = :isFavorite WHERE currencyCode = :currencyCode")
-    suspend fun updateFavoriteCurrency(currencyCode: String, isFavorite: Boolean)
+    fun updateFavoriteCurrency(currencyCode: String, isFavorite: Boolean)
 
     @Query("SELECT * from tb_currency WHERE recentlyUsed = 1 AND isFavorite = 0 ORDER BY updateTimeMillis DESC")
-    suspend fun selectRecentlyUsedCurrencies(): List<CurrencyDTO>
+    fun selectRecentlyUsedCurrencies(): List<CurrencyDTO>
 
     @Transaction
-    suspend fun setCurrencyList(list: List<CurrencyDTO>){
+    fun setCurrencyList(list: List<CurrencyDTO>){
         val localCurrenciesList = getAll()
         if(!localCurrenciesList.isNullOrEmpty()) {
             val localCurrencies = getAll().associateBy {

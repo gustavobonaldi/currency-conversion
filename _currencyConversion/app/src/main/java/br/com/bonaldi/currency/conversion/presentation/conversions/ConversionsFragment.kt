@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import br.com.bonaldi.currency.conversion.R
+import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO
 import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO.*
 import br.com.bonaldi.currency.conversion.databinding.FragmentConversionsBinding
 import br.com.bonaldi.currency.conversion.presentation.BaseFragment
 import br.com.bonaldi.currency.conversion.presentation.ConversionViewModel
 import br.com.bonaldi.currency.conversion.utils.customcomponents.controls.CustomTextWatcher
 import br.com.bonaldi.currency.conversion.presentation.currencylist.CurrencyListFragment
+import br.com.bonaldi.currency.conversion.presentation.currencylist.CurrencyListener
 import br.com.bonaldi.currency.conversion.presentation.extensions.empty
 import br.com.bonaldi.currency.conversion.presentation.extensions.getFormattedString
 import br.com.bonaldi.currency.conversion.presentation.extensions.setDrawableFlag
@@ -31,7 +33,6 @@ class ConversionsFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        super.onCreateView(inflater, container, savedInstanceState)
         binding = FragmentConversionsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -80,6 +81,7 @@ class ConversionsFragment : BaseFragment() {
         val adRequest = AdRequest.Builder().build()
         binding.adView.loadAd(adRequest)
     }
+
     private fun getConvertedValue(value: Double) {
         try {
             viewModel.getConversionFromTo(
@@ -93,7 +95,8 @@ class ConversionsFragment : BaseFragment() {
                 },
                 onError = {
                     showSnackBar(it.info)
-                })
+                }
+            )
         } catch (ex: Exception) {
             when (ex) {
                 is NumberFormatException -> {
@@ -105,24 +108,33 @@ class ConversionsFragment : BaseFragment() {
 
     private fun showCurrencyList(currencyType: CurrencyType) {
         val currencyListFragment = CurrencyListFragment(currencyType).apply {
-            addOnCurrencyClickedListener { currency ->
-                viewModel.updateCurrencyRecentlyUsed(currency.currencyCode)
-                binding.apply {
-                    if (currencyType == CurrencyType.FROM) {
-                        clearFields()
-                        viewModel.currencyConversionVO.currencyFrom = currency
-                        containerFrom.getImageView().setDrawableFlag(context, currency)
-                        containerFrom.setCurrencyText(currency.getFormattedString())
-                    } else if (currencyType == CurrencyType.TO) {
-                        clearFields()
-                        viewModel.currencyConversionVO.currencyTo = currency
-                        containerTo.getImageView().setDrawableFlag(context, currency)
-                        containerTo.setCurrencyText(currency.getFormattedString())
-                    }
+            addCurrencyListListener(object: CurrencyListener {
+                override fun onCurrencyClicked(currency: CurrencyDTO) {
+                    viewModel.updateCurrencyRecentlyUsed(currency.currencyCode)
+                    binding.apply {
+                        when (currencyType) {
+                            CurrencyType.FROM -> {
+                                clearFields()
+                                viewModel.currencyConversionVO.currencyFrom = currency
+                                containerFrom.getImageView().setDrawableFlag(context, currency)
+                                containerFrom.setCurrencyText(currency.getFormattedString())
+                            }
+                            CurrencyType.TO -> {
+                                clearFields()
+                                viewModel.currencyConversionVO.currencyTo = currency
+                                containerTo.getImageView().setDrawableFlag(context, currency)
+                                containerTo.setCurrencyText(currency.getFormattedString())
+                            }
+                        }
 
+                    }
+                    dismiss()
                 }
-                dismiss()
-            }
+
+                override fun onFavoriteClicked(currency: CurrencyDTO) {
+                    viewModel.updateCurrencyFavorite(currency)
+                }
+            })
         }
 
         activity?.supportFragmentManager?.let {

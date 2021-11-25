@@ -11,8 +11,7 @@ class RequestInterceptor() : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         var request: Request = chain.request()
-        val url: HttpUrl = request.url.newBuilder()
-            .addQueryParameter("access_key", BuildConfig.CURRENCY_LAYER_TOKEN).build()
+        val url: HttpUrl = request.url.newBuilder().addQueryParameter("access_key", BuildConfig.CURRENCY_LAYER_TOKEN).build()
         request = request.newBuilder().url(url).build()
         return chain.proceed(request)
     }

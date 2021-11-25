@@ -108,6 +108,12 @@ class ConversionViewModel(
         }
     }
 
+    override fun updateCurrencyFavorite(currency: CurrencyDTO) {
+        launch {
+            currencyLayerUseCase.updateFavoriteCurrency(currency.currencyCode, !currency.isFavorite)
+        }
+    }
+
     override fun addCurrenciesObserver(
         lifecycleOwner: LifecycleOwner,
         onSuccess: (List<CurrencyDTO>?) -> Unit
@@ -120,6 +126,5 @@ class ConversionViewModel(
                 onSuccess.invoke(currencies)
             }
         )
-
     }
 }

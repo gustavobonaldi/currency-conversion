@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.bonaldi.currency.conversion.R
 import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO
@@ -28,7 +29,7 @@ class CurrencyAdapter(
         filteredCurrencies = currencies
     }
 
-    fun addItems(currencyList: List<CurrencyDTO>){
+    fun addItems(currencyList: List<CurrencyDTO>) {
         currencies = currencyList
         filteredCurrencies = currencyList
         notifyDataSetChanged()
@@ -76,25 +77,32 @@ class CurrencyAdapter(
         private val parent: ViewGroup
     ) : BaseSwipeViewHolder<CurrencyItemBinding>(binding, parent) {
         fun bindName(currency: CurrencyDTO, position: Int, context: Context) {
+            super.bindItem()
             binding.headerContainer.visibility = View.GONE
-            if(position == 0 && !currencies.isNullOrEmpty() && currency.recentlyUsed){
-                binding.headerContainer.visibility = View.VISIBLE
-                binding.tvHeaderItem.text = context.resources.getString(R.string.recently_used_currencies)
-            }
-            else if(position > 0 && currencies.size > 1 && currencies[position-1].recentlyUsed && currencies.size-1 > position && !currency.recentlyUsed){
-                binding.headerContainer.visibility = View.VISIBLE
-                binding.tvHeaderItem.text = context.resources.getString(R.string.all_currencies)
+            when {
+                position == 0 && !currencies.isNullOrEmpty() && currency.recentlyUsed -> {
+                    binding.headerContainer.visibility = View.VISIBLE
+                    binding.tvHeaderItem.text =
+                        context.resources.getString(R.string.recently_used_currencies)
+                }
+                position > 0 && currencies.size > 1 && currencies[position - 1].recentlyUsed && currencies.size - 1 > position && !currency.recentlyUsed -> {
+                    binding.headerContainer.visibility = View.VISIBLE
+                    binding.tvHeaderItem.text = context.resources.getString(R.string.all_currencies)
+                }
             }
 
             binding.apply {
                 currencyName.text = currency.currencyCode
                 currencyCountry.text = currency.currencyCountry
                 currencyCountryImage.setDrawableFlag(context, currency)
+                setButtonDrawable(getFavoriteImage(currency))
             }
         }
 
-        override fun onPrimaryButtonClicked(position: Int) {
+        override fun onPrimaryButtonClicked(position: Int, favoriteImage: ImageView) {
+            favoriteImage.setImageResource(getFavoriteImage(currencies[position]))
             onFavoriteItemClicked?.invoke(currencies[position])
+            notifyItemChanged(position)
         }
 
         override fun onItemClicked(position: Int) {
@@ -102,5 +110,9 @@ class CurrencyAdapter(
             currencies[position].selectionType = currencyType
             onItemClicked?.invoke(currencies[position])
         }
+    }
+
+    private fun getFavoriteImage(currency: CurrencyDTO): Int {
+        return if (currency.isFavorite) R.drawable.ic_star_to_favorite else R.drawable.ic_star_favorited
     }
 }

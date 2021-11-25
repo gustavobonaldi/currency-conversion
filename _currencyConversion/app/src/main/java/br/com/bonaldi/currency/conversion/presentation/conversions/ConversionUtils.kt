@@ -10,11 +10,14 @@ class ConversionUtils{
             quoteTo: RatesDTO?,
             valueToConvert: Double
         ): Double {
-            return if (quoteFrom != null && quoteTo != null) {
-                val valueInDollar = valueToConvert / quoteFrom.currencyValueInDollar
-                valueInDollar * quoteTo.currencyValueInDollar
-            } else {
-                Double.Zero()
+            return when {
+                quoteFrom != null && quoteTo != null -> {
+                    val valueInDollar = valueToConvert / quoteFrom.currencyValueInDollar
+                    valueInDollar * quoteTo.currencyValueInDollar
+                }
+                else -> {
+                    Double.Zero()
+                }
             }
         }
     }

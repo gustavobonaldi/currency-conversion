@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<br.com.bonaldi.currency.conversion.utils.customcomponents.CustomSwipeButtonConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:clickable="true"
-    android:focusable="true">
+    android:orientation="horizontal">
 
     <LinearLayout
         android:id="@+id/swipe_options"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
         android:orientation="horizontal"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -23,21 +23,21 @@
             style="@style/SwipeOptionButton"
             android:visibility="visible">
             <ImageView
+                android:id="@+id/img_favorite"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_star_to_favorite" />
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
+    <br.com.bonaldi.currency.conversion.utils.customcomponents.CustomSwipeButtonConstraintLayout
         android:id="@+id/swipeable_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
+        android:visibility="visible"
         android:background="#fff"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:clickable="true"
+        android:focusable="true"
         tools:layout_height="@dimen/_80sdp" />
-</br.com.bonaldi.currency.conversion.utils.customcomponents.CustomSwipeButtonConstraintLayout>
+</FrameLayout>
