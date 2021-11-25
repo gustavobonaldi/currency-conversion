@@ -33,7 +33,7 @@ import android.widget.ImageView
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import br.com.bonaldi.currency.conversion.R
-import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO
+import br.com.bonaldi.currency.conversion.api.model.CurrencyModel
 import java.util.*
 
 fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View {
@@ -47,7 +47,7 @@ fun <T : RecyclerView.ViewHolder> T.listen(event: (position: Int, type: Int) -> 
   return this
 }
 
-fun ImageView.setDrawableFlag(context: Context?, currency: CurrencyDTO){
+fun ImageView.setDrawableFlag(context: Context?, currency: CurrencyModel){
   val uri = "@drawable/flag_" + currency.currencyCode?.lowercase(Locale.getDefault())
   context?.let {
     var imageResource: Int =
@@ -59,14 +59,14 @@ fun ImageView.setDrawableFlag(context: Context?, currency: CurrencyDTO){
   }
 }
 
-fun CurrencyDTO.getFormattedString(): String{
+fun CurrencyModel.getFormattedString(): String{
   return ("$currencyCode - $currencyCountry")
 }
 
 fun String.Companion.empty() = ""
 
-fun CurrencyDTO.getCurrencyMapped(): CurrencyDTO {
-  return CurrencyDTO(currencyCode, currencyCountry)
+fun CurrencyModel.getCurrencyMapped(): CurrencyModel {
+  return CurrencyModel(currencyCode, currencyCountry)
 }
 
 fun Dialog.setWindowSettings(){

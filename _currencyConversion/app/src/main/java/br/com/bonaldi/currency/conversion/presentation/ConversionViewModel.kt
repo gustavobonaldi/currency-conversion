@@ -5,14 +5,13 @@ import android.util.Log
 import androidx.lifecycle.*
 import androidx.lifecycle.Observer
 import br.com.bonaldi.currency.conversion.R
-import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO
+import br.com.bonaldi.currency.conversion.api.model.CurrencyModel
 import br.com.bonaldi.currency.conversion.api.dto.ErrorDTO
-import br.com.bonaldi.currency.conversion.api.dto.RatesDTO
+import br.com.bonaldi.currency.conversion.api.model.RatesModel
 import br.com.bonaldi.currency.conversion.domain.CurrencyLayerUseCase
 import br.com.bonaldi.currency.conversion.presentation.conversions.ConversionUtils
 import br.com.bonaldi.currency.conversion.presentation.conversions.CurrencyConversionVO
 import br.com.bonaldi.currency.conversion.presentation.currencylist.Conversions
-import br.com.bonaldi.currency.conversion.presentation.extensions.empty
 import br.com.bonaldi.currency.conversion.presentation.extensions.safeLet
 import java.text.NumberFormat
 import java.util.*
@@ -27,9 +26,9 @@ class ConversionViewModel(
     }
 
     val currencyConversionVO = CurrencyConversionVO()
-    private var currencyListMemory: List<CurrencyDTO>? = listOf()
-    private val _realTimeRates = MutableLiveData<List<RatesDTO>>()
-    private val realTimeRatesLiveData: LiveData<List<RatesDTO>> = _realTimeRates
+    private var currencyListMemory: List<CurrencyModel>? = listOf()
+    private val _realTimeRates = MutableLiveData<List<RatesModel>>()
+    private val realTimeRatesLiveData: LiveData<List<RatesModel>> = _realTimeRates
 
     override fun updateRealtimeRates() {
         launch {
@@ -49,7 +48,7 @@ class ConversionViewModel(
 
     override fun addRealtimeRatesObserver(
         lifecycleOwner: LifecycleOwner,
-        onResult: (List<RatesDTO>?) -> Unit
+        onResult: (List<RatesModel>?) -> Unit
     ) {
         currencyLayerUseCase.getCurrencyRateListLiveData().observe(
             lifecycleOwner,
@@ -108,7 +107,7 @@ class ConversionViewModel(
         }
     }
 
-    override fun updateCurrencyFavorite(currency: CurrencyDTO) {
+    override fun updateCurrencyFavorite(currency: CurrencyModel) {
         launch {
             currencyLayerUseCase.updateFavoriteCurrency(currency.currencyCode, !currency.isFavorite)
         }
@@ -116,7 +115,7 @@ class ConversionViewModel(
 
     override fun addCurrenciesObserver(
         lifecycleOwner: LifecycleOwner,
-        onSuccess: (List<CurrencyDTO>?) -> Unit
+        onSuccess: (List<CurrencyModel>?) -> Unit
     ) {
         onSuccess.invoke(currencyListMemory)
         currencyLayerUseCase.getCurrencyListLiveData().observe(

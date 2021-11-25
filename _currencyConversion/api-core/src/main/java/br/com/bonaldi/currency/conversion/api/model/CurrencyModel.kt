@@ -1,4 +1,4 @@
-package br.com.bonaldi.currency.conversion.api.dto
+package br.com.bonaldi.currency.conversion.api.model
 
 import androidx.room.Entity
 import androidx.room.Ignore
@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import java.io.Serializable
 
 @Entity(tableName = "tb_currency")
-data class CurrencyDTO(
+data class CurrencyModel(
     @PrimaryKey
     val currencyCode: String,
     var currencyCountry: String?,

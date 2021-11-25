@@ -9,27 +9,26 @@ import android.widget.Filterable
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.bonaldi.currency.conversion.R
-import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO
+import br.com.bonaldi.currency.conversion.api.model.CurrencyModel
 import br.com.bonaldi.currency.conversion.databinding.CurrencyItemBinding
-import br.com.bonaldi.currency.conversion.presentation.extensions.listen
 import br.com.bonaldi.currency.conversion.presentation.extensions.setDrawableFlag
 
 
 class CurrencyAdapter(
     val context: Context,
-    private val currencyType: CurrencyDTO.CurrencyType,
-    private val onItemClicked: ((CurrencyDTO) -> Unit)?,
-    private val onFavoriteItemClicked: ((CurrencyDTO) -> Unit)?
+    private val currencyType: CurrencyModel.CurrencyType,
+    private val onItemClicked: ((CurrencyModel) -> Unit)?,
+    private val onFavoriteItemClicked: ((CurrencyModel) -> Unit)?
 ) : RecyclerView.Adapter<CurrencyAdapter.CurrencyHolder>(), Filterable {
 
-    private var currencies: List<CurrencyDTO> = listOf()
-    var filteredCurrencies: List<CurrencyDTO>
+    private var currencies: List<CurrencyModel> = listOf()
+    var filteredCurrencies: List<CurrencyModel>
 
     init {
         filteredCurrencies = currencies
     }
 
-    fun addItems(currencyList: List<CurrencyDTO>) {
+    fun addItems(currencyList: List<CurrencyModel>) {
         currencies = currencyList
         filteredCurrencies = currencyList
         notifyDataSetChanged()
@@ -64,7 +63,7 @@ class CurrencyAdapter(
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                (results?.values as? List<CurrencyDTO>)?.let {
+                (results?.values as? List<CurrencyModel>)?.let {
                     filteredCurrencies = it
                     notifyDataSetChanged()
                 }
@@ -76,7 +75,7 @@ class CurrencyAdapter(
         private val binding: CurrencyItemBinding,
         private val parent: ViewGroup
     ) : BaseSwipeViewHolder<CurrencyItemBinding>(binding, parent) {
-        fun bindName(currency: CurrencyDTO, position: Int, context: Context) {
+        fun bindName(currency: CurrencyModel, position: Int, context: Context) {
             super.bindItem()
             binding.headerContainer.visibility = View.GONE
             when {
@@ -112,7 +111,7 @@ class CurrencyAdapter(
         }
     }
 
-    private fun getFavoriteImage(currency: CurrencyDTO): Int {
+    private fun getFavoriteImage(currency: CurrencyModel): Int {
         return if (currency.isFavorite) R.drawable.ic_star_to_favorite else R.drawable.ic_star_favorited
     }
 }

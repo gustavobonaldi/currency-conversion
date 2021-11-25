@@ -5,17 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import br.com.bonaldi.currency.conversion.R
-import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO
+import br.com.bonaldi.currency.conversion.api.model.CurrencyModel
 import br.com.bonaldi.currency.conversion.databinding.FragmentCurrencyListBinding
 import br.com.bonaldi.currency.conversion.presentation.ConversionViewModel
 import br.com.bonaldi.currency.conversion.presentation.extensions.setWindowSettings
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class CurrencyListFragment(private val currencyType: CurrencyDTO.CurrencyType) : DialogFragment() {
+class CurrencyListFragment(private val currencyType: CurrencyModel.CurrencyType) : DialogFragment() {
     private lateinit var binding: FragmentCurrencyListBinding
     private val viewModel: ConversionViewModel by sharedViewModel()
 
@@ -54,7 +52,7 @@ class CurrencyListFragment(private val currencyType: CurrencyDTO.CurrencyType) :
         onCurrencyListener = currencyListener
     }
 
-    private fun setCurrencyList(currencies: List<CurrencyDTO>) {
+    private fun setCurrencyList(currencies: List<CurrencyModel>) {
         binding.recyclerCurrencyList.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = listAdapter
@@ -88,16 +86,16 @@ class CurrencyListFragment(private val currencyType: CurrencyDTO.CurrencyType) :
         })
     }
 
-    private fun onCurrencyClicked(currency: CurrencyDTO) {
+    private fun onCurrencyClicked(currency: CurrencyModel) {
         onCurrencyListener?.onCurrencyClicked(currency)
     }
 
-    private fun onFavoriteClicked(currency: CurrencyDTO) {
+    private fun onFavoriteClicked(currency: CurrencyModel) {
         onCurrencyListener?.onFavoriteClicked(currency)
     }
 }
 
 interface CurrencyListener {
-    fun onCurrencyClicked(currency: CurrencyDTO)
-    fun onFavoriteClicked(currency: CurrencyDTO)
+    fun onCurrencyClicked(currency: CurrencyModel)
+    fun onFavoriteClicked(currency: CurrencyModel)
 }

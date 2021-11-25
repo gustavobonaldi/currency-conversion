@@ -1,8 +1,8 @@
 package br.com.bonaldi.currency.conversion.presentation.conversions
 
-import br.com.bonaldi.currency.conversion.api.dto.CurrencyDTO
+import br.com.bonaldi.currency.conversion.api.model.CurrencyModel
 
 data class CurrencyConversionVO(
-    var currencyFrom: CurrencyDTO? = null,
-    var currencyTo: CurrencyDTO? = null
+    var currencyFrom: CurrencyModel? = null,
+    var currencyTo: CurrencyModel? = null
 )
