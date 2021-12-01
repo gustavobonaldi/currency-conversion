@@ -20,6 +20,10 @@ data class CurrencyModel(
         FROM,
         TO
     }
+
+    fun getFormattedString(): String{
+        return ("$currencyCode - $currencyCountry")
+    }
 }
 
 

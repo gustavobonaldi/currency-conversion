@@ -1,15 +1,12 @@
-package br.com.bonaldi.currency.conversion.presentation.currencylist
+package br.com.bonaldi.currency.conversion.utils.customcomponents
 
 import android.animation.Animator
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.view.animation.Animation
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import br.com.bonaldi.currency.conversion.utils.customcomponents.controls.LogTags
-import br.com.bonaldi.currency.conversion.utils.customcomponents.controls.OnSwipeListener
+import br.com.bonaldi.currency.conversion.utils.controls.OnSwipeListener
 import br.com.bonaldi.currency.conversion.utils.databinding.BaseViewHolderLayoutBinding
 
 open class BaseSwipeViewHolder<T : ViewBinding>(

@@ -1,14 +1,9 @@
 package br.com.bonaldi.currency.conversion.api.dto
 
-import kotlin.collections.HashMap
-
-
 open class ApiResponse(
-   open val success: Boolean? = null,
-   open val error: ErrorDTO? = null,
-   open val terms: String? = null,
-   open val timestamp: Long? = null,
-   open val source: String? = null
-) {
-
-}
+   val success: Boolean? = null,
+   val error: ErrorDTO? = null,
+   val terms: String? = null,
+   val timestamp: Long? = null,
+   val source: String? = null
+)

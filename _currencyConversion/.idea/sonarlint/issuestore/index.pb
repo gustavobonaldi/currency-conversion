@@ -1,13 +1,21 @@
 
 ?
 settings.gradle,0/5/05efc8b1657769a27696d478ded1e95f38737233
-z
-Japp/src/main/java/br/com/bonaldi/currency/conversion/data/di/AppModules.kt,1/3/137a5b2e5050c68d98e2fcd8b43d28c0cd3beace
-è
-_utils/src/main/java/br/com/bonaldi/currency/conversion/utils/customcomponents/controls/Utils.kt,1/6/16f5c56e9b63c0c48413b272418e156f53b95d24
 ô
 iutils/src/main/java/br/com/bonaldi/currency/conversion/utils/customcomponents/controls/OnSwipeListener.kt,8/2/82202155b938d6ac036922b7ddc613120a307885
 ö
 jutils/src/main/java/br/com/bonaldi/currency/conversion/utils/customcomponents/controls/EditTextCurrency.kt,7/8/7825c40081f4790cd85c78d542166f174686d10a
 õ
 kutils/src/main/java/br/com/bonaldi/currency/conversion/utils/customcomponents/controls/CustomTextWatcher.kt,8/1/81d101dc43adaa723cbf2e5708f7d1a259e6daff
+à
+Xapi-core/src/main/java/br/com/bonaldi/currency/conversion/api/cache/CurrencyDataStore.kt,7/5/755f329ee51cd2856b084ffa48fd8d3ec3eabfc1
+à
+Xapi-core/src/main/java/br/com/bonaldi/currency/conversion/api/api/config/NetworkUtils.kt,b/8/b8690301f77ec601413367cd1abdb591750a3703
+B
+utils/build.gradle,3/d/3d25e1f20477d3832dc1c6ae6f7dacae057bb981
+Å
+Qapi-core/src/main/java/br/com/bonaldi/currency/conversion/api/room/dao/BaseDao.kt,6/1/6114af58129d07a1cc8bc9113b5a61e7611910fc
+é
+^api-core/src/main/java/br/com/bonaldi/currency/conversion/api/api/config/RequestInterceptor.kt,d/7/d7548ac682fea25c864899f441bdcac41102ecc8
+ê
+`api-core/src/main/java/br/com/bonaldi/currency/conversion/api/room/CurrConversionRoomDatabase.kt,a/5/a5699a90f1c72210bcc3a22fafc62946df3dc00f
