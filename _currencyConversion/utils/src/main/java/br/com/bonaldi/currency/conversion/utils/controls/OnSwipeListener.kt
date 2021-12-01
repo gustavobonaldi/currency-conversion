@@ -1,4 +1,4 @@
-package br.com.bonaldi.currency.conversion.utils.customcomponents.controls
+package br.com.bonaldi.currency.conversion.utils.controls
 
 import android.view.GestureDetector
 import android.view.MotionEvent

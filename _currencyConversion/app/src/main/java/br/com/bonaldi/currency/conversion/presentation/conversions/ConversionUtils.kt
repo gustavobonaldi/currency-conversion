@@ -1,7 +1,7 @@
 package br.com.bonaldi.currency.conversion.presentation.conversions
 
 import br.com.bonaldi.currency.conversion.api.model.RatesModel
-import br.com.bonaldi.currency.conversion.presentation.extensions.Zero
+import br.com.bonaldi.currency.conversion.utils.extensions.zero
 
 class ConversionUtils{
     companion object {
@@ -16,7 +16,7 @@ class ConversionUtils{
                     valueInDollar * quoteTo.currencyValueInDollar
                 }
                 else -> {
-                    Double.Zero()
+                    Double.zero()
                 }
             }
         }

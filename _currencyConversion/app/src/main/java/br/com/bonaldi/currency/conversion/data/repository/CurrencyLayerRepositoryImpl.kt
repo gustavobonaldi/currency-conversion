@@ -1,85 +1,79 @@
-package br.com.bonaldi.currency.conversion.data.repository;
+package br.com.bonaldi.currency.conversion.data.repository
 
-
+import br.com.bonaldi.currency.conversion.api.api.config.Resource
 import br.com.bonaldi.currency.conversion.api.cache.CurrencyDataStore
 import br.com.bonaldi.currency.conversion.api.model.CurrencyModel
-import br.com.bonaldi.currency.conversion.api.dto.ErrorDTO
 import br.com.bonaldi.currency.conversion.api.model.RatesModel
 import br.com.bonaldi.currency.conversion.api.room.dao.CurrencyDao
 import br.com.bonaldi.currency.conversion.api.room.dao.CurrencyRateDao
+import br.com.bonaldi.currency.conversion.api.utils.BaseRepository
 import br.com.bonaldi.currency.conversion.data.api.CurrencyLayerServices
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 class CurrencyLayerRepositoryImpl(
     private val currencyLayerApi: CurrencyLayerServices,
     private val currencyDao: CurrencyDao,
     private val currencyRateDao: CurrencyRateDao,
-    private val currencyDataStore: CurrencyDataStore
-) : BaseRepository(), CurrencyLayerRepository {
+    private val currencyDataStore: CurrencyDataStore,
+    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
+) : BaseRepository(defaultDispatcher), CurrencyLayerRepository {
 
-    override suspend fun updateCurrencyList(
-        shouldShowLoading: (Boolean) -> Unit,
-        onError: (ErrorDTO) -> Unit,
-        onSuccess: (List<CurrencyModel>) -> Unit
-    ) {
-        withContext(Dispatchers.IO) {
-            createRequest(
-                shouldShowLoading,
-                onError,
-                request = {
-                    currencyLayerApi.getCurrencies()
-                },
-                onSuccess = { supportedCurrenciesResponse ->
-                    supportedCurrenciesResponse.toCurrencyModel(supportedCurrenciesResponse.currencies)
-                        .let { currencyList ->
-                            runOnBG {
-                                currencyDao.setCurrencyList(currencyList)
-                            }
-                            onSuccess.invoke(currencyList)
-                        }
-                })
-        }
+    override suspend fun updateCurrencyList(onResult: suspend (Flow<Resource<List<CurrencyModel>>>) -> Unit) {
+        return createRequest(
+            request = {
+                val supportedCurrencies = currencyLayerApi.getCurrencies()
+                supportedCurrencies.toCurrencyModel(supportedCurrencies.currencies)
+            },
+            localRequest = {
+                currencyDao.getCurrenciesFlow()
+            },
+            updateLocal = { list ->
+                withContext(defaultDispatcher) {
+                    currencyDao.setCurrencyList(list)
+                }
+            },
+            onResult = {
+                onResult.invoke(it)
+            }
+        )
     }
 
-    override suspend fun updateCurrencyRateList(
-        shouldShowLoading: (Boolean) -> Unit,
-        onError: (ErrorDTO) -> Unit,
-        onSuccess: (List<RatesModel>) -> Unit
-    ) {
-        withContext(Dispatchers.IO) {
-            createRequest(
-                shouldShowLoading,
-                onError,
-                request = {
-                    currencyLayerApi.getRealTimeRates()
-                },
-                onSuccess = { exchangesRatesResponse ->
-                    exchangesRatesResponse.toRatesModel(exchangesRatesResponse.quotes)
-                        .let { currencyRateList ->
-                            runOnBG {
-                                currencyRateDao.insertAll(currencyRateList)
-                            }
-                            onSuccess.invoke(currencyRateList)
-                        }
+    override suspend fun updateCurrencyRateList(onResult: suspend (Flow<Resource<List<RatesModel>>>) -> Unit) {
+        return createRequest(
+            request = {
+                val quotes = currencyLayerApi.getRealTimeRates()
+                quotes.toRatesModel(quotes.quotes)
+            },
+            localRequest = {
+                currencyRateDao.getRatesFlow()
+            },
+            updateLocal = {
+                withContext(defaultDispatcher) {
+                    currencyRateDao.insertAll(it)
                 }
-            )
-        }
+            },
+            onResult = {
+                onResult.invoke(it)
+            }
+        )
     }
 
     override suspend fun selectRecentlyUsedCurrencies(): List<CurrencyModel> {
         return currencyDao.selectRecentlyUsedCurrencies()
     }
 
-    override suspend fun updateCurrencyRecentlyUsed(currencyCode: String, recentlyUsed: Boolean) {
-        val timeInMillis = if (recentlyUsed) System.currentTimeMillis() else 0L
-        currencyDao.updateCurrencyRecentlyUsed(currencyCode, recentlyUsed, timeInMillis)
+    override suspend fun updateRecentlyUsedCurrency(currencyCode: String, recentlyUsed: Boolean) {
+        withContext(defaultDispatcher) {
+            val timeInMillis = if (recentlyUsed) System.currentTimeMillis() else 0L
+            currencyDao.updateRecentlyUsedCurrency(currencyCode, recentlyUsed, timeInMillis)
+        }
     }
 
     override suspend fun updateFavoriteCurrency(currencyCode: String, isFavorite: Boolean) {
         currencyDao.updateFavoriteCurrency(currencyCode, isFavorite)
     }
-
-    override fun getCurrencyListLiveData() = currencyDao.getCurrenciesLiveData()
-    override fun getCurrencyRateListLiveData() = currencyRateDao.getRatesLiveData()
 }

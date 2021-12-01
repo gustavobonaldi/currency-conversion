@@ -6,18 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.bonaldi.currency.conversion.api.model.CurrencyModel
 import br.com.bonaldi.currency.conversion.databinding.FragmentCurrencyListBinding
 import br.com.bonaldi.currency.conversion.presentation.ConversionViewModel
-import br.com.bonaldi.currency.conversion.presentation.extensions.setWindowSettings
+import br.com.bonaldi.currency.conversion.utils.extensions.setWindowSettings
+import br.com.bonaldi.currency.conversion.utils.controls.setIsVisible
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class CurrencyListFragment(private val currencyType: CurrencyModel.CurrencyType) : DialogFragment() {
     private lateinit var binding: FragmentCurrencyListBinding
     private val viewModel: ConversionViewModel by sharedViewModel()
-
-    private var onCurrencyListener: CurrencyListener? = null
 
     private val listAdapter: CurrencyAdapter by lazy {
         CurrencyAdapter(
@@ -48,10 +50,6 @@ class CurrencyListFragment(private val currencyType: CurrencyModel.CurrencyType)
         dialog?.setWindowSettings()
     }
 
-    fun addCurrencyListListener(currencyListener: CurrencyListener) {
-        onCurrencyListener = currencyListener
-    }
-
     private fun setCurrencyList(currencies: List<CurrencyModel>) {
         binding.recyclerCurrencyList.apply {
             layoutManager = LinearLayoutManager(context)
@@ -60,16 +58,15 @@ class CurrencyListFragment(private val currencyType: CurrencyModel.CurrencyType)
         }
     }
 
-    private fun setObservers() {
-        viewModel.addCurrenciesObserver(this@CurrencyListFragment) { currencies ->
-            binding.loaderCurrencyList.visibility = View.GONE
-            binding.recyclerCurrencyList.visibility = View.VISIBLE
-            currencies?.let {
-                setCurrencyList(it)
+    private fun setObservers() = binding.apply {
+        lifecycleScope.launch {
+            viewModel.currencyListState.collectLatest { currencies ->
+                loaderCurrencyList.setIsVisible(currencies.isLoading)
+                recyclerCurrencyList.setIsVisible(!currencies.isLoading)
+                setCurrencyList(currencies.currencyList)
                 setSearchView()
             }
         }
-
         viewModel.updateCurrencies()
     }
 
@@ -87,15 +84,11 @@ class CurrencyListFragment(private val currencyType: CurrencyModel.CurrencyType)
     }
 
     private fun onCurrencyClicked(currency: CurrencyModel) {
-        onCurrencyListener?.onCurrencyClicked(currency)
+        viewModel.updateCurrencyRecentlyUsed(currency, currencyType)
+        dismiss()
     }
 
     private fun onFavoriteClicked(currency: CurrencyModel) {
-        onCurrencyListener?.onFavoriteClicked(currency)
+        viewModel.updateCurrencyFavorite(currency)
     }
-}
-
-interface CurrencyListener {
-    fun onCurrencyClicked(currency: CurrencyModel)
-    fun onFavoriteClicked(currency: CurrencyModel)
 }

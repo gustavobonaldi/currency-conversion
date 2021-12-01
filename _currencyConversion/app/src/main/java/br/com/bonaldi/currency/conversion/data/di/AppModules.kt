@@ -31,5 +31,5 @@ val appModule = module {
     single { get<CurrConversionRoomDatabase>().currenciesDao() }
     single { get<CurrConversionRoomDatabase>().ratesDao() }
 
-    viewModel { ConversionViewModel(get(), get()) }
+    viewModel { ConversionViewModel(get()) }
 }

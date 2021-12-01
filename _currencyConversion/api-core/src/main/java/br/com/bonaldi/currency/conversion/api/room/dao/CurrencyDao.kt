@@ -1,8 +1,10 @@
 package br.com.bonaldi.currency.conversion.api.room.dao
 
-import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.Transaction
 import br.com.bonaldi.currency.conversion.api.model.CurrencyModel
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CurrencyDao: BaseDao<CurrencyModel> {
@@ -10,13 +12,13 @@ interface CurrencyDao: BaseDao<CurrencyModel> {
     fun getAll(): List<CurrencyModel>
 
     @Query("SELECT * from tb_currency ORDER BY isFavorite DESC, recentlyUsed DESC, updateTimeMillis DESC")
-    fun getCurrenciesLiveData(): LiveData<List<CurrencyModel>?>
+    fun getCurrenciesFlow(): Flow<List<CurrencyModel>>
 
     @Query("DELETE FROM tb_currency")
     fun deleteAll()
 
     @Query("UPDATE tb_currency SET recentlyUsed = :recentlyUsed , updateTimeMillis = :timeMillis  WHERE currencyCode = :currencyCode")
-    fun updateCurrencyRecentlyUsed(currencyCode: String, recentlyUsed: Boolean, timeMillis: Long)
+    fun updateRecentlyUsedCurrency(currencyCode: String, recentlyUsed: Boolean, timeMillis: Long)
 
     @Query("UPDATE tb_currency SET isFavorite = :isFavorite WHERE currencyCode = :currencyCode")
     fun updateFavoriteCurrency(currencyCode: String, isFavorite: Boolean)

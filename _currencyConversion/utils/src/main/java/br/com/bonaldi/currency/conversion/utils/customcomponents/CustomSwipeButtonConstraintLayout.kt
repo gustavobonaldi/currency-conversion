@@ -2,17 +2,14 @@ package br.com.bonaldi.currency.conversion.utils.customcomponents
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.MotionEvent.ACTION_UP
 import android.view.VelocityTracker
 import android.view.View
 import android.widget.FrameLayout
-import androidx.constraintlayout.widget.ConstraintLayout
 import br.com.bonaldi.currency.conversion.utils.R
-import br.com.bonaldi.currency.conversion.utils.customcomponents.controls.LogTags
-import br.com.bonaldi.currency.conversion.utils.customcomponents.controls.OnSwipeListener
+import br.com.bonaldi.currency.conversion.utils.controls.OnSwipeListener
 
 class CustomSwipeButtonConstraintLayout(context: Context, attrs: AttributeSet) :
     FrameLayout(context, attrs), View.OnTouchListener {

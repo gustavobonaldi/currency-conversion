@@ -11,12 +11,12 @@ import kotlin.reflect.typeOf
 
 open class ErrorHandler {
     companion object {
-        fun <T: Exception> handleException(exception: T): ErrorDTO {
-            return when (exception) {
+        fun <T> handleException(exception: Throwable): Resource<T> {
+            return Resource.Error(error = when (exception) {
                 is HttpException -> Gson().fromJson(exception.response()?.errorBody()?.string(), ErrorDTO::class.java)
                 is SocketTimeoutException -> ErrorDTO(info = getErrorMessage(ErrorCodes.SocketTimeOut.code), code = ErrorCodes.SocketTimeOut.code)
                 else -> ErrorDTO(info = getErrorMessage(Int.MAX_VALUE))
-            }
+            })
         }
 
         private fun getErrorMessage(code: Int): String {
