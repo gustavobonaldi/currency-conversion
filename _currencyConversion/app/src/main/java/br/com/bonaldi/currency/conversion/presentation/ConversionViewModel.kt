@@ -1,10 +1,11 @@
 package br.com.bonaldi.currency.conversion.presentation
 
 import android.content.Context
-import br.com.bonaldi.currency.conversion.R
 import br.com.bonaldi.currency.conversion.api.api.config.Resource
 import br.com.bonaldi.currency.conversion.api.model.CurrencyModel
 import br.com.bonaldi.currency.conversion.api.model.CurrencyModel.CurrencyType
+import br.com.bonaldi.currency.conversion.api.model.RatesModel
+import br.com.bonaldi.currency.conversion.data.enums.ConversionErrorEnum
 import br.com.bonaldi.currency.conversion.domain.CurrencyLayerUseCase
 import br.com.bonaldi.currency.conversion.presentation.conversions.ConversionState
 import br.com.bonaldi.currency.conversion.presentation.conversions.ConversionUtils
@@ -88,14 +89,10 @@ class ConversionViewModel(
                     _conversionState.value.currencyFrom,
                     _conversionState.value.currencyTo
                 ) { currencyFrom, currencyTo ->
-                    val ratesOfCurrencyFrom =
-                        _currencyListState.value.ratesList.firstOrNull { it.currencyCode == "$DOLLAR_CURRENCY_CODE${currencyFrom.currencyCode}" }
-                    val ratesOfCurrencyTo =
-                        _currencyListState.value.ratesList.firstOrNull { it.currencyCode == "$DOLLAR_CURRENCY_CODE${currencyTo.currencyCode}" }
 
                     val convertedValue = ConversionUtils.convertValue(
-                        ratesOfCurrencyFrom,
-                        ratesOfCurrencyTo,
+                        searchCurrencyRatesInList(currencyFrom),
+                        searchCurrencyRatesInList(currencyTo),
                         valueToConvert
                     )
 
@@ -107,23 +104,17 @@ class ConversionViewModel(
 
                     _conversionEventFlow.emit(ConversionUIEvent.ShowConvertedValue(_conversionState.value.convertedValue.orEmpty()))
                 } ?: run {
-                    _conversionEventFlow.emit(
-                        ConversionUIEvent.SnackBarError(
-                            context.getString(R.string.currencies_not_selected)
-                        )
+                    updateSnackBarState(
+                        context,
+                        ConversionErrorEnum.CURRENCIES_NOT_SELECTED_ERROR.message
                     )
                 }
             } catch (ex: Exception) {
                 when (ex) {
-                    is NumberFormatException -> {
-                        _conversionEventFlow.emit(
-                            ConversionUIEvent.SnackBarError(
-                                context.resources.getString(
-                                    R.string.type_valid_value
-                                )
-                            )
-                        )
-                    }
+                    is NumberFormatException -> updateSnackBarState(
+                        context,
+                        ConversionErrorEnum.INVALID_VALUE_TYPED_ERROR.message
+                    )
                 }
             }
         }
@@ -131,7 +122,7 @@ class ConversionViewModel(
 
     override fun updateCurrencyRecentlyUsed(
         currency: CurrencyModel,
-        currencyType: CurrencyModel.CurrencyType
+        currencyType: CurrencyType
     ) {
         launch {
             currencyLayerUseCase.updateRecentlyUsedCurrency(currency.currencyCode)
@@ -152,6 +143,20 @@ class ConversionViewModel(
         launch {
             currencyLayerUseCase.updateFavoriteCurrency(currency.currencyCode, !currency.isFavorite)
         }
+    }
+
+    private fun updateSnackBarState(context: Context, message: Int) {
+        launch {
+            _conversionEventFlow.emit(
+                ConversionUIEvent.SnackBarError(
+                    context.resources.getString(message)
+                )
+            )
+        }
+    }
+
+    private fun searchCurrencyRatesInList(currency: CurrencyModel): RatesModel? {
+        return _currencyListState.value.ratesList.firstOrNull { it.currencyCode == "$DOLLAR_CURRENCY_CODE${currency.currencyCode}" }
     }
 
     sealed class ConversionUIEvent {
