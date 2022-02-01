@@ -135,7 +135,6 @@ class ConversionsFragment : BaseFragment() {
         }
     }
 
-
     private fun showSnackBar(message: String?) =
         try {
             message?.let {
