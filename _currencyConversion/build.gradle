@@ -39,7 +39,7 @@ buildscript {
         nav_version = "2.3.5"
         recyclerViewVersion = '1.2.0'
         robolectricVersion = '4.7.2'
-        roomVersion = '2.3.0'
+        roomVersion = '2.4.1'
         rulesVersion = '1.0.1'
         timberVersion = '4.7.1'
         truthVersion = '0.44'

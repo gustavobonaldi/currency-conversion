@@ -5,7 +5,7 @@ import br.com.bonaldi.currency.conversion.api.api.config.Resource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
 
-open class BaseRepository(private val defaultDispatcher: CoroutineDispatcher){
+open class BaseRepository(){
     suspend fun <T> createRequest(
         request: suspend () -> T,
         localRequest: (() -> Flow<T>)? = null,
@@ -38,33 +38,6 @@ open class BaseRepository(private val defaultDispatcher: CoroutineDispatcher){
                 }
                 onResult.invoke(remoteFlow)
             }
-        }
-    }
-
-    fun <T> createRequest3(
-        request: suspend () -> T,
-        localRequest: (suspend () -> T)? = null,
-        updateLocal: (suspend (T) -> Unit)? = null,
-    ): Flow<Resource<T>> = flow {
-        emit(Resource.Loading(true))
-        try {
-            localRequest?.let {
-                emit(Resource.Success(it.invoke()))
-                emit(Resource.Loading(false))
-
-                request.invoke().apply {
-                    updateLocal?.invoke(this)
-                }
-            } ?: run {
-                request.invoke().apply {
-                    updateLocal?.invoke(this)
-                    emit(Resource.Success(this))
-                }
-            }
-        } catch (e: Exception) {
-            emit(ErrorHandler.handleException(e))
-        } finally {
-            emit(Resource.Loading(false))
         }
     }
 }

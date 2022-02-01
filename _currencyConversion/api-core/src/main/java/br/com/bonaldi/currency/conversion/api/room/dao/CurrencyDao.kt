@@ -9,25 +9,25 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CurrencyDao: BaseDao<CurrencyModel> {
     @Query("SELECT * from tb_currency ORDER BY isFavorite DESC, recentlyUsed DESC, updateTimeMillis DESC")
-    fun getAll(): List<CurrencyModel>
+    suspend fun getAll(): List<CurrencyModel>
 
     @Query("SELECT * from tb_currency ORDER BY isFavorite DESC, recentlyUsed DESC, updateTimeMillis DESC")
     fun getCurrenciesFlow(): Flow<List<CurrencyModel>>
 
     @Query("DELETE FROM tb_currency")
-    fun deleteAll()
+    suspend fun deleteAll()
 
     @Query("UPDATE tb_currency SET recentlyUsed = :recentlyUsed , updateTimeMillis = :timeMillis  WHERE currencyCode = :currencyCode")
-    fun updateRecentlyUsedCurrency(currencyCode: String, recentlyUsed: Boolean, timeMillis: Long)
+    suspend fun updateRecentlyUsedCurrency(currencyCode: String, recentlyUsed: Boolean, timeMillis: Long)
 
     @Query("UPDATE tb_currency SET isFavorite = :isFavorite WHERE currencyCode = :currencyCode")
-    fun updateFavoriteCurrency(currencyCode: String, isFavorite: Boolean)
+    suspend fun updateFavoriteCurrency(currencyCode: String, isFavorite: Boolean)
 
     @Query("SELECT * from tb_currency WHERE recentlyUsed = 1 AND isFavorite = 0 ORDER BY updateTimeMillis DESC")
-    fun selectRecentlyUsedCurrencies(): List<CurrencyModel>
+    suspend fun selectRecentlyUsedCurrencies(): List<CurrencyModel>
 
     @Transaction
-    fun setCurrencyList(list: List<CurrencyModel>){
+    suspend fun setCurrencyList(list: List<CurrencyModel>){
         val localCurrenciesList = getAll()
         if(!localCurrenciesList.isNullOrEmpty()) {
             val localCurrencies = getAll().associateBy {

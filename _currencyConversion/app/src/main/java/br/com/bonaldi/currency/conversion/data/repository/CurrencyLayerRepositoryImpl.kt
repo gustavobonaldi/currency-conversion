@@ -19,8 +19,7 @@ class CurrencyLayerRepositoryImpl(
     private val currencyDao: CurrencyDao,
     private val currencyRateDao: CurrencyRateDao,
     private val currencyDataStore: CurrencyDataStore,
-    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
-) : BaseRepository(defaultDispatcher), CurrencyLayerRepository {
+) : BaseRepository(), CurrencyLayerRepository {
 
     override suspend fun updateCurrencyList(onResult: suspend (Flow<Resource<List<CurrencyModel>>>) -> Unit) {
         return createRequest(
@@ -32,9 +31,7 @@ class CurrencyLayerRepositoryImpl(
                 currencyDao.getCurrenciesFlow()
             },
             updateLocal = { list ->
-                withContext(defaultDispatcher) {
-                    currencyDao.setCurrencyList(list)
-                }
+                currencyDao.setCurrencyList(list)
             },
             onResult = {
                 onResult.invoke(it)
@@ -52,9 +49,7 @@ class CurrencyLayerRepositoryImpl(
                 currencyRateDao.getRatesFlow()
             },
             updateLocal = {
-                withContext(defaultDispatcher) {
-                    currencyRateDao.insertAll(it)
-                }
+                currencyRateDao.insertAll(it)
             },
             onResult = {
                 onResult.invoke(it)
@@ -67,10 +62,8 @@ class CurrencyLayerRepositoryImpl(
     }
 
     override suspend fun updateRecentlyUsedCurrency(currencyCode: String, recentlyUsed: Boolean) {
-        withContext(defaultDispatcher) {
-            val timeInMillis = if (recentlyUsed) System.currentTimeMillis() else 0L
-            currencyDao.updateRecentlyUsedCurrency(currencyCode, recentlyUsed, timeInMillis)
-        }
+        val timeInMillis = if (recentlyUsed) System.currentTimeMillis() else 0L
+        currencyDao.updateRecentlyUsedCurrency(currencyCode, recentlyUsed, timeInMillis)
     }
 
     override suspend fun updateFavoriteCurrency(currencyCode: String, isFavorite: Boolean) {

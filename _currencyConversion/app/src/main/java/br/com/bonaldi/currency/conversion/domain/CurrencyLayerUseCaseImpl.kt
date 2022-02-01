@@ -4,9 +4,7 @@ import br.com.bonaldi.currency.conversion.api.api.config.Resource
 import br.com.bonaldi.currency.conversion.api.model.CurrencyModel
 import br.com.bonaldi.currency.conversion.api.model.RatesModel
 import br.com.bonaldi.currency.conversion.data.repository.CurrencyLayerRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.Flow
 
 class CurrencyLayerUseCaseImpl(
     private val currencyLayerRepository: CurrencyLayerRepository
@@ -25,24 +23,21 @@ class CurrencyLayerUseCaseImpl(
     }
 
     override suspend fun updateRecentlyUsedCurrency(currencyCode: String) {
-        withContext(Dispatchers.Default) {
-            currencyLayerRepository.selectRecentlyUsedCurrencies().let { recentlyUsedCurrencies ->
-                when {
-                    recentlyUsedCurrencies.isNullOrEmpty() || recentlyUsedCurrencies.size < RECENTLY_USED_SECTION_SIZE -> {
-                        currencyLayerRepository.updateRecentlyUsedCurrency(currencyCode, true)
-                    }
-                    else -> {
-                        for (currency in recentlyUsedCurrencies.subList(
-                            RECENTLY_USED_SECTION_SIZE - 1,
-                            recentlyUsedCurrencies.lastIndex
-                        )) {
+        currencyLayerRepository.selectRecentlyUsedCurrencies().let { recentlyUsedCurrencies ->
+            when {
+                recentlyUsedCurrencies.isNullOrEmpty() || (recentlyUsedCurrencies.size < (RECENTLY_USED_SECTION_SIZE -1)) -> {
+                    currencyLayerRepository.updateRecentlyUsedCurrency(currencyCode, true)
+                }
+                else -> {
+                    recentlyUsedCurrencies.mapIndexed { index, currency ->
+                        if(index > (RECENTLY_USED_SECTION_SIZE -2)){
                             currencyLayerRepository.updateRecentlyUsedCurrency(
-                                currencyCode,
+                                currency.currencyCode,
                                 false
                             )
                         }
-                        currencyLayerRepository.updateRecentlyUsedCurrency(currencyCode, true)
                     }
+                    currencyLayerRepository.updateRecentlyUsedCurrency(currencyCode, true)
                 }
             }
         }
