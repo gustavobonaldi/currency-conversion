@@ -1,6 +1,6 @@
 package br.com.bonaldi.currency.conversion.domain
 
-import br.com.bonaldi.currency.conversion.api.api.config.Resource
+import br.com.bonaldi.currency.conversion.api.api.config.ResponseResource
 import br.com.bonaldi.currency.conversion.api.model.CurrencyModel
 import br.com.bonaldi.currency.conversion.api.model.RatesModel
 import br.com.bonaldi.currency.conversion.data.repository.CurrencyLayerRepository
@@ -14,23 +14,23 @@ class CurrencyLayerUseCaseImpl(
         const val RECENTLY_USED_SECTION_SIZE = 5
     }
 
-    override suspend fun updateCurrencyList(onResult: suspend (Flow<Resource<List<CurrencyModel>>>) -> Unit) {
-        return currencyLayerRepository.updateCurrencyList(onResult)
+    override suspend fun updateCurrencyList(): Flow<ResponseResource<List<CurrencyModel>>> {
+        return currencyLayerRepository.updateCurrencyList()
     }
 
-    override suspend fun updateCurrencyRateList(onResult: suspend (Flow<Resource<List<RatesModel>>>) -> Unit) {
-        return currencyLayerRepository.updateCurrencyRateList(onResult)
+    override suspend fun updateCurrencyRateList(): Flow<ResponseResource<List<RatesModel>>> {
+        return currencyLayerRepository.updateCurrencyRateList()
     }
 
     override suspend fun updateRecentlyUsedCurrency(currencyCode: String) {
         currencyLayerRepository.selectRecentlyUsedCurrencies().let { recentlyUsedCurrencies ->
             when {
-                recentlyUsedCurrencies.isNullOrEmpty() || (recentlyUsedCurrencies.size < (RECENTLY_USED_SECTION_SIZE -1)) -> {
+                recentlyUsedCurrencies.isNullOrEmpty() || (recentlyUsedCurrencies.size < (RECENTLY_USED_SECTION_SIZE - 1)) -> {
                     currencyLayerRepository.updateRecentlyUsedCurrency(currencyCode, true)
                 }
                 else -> {
                     recentlyUsedCurrencies.mapIndexed { index, currency ->
-                        if(index > (RECENTLY_USED_SECTION_SIZE -2)){
+                        if (index > (RECENTLY_USED_SECTION_SIZE - 2)) {
                             currencyLayerRepository.updateRecentlyUsedCurrency(
                                 currency.currencyCode,
                                 false
@@ -46,4 +46,7 @@ class CurrencyLayerUseCaseImpl(
     override suspend fun updateFavoriteCurrency(currencyCode: String, isFavorite: Boolean) {
         currencyLayerRepository.updateFavoriteCurrency(currencyCode, isFavorite)
     }
+
+    override fun getCurrencyListFlow(): Flow<List<CurrencyModel>> = currencyLayerRepository.getCurrencyListFlow()
+    override fun getCurrentRatesFlow():  Flow<List<RatesModel>> = currencyLayerRepository.getCurrentRatesFlow()
 }

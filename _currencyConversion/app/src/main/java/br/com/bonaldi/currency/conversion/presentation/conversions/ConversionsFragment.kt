@@ -47,8 +47,8 @@ class ConversionsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setListeners()
-        setObservers()
         setAds()
+        setObservers()
     }
 
     private fun setAds() {
@@ -88,7 +88,9 @@ class ConversionsFragment : BaseFragment() {
         viewModel.apply {
             updateRealtimeRates()
             conversionEventFlow.collectLatest { event ->
-                handleUIEvent(event)
+                if(isAdded) {
+                    handleUIEvent(event)
+                }
             }
         }
     }
@@ -123,7 +125,6 @@ class ConversionsFragment : BaseFragment() {
                     containerFrom.getImageView()
                         .setDrawableFlag(context, currency.currencyCode)
                     containerFrom.setCurrencyText(currency.getFormattedString())
-
                 }
             }
         }
@@ -135,14 +136,18 @@ class ConversionsFragment : BaseFragment() {
         }
     }
 
-    private fun showSnackBar(message: String?) =
+    private fun showSnackBar(message: String?) {
         try {
-            message?.let {
-                Snackbar.make(binding.currencyFromEditText, it, Snackbar.LENGTH_LONG).show()
+            context?.let { context ->
+                message?.let {
+                    Snackbar.make(context, binding.currencyFromEditText, it, Snackbar.LENGTH_LONG)
+                        .show()
+                }
             }
         } catch (ex: Exception) {
             Log.e(LOG_TAG, ex.message, ex.cause)
         }
+    }
 
 
     private fun clearFields() = binding.apply {

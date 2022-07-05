@@ -1,7 +1,7 @@
 package br.com.bonaldi.currency.conversion.presentation
 
 import android.content.Context
-import br.com.bonaldi.currency.conversion.api.api.config.Resource
+import br.com.bonaldi.currency.conversion.api.api.config.ResponseResource
 import br.com.bonaldi.currency.conversion.api.model.CurrencyModel
 import br.com.bonaldi.currency.conversion.api.model.CurrencyModel.CurrencyType
 import br.com.bonaldi.currency.conversion.api.model.RatesModel
@@ -11,10 +11,7 @@ import br.com.bonaldi.currency.conversion.presentation.conversions.ConversionSta
 import br.com.bonaldi.currency.conversion.presentation.conversions.ConversionUtils
 import br.com.bonaldi.currency.conversion.presentation.currencylist.CurrencyListState
 import br.com.bonaldi.currency.conversion.utils.extensions.safeLet
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.*
 import java.text.NumberFormat
 import java.util.*
 
@@ -37,20 +34,20 @@ class ConversionViewModel(
 
     override fun updateRealtimeRates() {
         launch {
-            currencyLayerUseCase.updateCurrencyRateList { rateListFlow ->
-                rateListFlow.collectLatest { result ->
-                    when (result) {
-                        is Resource.Success -> {
-                            _currencyListState.value =
-                                _currencyListState.value.copy(ratesList = result.data.orEmpty())
+            currencyLayerUseCase.updateCurrencyRateList().collectLatest { result ->
+                when (result) {
+                    is ResponseResource.Success -> {
+                        _currencyListState.value =
+                            _currencyListState.value.copy(ratesList = result.data.orEmpty())
+                    }
+                    is ResponseResource.Error -> {
+                        result.error.message?.let {
+                            _conversionEventFlow.emit(ConversionUIEvent.SnackBarError(it))
                         }
-                        is Resource.Error -> {
-                            _conversionEventFlow.emit(ConversionUIEvent.SnackBarError(result.error.info))
-                        }
-                        is Resource.Loading -> {
-                            _conversionState.value =
-                                conversionState.value.copy(isLoading = result.isLoading)
-                        }
+                    }
+                    is ResponseResource.Loading -> {
+                        _conversionState.value =
+                            conversionState.value.copy(isLoading = result.isLoading)
                     }
                 }
             }
@@ -59,20 +56,20 @@ class ConversionViewModel(
 
     override fun updateCurrencies() {
         launch {
-            currencyLayerUseCase.updateCurrencyList { currencyFlow ->
-                currencyFlow.collectLatest { result ->
-                    when (result) {
-                        is Resource.Success -> {
-                            _currencyListState.value =
-                                _currencyListState.value.copy(currencyList = result.data.orEmpty())
+            currencyLayerUseCase.updateCurrencyList().collectLatest { result ->
+                when (result) {
+                    is ResponseResource.Success<List<CurrencyModel>> -> {
+                        _currencyListState.value =
+                            _currencyListState.value.copy(currencyList = result.data.orEmpty())
+                    }
+                    is ResponseResource.Error -> {
+                        result.error.message?.let {
+                            _conversionEventFlow.emit(ConversionUIEvent.SnackBarError(it))
                         }
-                        is Resource.Error -> {
-                            _conversionEventFlow.emit(ConversionUIEvent.SnackBarError(result.error.info))
-                        }
-                        is Resource.Loading -> {
-                            _conversionState.value =
-                                conversionState.value.copy(isLoading = result.isLoading)
-                        }
+                    }
+                    is ResponseResource.Loading -> {
+                        _conversionState.value =
+                            conversionState.value.copy(isLoading = result.isLoading)
                     }
                 }
             }
@@ -99,7 +96,8 @@ class ConversionViewModel(
                     _conversionState.value = _conversionState.value.copy(
                         currencyFrom = _conversionState.value.currencyFrom,
                         currencyTo = _conversionState.value.currencyTo,
-                        convertedValue = NumberFormat.getCurrencyInstance(Locale.US).format(convertedValue)
+                        convertedValue = NumberFormat.getCurrencyInstance(Locale.US)
+                            .format(convertedValue)
                     )
 
                     _conversionEventFlow.emit(ConversionUIEvent.ShowConvertedValue(_conversionState.value.convertedValue.orEmpty()))

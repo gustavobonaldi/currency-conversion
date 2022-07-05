@@ -1,18 +1,19 @@
 package br.com.bonaldi.currency.conversion.data.repository
 
-import br.com.bonaldi.currency.conversion.api.api.config.Resource
+import br.com.bonaldi.currency.conversion.api.api.config.ResponseResource
 import br.com.bonaldi.currency.conversion.api.cache.CurrencyDataStore
+import br.com.bonaldi.currency.conversion.api.dto.ErrorDTO
+import br.com.bonaldi.currency.conversion.api.dto.exception.ApiException
 import br.com.bonaldi.currency.conversion.api.model.CurrencyModel
 import br.com.bonaldi.currency.conversion.api.model.RatesModel
+import br.com.bonaldi.currency.conversion.api.model.mappers.Mapper.toCurrencyModel
+import br.com.bonaldi.currency.conversion.api.model.mappers.Mapper.toRatesModel
 import br.com.bonaldi.currency.conversion.api.room.dao.CurrencyDao
 import br.com.bonaldi.currency.conversion.api.room.dao.CurrencyRateDao
 import br.com.bonaldi.currency.conversion.api.utils.BaseRepository
 import br.com.bonaldi.currency.conversion.data.api.CurrencyLayerServices
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 
 class CurrencyLayerRepositoryImpl(
     private val currencyLayerApi: CurrencyLayerServices,
@@ -21,38 +22,24 @@ class CurrencyLayerRepositoryImpl(
     private val currencyDataStore: CurrencyDataStore,
 ) : BaseRepository(), CurrencyLayerRepository {
 
-    override suspend fun updateCurrencyList(onResult: suspend (Flow<Resource<List<CurrencyModel>>>) -> Unit) {
-        return createRequest(
-            request = {
-                val supportedCurrencies = currencyLayerApi.getCurrencies()
-                supportedCurrencies.toCurrencyModel(supportedCurrencies.currencies)
-            },
-            localRequest = {
-                currencyDao.getCurrenciesFlow()
-            },
-            updateLocal = { list ->
-                currencyDao.setCurrencyList(list)
-            },
-            onResult = {
-                onResult.invoke(it)
+    override suspend fun updateCurrencyList(): Flow<ResponseResource<List<CurrencyModel>>> {
+        return request(
+            apiRequest = currencyLayerApi::getCurrencies,
+            localMapper = ::toCurrencyModel,
+            localRequest = currencyDao::getCurrenciesFlow,
+            updateLocal = { supportedCurrencies ->
+                currencyDao.setCurrencyList(supportedCurrencies)
             }
         )
     }
 
-    override suspend fun updateCurrencyRateList(onResult: suspend (Flow<Resource<List<RatesModel>>>) -> Unit) {
-        return createRequest(
-            request = {
-                val quotes = currencyLayerApi.getRealTimeRates()
-                quotes.toRatesModel(quotes.quotes)
-            },
-            localRequest = {
-                currencyRateDao.getRatesFlow()
-            },
-            updateLocal = {
-                currencyRateDao.insertAll(it)
-            },
-            onResult = {
-                onResult.invoke(it)
+    override suspend fun updateCurrencyRateList(): Flow<ResponseResource<List<RatesModel>>> {
+        return request(
+            apiRequest = currencyLayerApi::getRealTimeRates,
+            localMapper = ::toRatesModel,
+            localRequest = currencyRateDao::getRatesFlow,
+            updateLocal = { quotes ->
+                currencyRateDao.insertAll(quotes)
             }
         )
     }
@@ -68,5 +55,13 @@ class CurrencyLayerRepositoryImpl(
 
     override suspend fun updateFavoriteCurrency(currencyCode: String, isFavorite: Boolean) {
         currencyDao.updateFavoriteCurrency(currencyCode, isFavorite)
+    }
+
+    override fun getCurrencyListFlow(): Flow<List<CurrencyModel>>{
+        return currencyDao.getCurrenciesFlow()
+    }
+
+    override fun getCurrentRatesFlow():  Flow<List<RatesModel>>{
+        return currencyRateDao.getRatesFlow()
     }
 }
