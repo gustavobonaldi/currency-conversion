@@ -5,7 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import br.com.bonaldi.currency.conversion.core.database.model.CurrencyModel
 import br.com.bonaldi.currency.conversion.core.database.model.CurrencyModel.CurrencyType
@@ -29,7 +29,7 @@ import java.util.*
 
 @AndroidEntryPoint
 class ConversionsFragment : BaseFragment() {
-    private val viewModel: ConversionViewModel by viewModels()
+    private val viewModel: ConversionViewModel by activityViewModels()
     private lateinit var binding: FragmentConversionsBinding
 
     companion object {

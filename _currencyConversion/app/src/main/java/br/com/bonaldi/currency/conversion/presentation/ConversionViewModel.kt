@@ -17,6 +17,8 @@ import java.text.NumberFormat
 import java.util.*
 import javax.inject.Inject
 
+
+@HiltViewModel
 class ConversionViewModel @Inject constructor(
     private val currencyLayerUseCase: CurrencyLayerUseCase
 ) : BaseViewModel(), Conversions {

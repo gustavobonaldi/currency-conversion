@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,9 +19,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class CurrencyListFragment(private val currencyType: CurrencyModel.CurrencyType) : DialogFragment() {
     private lateinit var binding: FragmentCurrencyListBinding
-    private val viewModel: ConversionViewModel by viewModels()
+    private val viewModel: ConversionViewModel by activityViewModels()
 
     private val listAdapter: CurrencyAdapter by lazy {
         CurrencyAdapter(
