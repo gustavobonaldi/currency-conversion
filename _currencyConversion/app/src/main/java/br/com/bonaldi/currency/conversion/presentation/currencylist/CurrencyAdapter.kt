@@ -9,9 +9,8 @@ import android.widget.Filterable
 import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import br.com.bonaldi.currency.conversion.R
-import br.com.bonaldi.currency.conversion.api.model.CurrencyModel
+import br.com.bonaldi.currency.conversion.core.database.model.CurrencyModel
 import br.com.bonaldi.currency.conversion.databinding.CurrencyItemBinding
 import br.com.bonaldi.currency.conversion.utils.customcomponents.BaseSwipeViewHolder
 import br.com.bonaldi.currency.conversion.utils.extensions.setDrawableFlag

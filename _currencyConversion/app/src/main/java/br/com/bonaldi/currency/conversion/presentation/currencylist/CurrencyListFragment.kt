@@ -6,20 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import br.com.bonaldi.currency.conversion.api.model.CurrencyModel
+import br.com.bonaldi.currency.conversion.core.database.model.CurrencyModel
 import br.com.bonaldi.currency.conversion.databinding.FragmentCurrencyListBinding
 import br.com.bonaldi.currency.conversion.presentation.ConversionViewModel
 import br.com.bonaldi.currency.conversion.utils.extensions.setWindowSettings
 import br.com.bonaldi.currency.conversion.utils.controls.setIsVisible
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class CurrencyListFragment(private val currencyType: CurrencyModel.CurrencyType) : DialogFragment() {
     private lateinit var binding: FragmentCurrencyListBinding
-    private val viewModel: ConversionViewModel by sharedViewModel()
+    private val viewModel: ConversionViewModel by viewModels()
 
     private val listAdapter: CurrencyAdapter by lazy {
         CurrencyAdapter(

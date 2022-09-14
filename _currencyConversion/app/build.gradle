@@ -6,6 +6,7 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -83,11 +84,9 @@ dependencies {
     implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 
-    /* Koin */
-    implementation "io.insert-koin:koin-core:${koinVersion}"
-    implementation "io.insert-koin:koin-android:${koinVersion}"
-    implementation "io.insert-koin:koin-androidx-workmanager:${koinVersion}"
-    testImplementation "io.insert-koin:koin-test:${koinVersion}"
+    /* Hilt */
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
 
     /* Google Truth */
     testImplementation "com.google.truth:truth:$googleTruthVersion"
@@ -129,6 +128,14 @@ dependencies {
     implementation "com.intuit.sdp:sdp-android:$intuitSdpVersion"
 
     /* Modules */
-    implementation project(':api-core')
     implementation project(':utils')
+    implementation project(':core:network')
+    implementation project(':core:database')
+    implementation project(':core:model')
+    implementation project(':core:common')
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
 }

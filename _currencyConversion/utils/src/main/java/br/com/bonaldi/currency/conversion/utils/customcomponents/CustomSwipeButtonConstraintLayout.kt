@@ -66,7 +66,7 @@ class CustomSwipeButtonConstraintLayout(context: Context, attrs: AttributeSet) :
             }
         }
 
-        val gestureTouch = gesture.onTouchEvent(event)
+        val gestureTouch = event?.let { gesture.onTouchEvent(it) } ?: true
         if(event?.action == ACTION_UP && !gestureTouch) {
             onItemClickListener?.invoke()
         }

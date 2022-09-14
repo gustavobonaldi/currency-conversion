@@ -1,4 +1,9 @@
-include ':utils'
-include ':api-core'
-include ':app'
 rootProject.name = "CurrencyConversion"
+include ':app',
+        ':utils',
+        ':core:network',
+        ':core:database',
+        ':core:model',
+        ':core:common',
+        'build-logic'
+

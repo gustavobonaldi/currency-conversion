@@ -39,6 +39,7 @@ open class BaseSwipeViewHolder<T : ViewBinding>(
                     OnSwipeListener.Direction.right -> {
                         animateSwipeLayout(0f, false)
                     }
+                    else -> {}
                 }
             }
         }
@@ -65,16 +66,15 @@ open class BaseSwipeViewHolder<T : ViewBinding>(
     private fun animateSwipeLayout(translationX: Float, isSwipeOpen: Boolean, animationEndCallback: (() -> Unit)? = null){
         baseViewBinding.apply{
             swipeableLayout.animate().translationX(translationX).setListener(object: Animator.AnimatorListener{
-                override fun onAnimationStart(p0: Animator?) = Unit
+                override fun onAnimationStart(animation: Animator) = Unit
 
-                override fun onAnimationEnd(p0: Animator?) {
+                override fun onAnimationEnd(animation: Animator) {
                     isSwiped = isSwipeOpen
                     animationEndCallback?.invoke()
                 }
 
-                override fun onAnimationCancel(p0: Animator?) = Unit
-
-                override fun onAnimationRepeat(p0: Animator?) = Unit
+                override fun onAnimationCancel(animation: Animator) = Unit
+                override fun onAnimationRepeat(animation: Animator) = Unit
             })
         }
     }

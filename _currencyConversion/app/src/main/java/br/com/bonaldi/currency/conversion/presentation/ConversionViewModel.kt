@@ -2,20 +2,22 @@ package br.com.bonaldi.currency.conversion.presentation
 
 import android.content.Context
 import br.com.bonaldi.currency.conversion.api.api.config.ResponseResource
-import br.com.bonaldi.currency.conversion.api.model.CurrencyModel
-import br.com.bonaldi.currency.conversion.api.model.CurrencyModel.CurrencyType
-import br.com.bonaldi.currency.conversion.api.model.RatesModel
+import br.com.bonaldi.currency.conversion.core.database.model.CurrencyModel
+import br.com.bonaldi.currency.conversion.core.database.model.CurrencyModel.CurrencyType
+import br.com.bonaldi.currency.conversion.core.database.model.RatesModel
 import br.com.bonaldi.currency.conversion.data.enums.ConversionErrorEnum
 import br.com.bonaldi.currency.conversion.domain.CurrencyLayerUseCase
 import br.com.bonaldi.currency.conversion.presentation.conversions.ConversionState
 import br.com.bonaldi.currency.conversion.presentation.conversions.ConversionUtils
 import br.com.bonaldi.currency.conversion.presentation.currencylist.CurrencyListState
 import br.com.bonaldi.currency.conversion.utils.extensions.safeLet
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import java.text.NumberFormat
 import java.util.*
+import javax.inject.Inject
 
-class ConversionViewModel(
+class ConversionViewModel @Inject constructor(
     private val currencyLayerUseCase: CurrencyLayerUseCase
 ) : BaseViewModel(), Conversions {
 

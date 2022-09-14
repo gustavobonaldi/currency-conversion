@@ -1,6 +1,6 @@
 package br.com.bonaldi.currency.conversion.presentation.conversions
 
-import br.com.bonaldi.currency.conversion.api.model.RatesModel
+import br.com.bonaldi.currency.conversion.core.database.model.RatesModel
 import br.com.bonaldi.currency.conversion.utils.extensions.zero
 
 class ConversionUtils{

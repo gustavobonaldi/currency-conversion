@@ -1,8 +1,8 @@
 package br.com.bonaldi.currency.conversion.data.repository
 
 import br.com.bonaldi.currency.conversion.api.api.config.ResponseResource
-import br.com.bonaldi.currency.conversion.api.model.CurrencyModel
-import br.com.bonaldi.currency.conversion.api.model.RatesModel
+import br.com.bonaldi.currency.conversion.core.database.model.CurrencyModel
+import br.com.bonaldi.currency.conversion.core.database.model.RatesModel
 import kotlinx.coroutines.flow.Flow
 
 interface CurrencyLayerRepository {

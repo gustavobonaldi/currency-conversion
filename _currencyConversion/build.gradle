@@ -9,56 +9,56 @@ buildscript {
         // Sdk and tools
         // Support library and architecture components support minSdk 14 and above.
         minSdkVersion = 21
-        targetSdkVersion = 32
-        compileSdkVersion = 32
+        targetSdkVersion = 33
+        compileSdkVersion = 33
         buildToolsVersion = "30.0.3"
 
         // App dependencies
-        kotlin_version = "1.6.21"
+        kotlin_version = "1.7.10"
 
         /* Android */
-        androidxCoreKtxVersion = "1.8.0"
+        androidxCoreKtxVersion = "1.9.0"
 
         /* Coroutines */
-        coroutinesVersion = '1.5.2'
-        coroutinesAndroidVersion = "1.6.3"
-        viewLifecycleVersion = "2.5.0"
-        viewModelVersion = "2.5.0"
+        coroutinesVersion = '1.6.4'
+        coroutinesAndroidVersion = "1.6.4"
+        viewLifecycleVersion = "2.5.1"
+        viewModelVersion = "2.5.1"
 
         /* DI */
-        koinVersion = '3.1.3'
+        hiltVersion = '2.43.2'
 
         /* Logger */
         timberVersion = '4.7.1'
 
         /* Database */
-        roomVersion = '2.4.2'
+        roomVersion = '2.4.3'
         dataStoreVersion = "1.0.0"
 
         /* Navigation */
-        nav_version = "2.5.0"
+        nav_version = "2.5.2"
 
         /* View */
         recyclerViewVersion = '1.2.0'
-        appCompatVersion = "1.4.2"
+        appCompatVersion = "1.5.1"
         materialVersion = '1.6.1'
         fragmentVersion = '1.1.0-alpha07'
-        intuitSdpVersion = "1.0.6"
+        intuitSdpVersion = '1.1.0'
         constraintLayoutVersion = "2.1.4"
         fragmentKtxVersion = '1.3.3'
 
         /* Firebase */
-        firebaseBomVersion = "26.4.0"
+        firebaseBomVersion = "30.4.1"
         crashlyticsVersion = "2.9.1"
 
         /* Google Play */
-        googleAdsVersion = "20.3.0"
+        googleAdsVersion = "21.2.0"
         googlePlayServices = "4.3.13"
 
         /* Http */
         retrofitVersion = "2.9.0"
-        okHttpVersion = "4.9.3"
-        okHttpInterceptorVersion = "4.9.1"
+        okHttpVersion = "4.10.0"
+        okHttpInterceptorVersion = "4.10.0"
 
         /* Tests */
         junitVersion = "4.13.2"
@@ -68,7 +68,7 @@ buildscript {
         androidXTestExtKotlinRunnerVersion = '1.1.3'
         androidXTestRulesVersion = '1.4.0'
         androidXTestRunnerVersion = "1.4.0"
-        robolectricVersion = '4.8.1'
+        robolectricVersion = '4.8.2'
         googleTruthVersion = '1.1.3'
         hamcrestVersion = '1.3'
         mockitoVersion = '2.8.9'
@@ -77,8 +77,8 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.android.tools.build:gradle:7.2.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10"
 
         /* Navigation */
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
@@ -88,6 +88,9 @@ buildscript {
 
         /* Firebase Crashlytics*/
         classpath "com.google.firebase:firebase-crashlytics-gradle:$crashlyticsVersion"
+
+        /* Hilt */
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hiltVersion"
     }
 }
 

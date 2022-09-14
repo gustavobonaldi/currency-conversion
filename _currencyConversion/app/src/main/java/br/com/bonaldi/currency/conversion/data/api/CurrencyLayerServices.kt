@@ -1,7 +1,7 @@
 package br.com.bonaldi.currency.conversion.data.api;
 
-import br.com.bonaldi.currency.conversion.api.dto.currency.SupportedCurrenciesDTO
-import br.com.bonaldi.currency.conversion.api.dto.currency.ExchangeRateDataDTO
+import br.com.bonaldi.currency.conversion.core.model.currency.SupportedCurrenciesDTO
+import br.com.bonaldi.currency.conversion.core.model.currency.ExchangeRateDataDTO
 import retrofit2.http.*
 
 interface CurrencyLayerServices {

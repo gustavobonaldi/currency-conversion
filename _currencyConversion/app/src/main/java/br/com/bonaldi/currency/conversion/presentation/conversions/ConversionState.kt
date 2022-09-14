@@ -1,6 +1,6 @@
 package br.com.bonaldi.currency.conversion.presentation.conversions
 
-import br.com.bonaldi.currency.conversion.api.model.CurrencyModel
+import br.com.bonaldi.currency.conversion.core.database.model.CurrencyModel
 
 data class ConversionState(
     val currencyFrom: CurrencyModel? = null,

@@ -5,9 +5,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import br.com.bonaldi.currency.conversion.api.model.CurrencyModel
-import br.com.bonaldi.currency.conversion.api.model.CurrencyModel.CurrencyType
+import br.com.bonaldi.currency.conversion.core.database.model.CurrencyModel
+import br.com.bonaldi.currency.conversion.core.database.model.CurrencyModel.CurrencyType
 import br.com.bonaldi.currency.conversion.databinding.FragmentConversionsBinding
 import br.com.bonaldi.currency.conversion.presentation.BaseFragment
 import br.com.bonaldi.currency.conversion.presentation.ConversionViewModel
@@ -20,15 +21,15 @@ import br.com.bonaldi.currency.conversion.utils.extensions.empty
 import br.com.bonaldi.currency.conversion.utils.extensions.setDrawableFlag
 import com.google.android.gms.ads.AdRequest
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.text.NumberFormat
 import java.util.*
 
+@AndroidEntryPoint
 class ConversionsFragment : BaseFragment() {
-
-    private val viewModel: ConversionViewModel by sharedViewModel()
+    private val viewModel: ConversionViewModel by viewModels()
     private lateinit var binding: FragmentConversionsBinding
 
     companion object {
