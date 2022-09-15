@@ -1,0 +1,97 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-android-extensions'
+    id "dagger.hilt.android.plugin"
+}
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildFeatures {
+        viewBinding = true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "androidx.appcompat:appcompat:$appCompatVersion"
+    implementation "androidx.core:core-ktx:$androidxCoreKtxVersion"
+
+    /* Retrofit */
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+
+    /* Google Ads */
+    implementation "com.google.android.gms:play-services-ads:$googleAdsVersion"
+
+    /* JUnit */
+    testImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$jUnitExtVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+
+    /* Hilt */
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
+
+    /* Coroutines */
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroidVersion"
+
+    /* Test */
+    testImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$jUnitExtVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+
+    /* View Model */
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewModelVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$viewModelVersion"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$viewModelVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$viewModelVersion"
+
+    /* Lifecycle */
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewLifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$viewLifecycleVersion"
+
+    /* Navigation */
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
+    androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
+
+    /* DataStore */
+    implementation "androidx.datastore:datastore-preferences:$dataStoreVersion"
+
+    /* SDP - intuit*/
+    implementation "com.intuit.sdp:sdp-android:$intuitSdpVersion"
+
+    /* Modules */
+    implementation project(':utils')
+    implementation project(':core:network')
+    implementation project(':core:database')
+    implementation project(':core:model')
+    implementation project(':core:common')
+}

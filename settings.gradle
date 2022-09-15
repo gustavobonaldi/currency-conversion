@@ -1,9 +1,10 @@
 rootProject.name = "CurrencyConversion"
-include ':app',
+include ':currency-conversion-sample',
         ':utils',
         ':core:network',
         ':core:database',
         ':core:model',
         ':core:common',
-        'build-logic'
-
+        'build-logic',
+        ':features:currency-conversion'
+include ':features:conversion-history'
