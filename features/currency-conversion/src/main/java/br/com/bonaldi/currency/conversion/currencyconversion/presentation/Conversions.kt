@@ -1,12 +1,12 @@
 package br.com.bonaldi.currency.conversion.currencyconversion.presentation
 
 import android.content.Context
-import br.com.bonaldi.currency.conversion.core.database.model.CurrencyModel
+import br.com.bonaldi.currency.conversion.core.database.model.conversion.Currency
 
 interface Conversions {
     fun updateCurrencies()
-    fun updateCurrencyFavorite(currency: CurrencyModel)
-    fun updateCurrencyRecentlyUsed(currency: CurrencyModel, currencyType: CurrencyModel.CurrencyType)
+    fun updateCurrencyFavorite(currency: Currency)
+    fun updateCurrencyRecentlyUsed(currency: Currency, currencyType: Currency.CurrencyType)
     fun updateRealtimeRates()
     fun performConversion(
         context: Context,

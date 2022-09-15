@@ -1,13 +1,13 @@
 package br.com.bonaldi.currency.conversion.currencyconversion.presentation.conversions
 
-import br.com.bonaldi.currency.conversion.core.database.model.RatesModel
+import br.com.bonaldi.currency.conversion.core.database.model.conversion.Rates
 import br.com.bonaldi.currency.conversion.utils.extensions.zero
 
 class ConversionUtils{
     companion object {
         fun convertValue(
-            quoteFrom: RatesModel?,
-            quoteTo: RatesModel?,
+            quoteFrom: Rates?,
+            quoteTo: Rates?,
             valueToConvert: Double
         ): Double {
             return when {

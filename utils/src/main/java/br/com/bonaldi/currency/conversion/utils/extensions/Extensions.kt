@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ImageView
 import androidx.annotation.LayoutRes
-import androidx.recyclerview.widget.RecyclerView
 import br.com.bonaldi.currency.conversion.utils.R
 import java.util.*
 

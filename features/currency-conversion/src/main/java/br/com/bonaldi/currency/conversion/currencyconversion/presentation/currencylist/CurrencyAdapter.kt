@@ -9,29 +9,28 @@ import android.widget.Filterable
 import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import br.com.bonaldi.currency.conversion.core.database.model.CurrencyModel
+import br.com.bonaldi.currency.conversion.core.database.model.conversion.Currency
 import br.com.bonaldi.currency.conversion.currencyconversion.R
 import br.com.bonaldi.currency.conversion.currencyconversion.databinding.CurrencyItemBinding
 import br.com.bonaldi.currency.conversion.utils.customcomponents.BaseSwipeViewHolder
 import br.com.bonaldi.currency.conversion.utils.extensions.setDrawableFlag
 import java.util.*
 
-
 class CurrencyAdapter(
     val context: Context,
-    private val currencyType: CurrencyModel.CurrencyType,
-    private val onItemClicked: ((CurrencyModel) -> Unit)?,
-    private val onFavoriteItemClicked: ((CurrencyModel) -> Unit)?
-) : ListAdapter<CurrencyModel, CurrencyAdapter.CurrencyHolder>(CurrencyDiffer), Filterable {
+    private val currencyType: Currency.CurrencyType,
+    private val onItemClicked: ((Currency) -> Unit)?,
+    private val onFavoriteItemClicked: ((Currency) -> Unit)?
+) : ListAdapter<Currency, CurrencyAdapter.CurrencyHolder>(CurrencyDiffer), Filterable {
 
-    private var currencies: List<CurrencyModel> = listOf()
-    var filteredCurrencies: List<CurrencyModel>
+    private var currencies: List<Currency> = listOf()
+    var filteredCurrencies: List<Currency>
 
     init {
         filteredCurrencies = currencies
     }
 
-    fun addItems(currencyList: List<CurrencyModel>) {
+    fun addItems(currencyList: List<Currency>) {
         filteredCurrencies = currencyList
         submitList(currencyList){
             currencies = currentList
@@ -39,7 +38,7 @@ class CurrencyAdapter(
         }
     }
 
-    fun setFilteredItems(currencyList: List<CurrencyModel>) {
+    fun setFilteredItems(currencyList: List<Currency>) {
         filteredCurrencies = currencyList
         submitList(currencyList){
             filteredCurrencies = currentList
@@ -65,8 +64,8 @@ class CurrencyAdapter(
                     filteredCurrencies = currencies
                 } ?: kotlin.run {
                     filteredCurrencies = currencies.filter {
-                        it.currencyCode.lowercase(Locale.getDefault()).contains(constraint.toString().lowercase(Locale.getDefault())) ||
-                        it.currencyCountry.orEmpty().lowercase(Locale.getDefault()).contains(constraint.toString().lowercase(Locale.getDefault()))
+                        it.code.lowercase(Locale.getDefault()).contains(constraint.toString().lowercase(Locale.getDefault())) ||
+                        it.country.orEmpty().lowercase(Locale.getDefault()).contains(constraint.toString().lowercase(Locale.getDefault()))
                     }
                 }
 
@@ -76,7 +75,7 @@ class CurrencyAdapter(
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                (results?.values as? List<CurrencyModel>)?.let {
+                (results?.values as? List<Currency>)?.let {
                     filteredCurrencies = it
                     setFilteredItems(it)
                 }
@@ -88,7 +87,7 @@ class CurrencyAdapter(
         private val binding: CurrencyItemBinding,
         private val parent: ViewGroup
     ) : BaseSwipeViewHolder<CurrencyItemBinding>(binding, parent) {
-        fun bindName(currency: CurrencyModel, position: Int, context: Context) {
+        fun bindName(currency: Currency, position: Int, context: Context) {
             super.bindItem()
             binding.headerContainer.visibility = View.GONE
             when {
@@ -110,10 +109,10 @@ class CurrencyAdapter(
                 context.resources.getString(R.string.recently_used_currencies)
         }
 
-        private fun setupCurrencyItem(currency: CurrencyModel) = binding.apply {
-            currencyName.text = currency.currencyCode
-            currencyCountry.text = currency.currencyCountry
-            currencyCountryImage.setDrawableFlag(context, currency.currencyCode)
+        private fun setupCurrencyItem(currency: Currency) = binding.apply {
+            currencyName.text = currency.code
+            currencyCountry.text = currency.country
+            currencyCountryImage.setDrawableFlag(context, currency.code)
             setButtonDrawable(getFavoriteImage(currency))
         }
 
@@ -129,23 +128,23 @@ class CurrencyAdapter(
             onItemClicked?.invoke(currentList[position])
         }
 
-        private fun CurrencyModel.showRecentlyUsedHeader(position: Int) =
-            position == 0 && !currentList.isNullOrEmpty() && recentlyUsed
+        private fun Currency.showRecentlyUsedHeader(position: Int) =
+            position == 0 && !currentList.isNullOrEmpty() && isRecentUse
 
-        private fun CurrencyModel.showCurrencyListHeader(position: Int) =
-            position > 0 && currentList.size > 1 && currentList[position - 1].recentlyUsed && currentList.size - 1 > position && !recentlyUsed
+        private fun Currency.showCurrencyListHeader(position: Int) =
+            position > 0 && currentList.size > 1 && currentList[position - 1].isRecentUse && currentList.size - 1 > position && !isRecentUse
     }
 
-    private fun getFavoriteImage(currency: CurrencyModel): Int {
+    private fun getFavoriteImage(currency: Currency): Int {
         return if (currency.isFavorite) R.drawable.ic_star_to_favorite else R.drawable.ic_star_favorited
     }
 
-    private object CurrencyDiffer: DiffUtil.ItemCallback<CurrencyModel>(){
-        override fun areItemsTheSame(oldItem: CurrencyModel, newItem: CurrencyModel): Boolean {
-            return oldItem.currencyCode == newItem.currencyCode
+    private object CurrencyDiffer: DiffUtil.ItemCallback<Currency>(){
+        override fun areItemsTheSame(oldItem: Currency, newItem: Currency): Boolean {
+            return oldItem.code == newItem.code
         }
 
-        override fun areContentsTheSame(oldItem: CurrencyModel, newItem: CurrencyModel): Boolean {
+        override fun areContentsTheSame(oldItem: Currency, newItem: Currency): Boolean {
             return oldItem == newItem
         }
     }

@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import br.com.bonaldi.currency.conversion.core.database.model.CurrencyModel
-import br.com.bonaldi.currency.conversion.core.database.model.CurrencyModel.CurrencyType
+import br.com.bonaldi.currency.conversion.core.database.model.conversion.Currency
+import br.com.bonaldi.currency.conversion.core.database.model.conversion.Currency.CurrencyType
 import br.com.bonaldi.currency.conversion.currencyconversion.databinding.FragmentConversionsBinding
 import br.com.bonaldi.currency.conversion.currencyconversion.presentation.ConversionViewModel
 import br.com.bonaldi.currency.conversion.currencyconversion.presentation.ConversionViewModel.ConversionUIEvent.*
@@ -28,7 +28,7 @@ import java.text.NumberFormat
 import java.util.*
 
 @AndroidEntryPoint
-class ConversionsFragment: Fragment() {
+class ConversionsFragment : Fragment() {
     private val viewModel: ConversionViewModel by activityViewModels()
     private lateinit var binding: FragmentConversionsBinding
 
@@ -89,22 +89,24 @@ class ConversionsFragment: Fragment() {
         viewModel.apply {
             updateRealtimeRates()
             conversionEventFlow.collectLatest { event ->
-                if(isAdded) {
+                if (isAdded) {
                     handleUIEvent(event)
                 }
             }
         }
     }
 
-    private fun handleUIEvent(event: ConversionViewModel.ConversionUIEvent) = when (event) {
-        is SnackBarError -> showSnackBar(event.message)
-        is ShowConvertedValue -> updateConvertedValue(
-            event.convertedValue
-        )
-        is SelectClickedCurrency -> updateSelectedCurrency(
-            event.currency,
-            event.currencyType
-        )
+    private fun handleUIEvent(event: ConversionViewModel.ConversionUIEvent) {
+        when (event) {
+            is SnackBarError -> showSnackBar(event.message)
+            is ShowConvertedValue -> updateConvertedValue(
+                event.convertedValue
+            )
+            is SelectClickedCurrency -> updateSelectedCurrency(
+                event.currency,
+                event.currencyType
+            )
+        }
     }
 
     private fun updateConvertedValue(convertedValue: String) = binding.apply {
@@ -112,20 +114,19 @@ class ConversionsFragment: Fragment() {
         step4.setIsVisible(convertedValue.isNotBlank())
     }
 
-    private fun updateSelectedCurrency(currency: CurrencyModel, currencyType: CurrencyType) =
+    private fun updateSelectedCurrency(currency: Currency, currencyType: CurrencyType) =
         binding.apply {
             when (currencyType) {
                 CurrencyType.TO -> {
                     clearFields()
-                    containerTo.getImageView().setDrawableFlag(context, currency.currencyCode)
-                    containerTo.setCurrencyText(currency.getFormattedString())
+                    containerTo.getImageView().setDrawableFlag(context, currency.code)
+                    containerTo.setCurrencyText(currency.toString())
 
                 }
                 CurrencyType.FROM -> {
                     clearFields()
-                    containerFrom.getImageView()
-                        .setDrawableFlag(context, currency.currencyCode)
-                    containerFrom.setCurrencyText(currency.getFormattedString())
+                    containerFrom.getImageView().setDrawableFlag(context, currency.code)
+                    containerFrom.setCurrencyText(currency.toString())
                 }
             }
         }

@@ -1,6 +1,7 @@
 package br.com.bonaldi.currency.conversion.core.database.di
 
 import br.com.bonaldi.currency.conversion.core.database.room.CurrConversionRoomDatabase
+import br.com.bonaldi.currency.conversion.core.database.room.dao.ConversionHistoryDao
 import br.com.bonaldi.currency.conversion.core.database.room.dao.CurrencyDao
 import br.com.bonaldi.currency.conversion.core.database.room.dao.CurrencyRateDao
 import dagger.Module
@@ -24,4 +25,10 @@ object DatabaseDaoModule {
     fun provideRatesDao(
         database: CurrConversionRoomDatabase,
     ): CurrencyRateDao = database.ratesDao()
+
+    @Provides
+    @Singleton
+    fun provideHistoryDao(
+        database: CurrConversionRoomDatabase,
+    ): ConversionHistoryDao = database.historyDao()
 }

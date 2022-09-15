@@ -9,17 +9,17 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import br.com.bonaldi.currency.conversion.core.database.model.CurrencyModel
+import br.com.bonaldi.currency.conversion.core.database.model.conversion.Currency
 import br.com.bonaldi.currency.conversion.currencyconversion.databinding.FragmentCurrencyListBinding
 import br.com.bonaldi.currency.conversion.currencyconversion.presentation.ConversionViewModel
-import br.com.bonaldi.currency.conversion.utils.extensions.setWindowSettings
 import br.com.bonaldi.currency.conversion.utils.controls.setIsVisible
+import br.com.bonaldi.currency.conversion.utils.extensions.setWindowSettings
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CurrencyListFragment(private val currencyType: CurrencyModel.CurrencyType) : DialogFragment() {
+class CurrencyListFragment(private val currencyType: Currency.CurrencyType) : DialogFragment() {
     private lateinit var binding: FragmentCurrencyListBinding
     private val viewModel: ConversionViewModel by activityViewModels()
 
@@ -52,7 +52,7 @@ class CurrencyListFragment(private val currencyType: CurrencyModel.CurrencyType)
         dialog?.setWindowSettings()
     }
 
-    private fun setCurrencyList(currencies: List<CurrencyModel>) {
+    private fun setCurrencyList(currencies: List<Currency>) {
         binding.recyclerCurrencyList.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = listAdapter
@@ -85,12 +85,12 @@ class CurrencyListFragment(private val currencyType: CurrencyModel.CurrencyType)
         })
     }
 
-    private fun onCurrencyClicked(currency: CurrencyModel) {
+    private fun onCurrencyClicked(currency: Currency) {
         viewModel.updateCurrencyRecentlyUsed(currency, currencyType)
         dismiss()
     }
 
-    private fun onFavoriteClicked(currency: CurrencyModel) {
+    private fun onFavoriteClicked(currency: Currency) {
         viewModel.updateCurrencyFavorite(currency)
     }
 }
