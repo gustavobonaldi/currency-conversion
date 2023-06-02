@@ -16,7 +16,7 @@ fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false):
     return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
 }
 
-fun ImageView.setDrawableFlag(context: Context?, currencyCode: String?) {
+fun getFlagDrawableResource(context: Context?, currencyCode: String?): Int {
     val uri = "@drawable/flag_" + currencyCode?.lowercase(Locale.getDefault())
     context?.let {
         var imageResource: Int =
@@ -24,8 +24,14 @@ fun ImageView.setDrawableFlag(context: Context?, currencyCode: String?) {
         if (imageResource == 0) {
             imageResource = R.drawable.globe
         }
-        setImageResource(imageResource)
+        return imageResource
     }
+    return R.drawable.globe
+}
+
+fun ImageView.setDrawableFlag(context: Context?, currencyCode: String?) {
+    val resource = getFlagDrawableResource(context, currencyCode)
+    setImageResource(resource)
 }
 
 fun String.Companion.empty() = ""

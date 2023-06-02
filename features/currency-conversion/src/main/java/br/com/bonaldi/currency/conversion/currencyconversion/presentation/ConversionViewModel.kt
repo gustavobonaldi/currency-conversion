@@ -1,6 +1,6 @@
 package br.com.bonaldi.currency.conversion.currencyconversion.presentation
 
-import android.content.Context
+import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.bonaldi.currency.conversion.api.api.config.ResponseResource
@@ -9,9 +9,8 @@ import br.com.bonaldi.currency.conversion.core.database.model.conversion.Currenc
 import br.com.bonaldi.currency.conversion.core.database.model.conversion.Rates
 import br.com.bonaldi.currency.conversion.currencyconversion.data.enums.ConversionErrorEnum
 import br.com.bonaldi.currency.conversion.currencyconversion.domain.CurrencyLayerUseCase
-import br.com.bonaldi.currency.conversion.currencyconversion.presentation.conversions.ConversionState
 import br.com.bonaldi.currency.conversion.currencyconversion.presentation.conversions.ConversionUtils
-import br.com.bonaldi.currency.conversion.currencyconversion.presentation.currencylist.CurrencyListState
+import br.com.bonaldi.currency.conversion.utils.extensions.empty
 import br.com.bonaldi.currency.conversion.utils.extensions.safeLet
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -20,7 +19,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
-import java.util.*
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,22 +31,32 @@ class ConversionViewModel @Inject constructor(
         private const val DOLLAR_CURRENCY_CODE = "USD"
     }
 
+    private val _currencyListState = MutableStateFlow<CurrencyListState>(CurrencyListState.Success())
+    val currencyListState = _currencyListState
+
     private val _conversionState = MutableStateFlow(ConversionState())
     val conversionState = _conversionState
 
-    private val _currencyListState = MutableStateFlow(CurrencyListState())
-    val currencyListState = _currencyListState
+    private val _currencyRatesData = MutableStateFlow(CurrencyRatesData())
 
-    private val _conversionEventFlow = MutableSharedFlow<ConversionUIEvent>()
+    private val _conversionEventFlow = MutableSharedFlow<ConversionUIEvent?>()
     val conversionEventFlow = _conversionEventFlow.asSharedFlow()
+
+    private val _searchOnCurrencyListState = MutableStateFlow(SearchOnCurrencyListState())
+    val searchOnCurrencyListState = _searchOnCurrencyListState
+
+    init {
+        updateCurrencies()
+        updateRealtimeRates()
+    }
 
     override fun updateRealtimeRates() {
         viewModelScope.launch {
             currencyLayerUseCase.updateCurrencyRateList().collectLatest { result ->
                 when (result) {
                     is ResponseResource.Success -> {
-                        _currencyListState.value =
-                            _currencyListState.value.copy(ratesList = result.data.orEmpty())
+                        _currencyRatesData.value =
+                            _currencyRatesData.value.copy(ratesList = result.data.orEmpty())
                     }
                     is ResponseResource.Error -> {
                         result.error.message?.let {
@@ -55,9 +64,9 @@ class ConversionViewModel @Inject constructor(
                         }
                     }
                     is ResponseResource.Loading -> {
-                        _conversionState.value =
-                            conversionState.value.copy(isLoading = result.isLoading)
+                        _currencyRatesData.value = _currencyRatesData.value.copy(isLoading = true)
                     }
+                    else -> {}
                 }
             }
         }
@@ -68,27 +77,23 @@ class ConversionViewModel @Inject constructor(
             currencyLayerUseCase.updateCurrencyList().collectLatest { result ->
                 when (result) {
                     is ResponseResource.Success<List<Currency>> -> {
-                        _currencyListState.value =
-                            _currencyListState.value.copy(currencyList = result.data.orEmpty())
+                        _currencyListState.value = CurrencyListState.Success(result.data.orEmpty())
                     }
                     is ResponseResource.Error -> {
                         result.error.message?.let {
-                            _conversionEventFlow.emit(ConversionUIEvent.SnackBarError(it))
+                            _currencyListState.value = CurrencyListState.Error(it)
                         }
                     }
                     is ResponseResource.Loading -> {
-                        _conversionState.value =
-                            conversionState.value.copy(isLoading = result.isLoading)
+                        _currencyListState.value = CurrencyListState.Loading
                     }
+                    else -> {}
                 }
             }
         }
     }
 
-    override fun performConversion(
-        context: Context,
-        valueToConvert: Double,
-    ) {
+    override fun performConversion(valueToConvert: Double) {
         viewModelScope.launch {
             try {
                 safeLet(
@@ -113,14 +118,12 @@ class ConversionViewModel @Inject constructor(
                     updateHistory(currencyFrom, currencyTo)
                 } ?: run {
                     updateSnackBarState(
-                        context,
                         ConversionErrorEnum.CURRENCIES_NOT_SELECTED_ERROR.message
                     )
                 }
             } catch (ex: Exception) {
                 when (ex) {
                     is NumberFormatException -> updateSnackBarState(
-                        context,
                         ConversionErrorEnum.INVALID_VALUE_TYPED_ERROR.message
                     )
                 }
@@ -137,12 +140,7 @@ class ConversionViewModel @Inject constructor(
             _conversionState.value = _conversionState.value.copy(
                 currencyFrom = if (currencyType == CurrencyType.FROM) currency else _conversionState.value.currencyFrom,
                 currencyTo = if (currencyType == CurrencyType.TO) currency else _conversionState.value.currencyTo,
-            )
-            _conversionEventFlow.emit(
-                ConversionUIEvent.SelectClickedCurrency(
-                    currency,
-                    currencyType
-                )
+                convertedValue = null
             )
         }
     }
@@ -153,18 +151,26 @@ class ConversionViewModel @Inject constructor(
         }
     }
 
-    private fun updateSnackBarState(context: Context, message: Int) {
+    override fun searchOnCurrencyList(searchText: String) {
+        (currencyListState.value as? CurrencyListState.Success)?.currencyList?.let { currencyList ->
+            val searchTextClean = searchText.clearText()
+            _searchOnCurrencyListState.value = _searchOnCurrencyListState.value.copy(
+                searchText = searchText,
+                resultList = currencyList.filter { it.code.clearText().contains(searchTextClean) || it.country?.clearText()?.contains(searchTextClean) ?: false }
+            )
+        }
+    }
+
+    private fun updateSnackBarState(message: Int) {
         viewModelScope.launch {
             _conversionEventFlow.emit(
-                ConversionUIEvent.SnackBarError(
-                    context.resources.getString(message)
-                )
+                ConversionUIEvent.SnackBarError(message)
             )
         }
     }
 
     private fun searchCurrencyRatesInList(currency: Currency): Rates? {
-        return _currencyListState.value.ratesList.firstOrNull { it.currencyCode == "$DOLLAR_CURRENCY_CODE${currency.code}" }
+        return _currencyRatesData.value.ratesList.firstOrNull { it.currencyCode == "$DOLLAR_CURRENCY_CODE${currency.code}" }
     }
 
     private fun updateHistory(origin: Currency, destiny: Currency){
@@ -174,12 +180,36 @@ class ConversionViewModel @Inject constructor(
     }
 
     sealed class ConversionUIEvent {
-        data class SnackBarError(val message: String) : ConversionUIEvent()
-        data class SelectClickedCurrency(
-            val currency: Currency,
-            val currencyType: CurrencyType
-        ) : ConversionUIEvent()
-
+        data class SnackBarError(val message: Any) : ConversionUIEvent()
         data class ShowConvertedValue(val convertedValue: String) : ConversionUIEvent()
     }
+
+    data class ConversionState(
+        val currencyFrom: Currency? = null,
+        val currencyTo: Currency? = null,
+        val convertedValue: String? = null,
+        val isLoading: Boolean = false
+    )
+
+    sealed class CurrencyListState {
+        data class Success(val currencyList: List<Currency> = emptyList()): CurrencyListState()
+        data class Error(val message: String): CurrencyListState()
+        object Loading: CurrencyListState()
+    }
+
+    data class SearchOnCurrencyListState (
+        val searchText: String = String.empty(),
+        val resultList: List<Currency> = listOf()
+    ) {
+        val isSearching: Boolean
+            get() = searchText.isNotBlank()
+
+    }
+
+    data class CurrencyRatesData(
+        val ratesList: List<Rates> = emptyList(),
+        val isLoading: Boolean = false
+    )
+
+    private fun String.clearText() = this.lowercase(Locale.getDefault())
 }

@@ -5,4 +5,8 @@
     <color name="colorAccent">#3F7BAA</color>
     <color name="transparent_blue">#602B608A</color>
     <color name="colorSeparator">#20000000</color>
+    <color name="roundedNumberBorderColor">#952B608A</color>
+    <color name="startGradient">#00467d</color>
+    <color name="centerGradient">#0360AA</color>
+    <color name="endGradient">#590360AA</color>
 </resources>

@@ -19,7 +19,7 @@ import br.com.bonaldi.currency.conversion.utils.controls.LogTags.LOG_TAG
 import br.com.bonaldi.currency.conversion.utils.controls.setIsVisible
 import br.com.bonaldi.currency.conversion.utils.extensions.empty
 import br.com.bonaldi.currency.conversion.utils.extensions.setDrawableFlag
-import com.google.android.gms.ads.AdRequest
+//import com.google.android.gms.ads.AdRequest
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -53,8 +53,8 @@ class ConversionsFragment : Fragment() {
     }
 
     private fun setAds() {
-        val adRequest = AdRequest.Builder().build()
-        binding.adView.loadAd(adRequest)
+//        val adRequest = AdRequest.Builder().build()
+//        binding.adView.loadAd(adRequest)
     }
 
     private fun setListeners() {
@@ -71,7 +71,6 @@ class ConversionsFragment : Fragment() {
                 currencyFromEditText.apply {
                     addTextChangedListener(CustomTextWatcher(this) { typedValue ->
                         viewModel.performConversion(
-                            requireContext(),
                             typedValue
                         )
 
@@ -90,23 +89,27 @@ class ConversionsFragment : Fragment() {
             updateRealtimeRates()
             conversionEventFlow.collectLatest { event ->
                 if (isAdded) {
-                    handleUIEvent(event)
+                    event?.let { handleUIEvent(it) }
                 }
             }
         }
     }
 
     private fun handleUIEvent(event: ConversionViewModel.ConversionUIEvent) {
-        when (event) {
-            is SnackBarError -> showSnackBar(event.message)
-            is ShowConvertedValue -> updateConvertedValue(
-                event.convertedValue
-            )
-            is SelectClickedCurrency -> updateSelectedCurrency(
-                event.currency,
-                event.currencyType
-            )
-        }
+//        when (event) {
+//            is SnackBarError -> showSnackBar(event.message)
+//            is ShowConvertedValue -> updateConvertedValue(
+//                event.convertedValue
+//            )
+//            is SelectClickedDestinyCurrency -> updateSelectedCurrency(
+//                event.currency,
+//                event.currencyType
+//            )
+//            is SelectClickedOriginCurrency -> updateSelectedCurrency(
+//                event.currency,
+//                event.currencyType
+//            )
+//        }
     }
 
     private fun updateConvertedValue(convertedValue: String) = binding.apply {
@@ -121,7 +124,6 @@ class ConversionsFragment : Fragment() {
                     clearFields()
                     containerTo.getImageView().setDrawableFlag(context, currency.code)
                     containerTo.setCurrencyText(currency.toString())
-
                 }
                 CurrencyType.FROM -> {
                     clearFields()
@@ -138,19 +140,25 @@ class ConversionsFragment : Fragment() {
         }
     }
 
-    private fun showSnackBar(message: String?) {
+    private fun showSnackBar(message: Any?) {
         try {
-            context?.let { context ->
-                message?.let {
-                    Snackbar.make(context, binding.currencyFromEditText, it, Snackbar.LENGTH_LONG)
-                        .show()
+            when(message){
+                is String -> {
+                    context?.let { context ->
+                        Snackbar.make(context, binding.currencyFromEditText, message, Snackbar.LENGTH_LONG).show()
+                    }
                 }
+                is Int -> {
+                    context?.let { context ->
+                        Snackbar.make(context, binding.currencyFromEditText, getString(message), Snackbar.LENGTH_LONG).show()
+                    }
+                }
+                else -> {}
             }
         } catch (ex: Exception) {
             Log.e(LOG_TAG, ex.message, ex.cause)
         }
     }
-
 
     private fun clearFields() = binding.apply {
         textViewConvertedValue.text = String.empty()

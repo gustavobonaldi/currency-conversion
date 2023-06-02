@@ -42,6 +42,7 @@ captures/
 # IntelliJ
 *.iml
 .idea/
+.idea/*
 .idea/workspace.xml
 .idea/tasks.xml
 .idea/gradle.xml
@@ -205,3 +206,14 @@ build-cache/
 
 # End of https://www.gitignore.io/api/android,androidstudio
 !/.idea/
+/.idea/sonarlint/issuestore/0/1/01513c6e5cfb66128c43e66f2f8607b9c9045bce
+/.idea/sonarlint/issuestore/5/b/5b72ab7e8ea1d056bdd45b1cd1c5913f553a9e94
+/.idea/sonarlint/issuestore/8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
+/.idea/sonarlint/issuestore/a/5/a5cc2925ca8258af241be7e5b0381edf30266302
+/.idea/sonarlint/issuestore/index.pb
+/.idea/aws.xml
+/.idea/deploymentTargetDropDown.xml
+/.idea/jarRepositories.xml
+/.idea/kotlinc.xml
+/currency-conversion-sample/release/output-metadata.json
+/.idea/inspectionProfiles/Project_Default.xml
