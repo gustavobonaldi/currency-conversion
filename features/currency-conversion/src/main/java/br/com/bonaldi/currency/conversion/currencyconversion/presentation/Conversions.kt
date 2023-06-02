@@ -8,7 +8,6 @@ interface Conversions {
     fun updateCurrencyFavorite(currency: Currency)
     fun updateCurrencyRecentlyUsed(currency: Currency, currencyType: Currency.CurrencyType)
     fun updateRealtimeRates()
-    fun performConversion(
-        context: Context,
-        valueToConvert: Double)
+    fun performConversion(valueToConvert: Double)
+    fun searchOnCurrencyList(searchText: String)
 }

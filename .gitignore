@@ -42,6 +42,7 @@ captures/
 # IntelliJ
 *.iml
 .idea/
+.idea/*
 .idea/workspace.xml
 .idea/tasks.xml
 .idea/gradle.xml
@@ -215,3 +216,4 @@ build-cache/
 /.idea/jarRepositories.xml
 /.idea/kotlinc.xml
 /currency-conversion-sample/release/output-metadata.json
+/.idea/inspectionProfiles/Project_Default.xml

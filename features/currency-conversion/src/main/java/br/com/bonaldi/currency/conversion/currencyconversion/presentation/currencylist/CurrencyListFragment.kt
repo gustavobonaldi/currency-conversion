@@ -62,12 +62,12 @@ class CurrencyListFragment(private val currencyType: Currency.CurrencyType) : Di
 
     private fun setObservers() = binding.apply {
         lifecycleScope.launch {
-            viewModel.currencyListState.collectLatest { currencies ->
-                loaderCurrencyList.setIsVisible(currencies.isLoading)
-                recyclerCurrencyList.setIsVisible(!currencies.isLoading)
-                setCurrencyList(currencies.currencyList)
-                setSearchView()
-            }
+//            viewModel.currencyListData.collectLatest { currencies ->
+//                loaderCurrencyList.setIsVisible(currencies.isLoading)
+//                recyclerCurrencyList.setIsVisible(!currencies.isLoading)
+//                setCurrencyList(currencies.currencyList)
+//                setSearchView()
+//            }
         }
         viewModel.updateCurrencies()
     }

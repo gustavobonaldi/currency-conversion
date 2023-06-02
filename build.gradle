@@ -74,6 +74,7 @@ buildscript {
         mockitoVersion = '2.8.9'
         archLifecycleVersion = '2.3.1'
         archTestingVersion = '2.0.0'
+        composeBomVersion = '2023.04.01'
     }
 
     dependencies {
